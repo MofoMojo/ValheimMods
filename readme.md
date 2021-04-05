@@ -7,15 +7,21 @@ Extends the ship radius when you're standing on a boat. I made this because an e
 Allows you to toggle the minimap and specify independent scaling of the minimap marker and the large map marker
 
 ##RecipeTweaks
-Adds a few recipes and tweaks
-* Lox Meat Surprise recipe
-* Fishing Rod recipe
-* Fishing Bait Recipe
-* Chains (4 iron = 1 chain)
-* Bronze tweaks (1 Tin/2 Copper = 3 Bronze and 5/10 = 15)
+FishingRodRecipe requires Wood and LinenThread. Yes, this is fairly late game and you probably already have one by then but thematically it makes sense. 
+* Bait requires raw Neck meat
+* Chains requires 4 iron
+* LoxMeatSurprise requires CarrotSoup and LoxPie
+* BronzeTweak gives you 3 bronze for 1 tin and 2 copper, or 15 for 5 tin and 10 copper
 
 ##ShowPlayerStatsInRange 
-Adds players within range to a moveable hud showing health data. Supports color coding based on health percentage and health
+PlayerStats will show health data for all nearby players within a given range of you. It allows you to configure various health and healthpercentage levels with customizable levels of criticality. As for coloring, the most critical level wins. In other words, if your health is considered critical, but your health percentage is Medium, then stats are colored with critical coloring. if your health percentage is critical, but your health level indicates it should be normal then the coloring will be critical.
+
+Default color levels are from Normal to Critical:
+
+* Green
+* White
+* Yellow
+* Red
 
 ##Wishbone tweak
 Allows the wishbone to track on Copper and Tin
@@ -24,3 +30,8 @@ Allows the wishbone to track on Copper and Tin
 Birds drop an additional 1-3 feathers
 Fishing in the ocean biome provides 1-3 extra fish
 Remember the IP address and port of the last server you connected to
+
+### Toggle Keys
+Use the values here: https://docs.unity3d.com/ScriptReference/KeyCode.html to determine what can be used/specified as a toggle key
+
+**Note: The default settings are the settings that I use**
