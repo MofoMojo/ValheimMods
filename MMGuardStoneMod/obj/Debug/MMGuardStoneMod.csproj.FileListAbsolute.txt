@@ -1,0 +1,4 @@
+C:\Users\stuar\source\repos\MofoMojoValheimMods\MMGuardStoneMod\bin\Debug\MMGuardStoneMod.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods\MMGuardStoneMod\bin\Debug\MMGuardStoneMod.pdb
+C:\Users\stuar\source\repos\MofoMojoValheimMods\MMGuardStoneMod\obj\Debug\MMGuardStoneMod.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods\MMGuardStoneMod\obj\Debug\MMGuardStoneMod.pdb

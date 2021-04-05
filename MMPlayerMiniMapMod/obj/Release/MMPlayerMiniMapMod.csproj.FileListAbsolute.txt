@@ -1,0 +1,4 @@
+C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPlayerMiniMapMod\bin\Release\MMPlayerMiniMapMod.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPlayerMiniMapMod\bin\Release\MMPlayerMiniMapMod.pdb
+C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPlayerMiniMapMod\obj\Release\MMPlayerMiniMapMod.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPlayerMiniMapMod\obj\Release\MMPlayerMiniMapMod.pdb

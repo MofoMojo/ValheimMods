@@ -1,0 +1,5 @@
+C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPersonalTweaks\bin\Debug\MMPersonalTweaks.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPersonalTweaks\bin\Debug\MMPersonalTweaks.pdb
+C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPersonalTweaks\obj\Debug\MMPersonalTweaks.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPersonalTweaks\obj\Debug\MMPersonalTweaks.pdb
+C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPersonalTweaks\obj\Debug\MMPersonalTweaks.csprojAssemblyReference.cache

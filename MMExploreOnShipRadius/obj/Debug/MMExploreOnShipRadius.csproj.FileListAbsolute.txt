@@ -1,0 +1,4 @@
+C:\Users\stuar\source\repos\MofoMojoValheimMods\MMExploreOnShipRadius\bin\Debug\MMExploreOnShipRadius.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods\MMExploreOnShipRadius\bin\Debug\MMExploreOnShipRadius.pdb
+C:\Users\stuar\source\repos\MofoMojoValheimMods\MMExploreOnShipRadius\obj\Debug\MMExploreOnShipRadius.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods\MMExploreOnShipRadius\obj\Debug\MMExploreOnShipRadius.pdb
