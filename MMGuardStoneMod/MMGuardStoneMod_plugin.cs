@@ -66,7 +66,7 @@ namespace MMGuardStoneMod
         public static ConfigEntry<float> GuardStoneRadius;
         public static void Init()
         {
-            MMGuardStoneModEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMGuardStoneMod", "MMGuardStoneModEnabled", false, "Enables MMGuardStoneMod mod");
+            MMGuardStoneModEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMGuardStoneMod", "MMGuardStoneModEnabled", true, "Enables MMGuardStoneMod mod");
             GuardStoneRadius = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("MMGuardStoneMod", "GuardStoneRadius", 32f, "Sets the GuardStone radius");
             PluginLoggingLevel = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.LoggingLevel>("LoggingLevel", "PluginLoggingLevel", Plugin.LoggingLevel.None, "Supported values are None, Normal, Verbose");
         }

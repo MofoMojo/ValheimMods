@@ -3,10 +3,11 @@ using UnityEngine;
 using System.IO;
 
 
-namespace MMShowPlayerStatsInRange
+namespace MofoMojo
 {
  public class UtilityClass
     {
+
         public static bool IgnoreKeyPresses(bool extra = false)
         {
             return ZNetScene.instance == null || Player.m_localPlayer == null || Minimap.IsOpen() || Console.IsVisible() || TextInput.IsVisible() || ZNet.instance.InPasswordDialog() || Chat.instance?.HasFocus() == true || StoreGui.IsVisible() || InventoryGui.IsVisible() || Menu.IsVisible() || TextViewer.instance?.IsVisible() == true;
@@ -43,7 +44,7 @@ namespace MMShowPlayerStatsInRange
                 return t2d;
             }
             {
-                Plugin.Log("texture not supported : " + fn);
+                Debug.Log("texture not supported : " + fn);
             }
             return null;
         }

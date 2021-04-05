@@ -320,13 +320,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MMShowPlayerStatsInRange.cs" />
     <Compile Include="MM_ShowPlayerStatsInRange_Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UtilityClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ModAssets\ReadMe.txt" />
+    <Content Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

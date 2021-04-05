@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace MMWishboneTweak
 {
-    [BepInPlugin("MofoMojo.MMWishbone", Plugin.ModName, Plugin.Version)]
+    [BepInPlugin("MofoMojo.MMWishboneTweak", Plugin.ModName, Plugin.Version)]
     public class Plugin : BaseUnityPlugin
     {
         public const string Version = "1.0";
@@ -69,7 +69,7 @@ namespace MMWishboneTweak
         // These are the settings that will be saved in the ..\plugins\mofomojo.cfg file
         public static void Init()
         {
-            WishBoneTweakEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Wishbone", "WishBoneTweakEnabled", false, "Allows the Wishbone to find Tin and Copper");
+            WishBoneTweakEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Wishbone", "WishBoneTweakEnabled", true, "Allows the Wishbone to find Tin and Copper");
             PluginLoggingLevel = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.LoggingLevel>("LoggingLevel", "PluginLoggingLevel", Plugin.LoggingLevel.None , "Supported values are None, Normal, Verbose");
         }
 

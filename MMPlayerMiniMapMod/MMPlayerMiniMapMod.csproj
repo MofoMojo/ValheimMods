@@ -320,9 +320,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MMPlayerMiniMap.cs" />
     <Compile Include="MMPlayerMiniMap_plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UtilityClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

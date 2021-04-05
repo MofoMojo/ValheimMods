@@ -15,9 +15,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMExplorationTweaks", "MMEx
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMRecipeTweaks", "MMRecipeTweaks\MMRecipeTweaks.csproj", "{F674EE4E-A06A-4FAE-A8C9-AC732773225C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{45AD8B2E-EE05-49A9-B235-9D78103CD241}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMGuardStoneMod", "MMGuardStoneMod\MMGuardStoneMod.csproj", "{D30638E3-90B4-4EDF-A0A0-869152AA9CCE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{57D706DB-D4B3-4F57-977D-3E3B325756E2}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
