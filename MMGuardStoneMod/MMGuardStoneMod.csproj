@@ -7,8 +7,8 @@
     <ProjectGuid>{D30638E3-90B4-4EDF-A0A0-869152AA9CCE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MMGuardStoneMod</RootNamespace>
-    <AssemblyName>MMGuardStoneMod</AssemblyName>
+    <RootNamespace>MofoMojo.MMGuardStoneMod</RootNamespace>
+    <AssemblyName>MofoMojo.MMGuardStoneMod</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -321,7 +321,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MMGuardStoneMod_plugin.cs" />
-    <Compile Include="MMGuardStoneMod.cs" />
+    <Compile Include="MMGuardStoneMod_patch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

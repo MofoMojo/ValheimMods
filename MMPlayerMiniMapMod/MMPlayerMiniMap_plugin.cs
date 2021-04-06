@@ -5,7 +5,7 @@ using BepInEx.Configuration;
 using UnityEngine;
 using HarmonyLib;
 
-namespace MMPlayerMiniMapMod
+namespace MofoMojo.MMPlayerMiniMapMod
 {
     [BepInPlugin("MofoMojo.MMPlayerMiniMapMod", Plugin.ModName, Plugin.Version)]
     public class Plugin : BaseUnityPlugin

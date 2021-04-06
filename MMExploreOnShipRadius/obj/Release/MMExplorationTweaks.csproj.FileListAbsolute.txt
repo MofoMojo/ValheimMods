@@ -6,3 +6,7 @@ C:\Users\stuar\source\repos\MofoMojoValheimMods\MMExploreOnShipRadius\%userprofi
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMExploreOnShipRadius\%userprofile%\source\repos\MofoMojoValheimMods\builds\release\MMExploreOnShipRadius.pdb
 C:\Users\stuar\source\repos\MofoMojoValheimMods\builds\release\MMExploreOnShipRadius.dll
 C:\Users\stuar\source\repos\MofoMojoValheimMods\builds\release\MMExploreOnShipRadius.pdb
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMExploreOnShipRadius\bin\Release\MofoMojo.MMExploreOnShipRadius.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMExploreOnShipRadius\bin\Release\MofoMojo.MMExploreOnShipRadius.pdb
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMExploreOnShipRadius\obj\Release\MofoMojo.MMExploreOnShipRadius.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMExploreOnShipRadius\obj\Release\MofoMojo.MMExploreOnShipRadius.pdb

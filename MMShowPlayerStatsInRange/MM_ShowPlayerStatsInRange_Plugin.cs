@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 
-namespace MMShowPlayerStatsInRange
+namespace MofoMojo.MMShowPlayerStatsInRange
 {
     [BepInPlugin("MofoMojo.MMShowPlayerStatsInRange", Plugin.ModName, Plugin.Version)]
     public class Plugin : BaseUnityPlugin

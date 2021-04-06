@@ -4,3 +4,8 @@ C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPlayerMiniMapMod\obj\Release\M
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPlayerMiniMapMod\obj\Release\MMPlayerMiniMapMod.pdb
 C:\Users\stuar\source\repos\MofoMojoValheimMods\builds\release\MMPlayerMiniMapMod.dll
 C:\Users\stuar\source\repos\MofoMojoValheimMods\builds\release\MMPlayerMiniMapMod.pdb
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMPlayerMiniMapMod\bin\Release\MofoMojo.MMPlayerMiniMapMod.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMPlayerMiniMapMod\bin\Release\MofoMojo.MMPlayerMiniMapMod.pdb
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMPlayerMiniMapMod\obj\Release\MMPlayerMiniMapMod.csprojAssemblyReference.cache
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMPlayerMiniMapMod\obj\Release\MofoMojo.MMPlayerMiniMapMod.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMPlayerMiniMapMod\obj\Release\MofoMojo.MMPlayerMiniMapMod.pdb

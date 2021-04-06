@@ -7,8 +7,8 @@
     <ProjectGuid>{EE8214EA-039D-4920-A79E-61290AB2AAEA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MMPersonalTweaks</RootNamespace>
-    <AssemblyName>MMPersonalTweaks</AssemblyName>
+    <RootNamespace>MofoMojo.MMPersonalTweaks</RootNamespace>
+    <AssemblyName>MofoMojo.MMPersonalTweaks</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

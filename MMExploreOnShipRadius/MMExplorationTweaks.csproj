@@ -7,8 +7,8 @@
     <ProjectGuid>{6C854223-618C-407E-93A2-315008741360}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MMExploreOnShipRadius</RootNamespace>
-    <AssemblyName>MMExploreOnShipRadius</AssemblyName>
+    <RootNamespace>MofoMojo.MMExploreOnShipRadius</RootNamespace>
+    <AssemblyName>MofoMojo.MMExploreOnShipRadius</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

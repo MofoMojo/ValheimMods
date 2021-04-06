@@ -7,8 +7,8 @@
     <ProjectGuid>{4B4A2ACC-F3BF-48FC-954D-1831C33CE821}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MMShowPlayerStatsInRange</RootNamespace>
-    <AssemblyName>MMShowPlayerStatsInRange</AssemblyName>
+    <RootNamespace>MofoMojo.MMShowPlayerStatsInRange</RootNamespace>
+    <AssemblyName>MofoMojo.MMShowPlayerStatsInRange</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 
 
-namespace MMPersonalTweaks
+namespace MofoMojo.MMPersonalTweaks
 {
     class patch
     {

@@ -2,3 +2,7 @@ C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPlayerMiniMapMod\bin\Debug\MMP
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPlayerMiniMapMod\bin\Debug\MMPlayerMiniMapMod.pdb
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPlayerMiniMapMod\obj\Debug\MMPlayerMiniMapMod.dll
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPlayerMiniMapMod\obj\Debug\MMPlayerMiniMapMod.pdb
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMPlayerMiniMapMod\bin\Debug\MofoMojo.MMPlayerMiniMapMod.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMPlayerMiniMapMod\bin\Debug\MofoMojo.MMPlayerMiniMapMod.pdb
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMPlayerMiniMapMod\obj\Debug\MofoMojo.MMPlayerMiniMapMod.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMPlayerMiniMapMod\obj\Debug\MofoMojo.MMPlayerMiniMapMod.pdb

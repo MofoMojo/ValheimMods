@@ -7,8 +7,8 @@
     <ProjectGuid>{48DFC998-62E8-4751-A860-8CDB3B829F30}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MMWishboneTweak</RootNamespace>
-    <AssemblyName>MMWishboneTweak</AssemblyName>
+    <RootNamespace>MofoMojo.MMWishboneTweak</RootNamespace>
+    <AssemblyName>MofoMojo.MMWishboneTweak</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

@@ -5,7 +5,7 @@ using BepInEx.Logging;
 using HarmonyLib;
 using UnityEngine;
 
-namespace MMPersonalTweaks
+namespace MofoMojo.MMPersonalTweaks
 {
     [BepInPlugin("MofoMojo.MMPersonalTweaks", Plugin.ModName, Plugin.Version)]
     public class Plugin : BaseUnityPlugin

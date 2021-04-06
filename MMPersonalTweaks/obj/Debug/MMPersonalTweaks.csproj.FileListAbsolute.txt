@@ -2,3 +2,7 @@ C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPersonalTweaks\bin\Debug\MMPer
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPersonalTweaks\bin\Debug\MMPersonalTweaks.pdb
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPersonalTweaks\obj\Debug\MMPersonalTweaks.dll
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPersonalTweaks\obj\Debug\MMPersonalTweaks.pdb
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMPersonalTweaks\bin\Debug\MofoMojo.MMPersonalTweaks.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMPersonalTweaks\bin\Debug\MofoMojo.MMPersonalTweaks.pdb
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMPersonalTweaks\obj\Debug\MofoMojo.MMPersonalTweaks.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMPersonalTweaks\obj\Debug\MofoMojo.MMPersonalTweaks.pdb

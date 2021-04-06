@@ -10,7 +10,7 @@ using UnityEngine;
 
 
 
-namespace MMRecipeTweaks
+namespace MofoMojo.MMRecipeTweaks
 {
     [BepInPlugin("MofoMojo.MMRecipeTweaks", Plugin.ModName, Plugin.Version)]
     [BepInDependency("com.bepinex.plugins.jotunnlib")]
