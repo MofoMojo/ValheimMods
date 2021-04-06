@@ -11,7 +11,7 @@ namespace MMGuardStoneMod
     {
         public const string Version = "1.0";
         public const string ModName = "MMGuardStoneMod";
-        public const string MonsterEffectArea = "NoMonsterArea";
+        public const string NoMonsterEffectAreaName = "NoMonsterArea";
         Harmony _Harmony;
         public static Plugin Instance;
         public static LoggingLevel PluginLoggingLevel = LoggingLevel.None;

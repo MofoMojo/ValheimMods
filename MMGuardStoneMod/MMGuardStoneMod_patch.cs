@@ -43,7 +43,7 @@ namespace MMGuardStoneMod
             private static void FixupRadii(PrivateArea pa, float radius)
             {
                 Plugin.Log($"FixupRaddi called - {radius}");
-                foreach(SphereCollider sphere in pa.gameObject.GetComponents<SphereCollider>())
+                foreach(SphereCollider sphere in pa.GetComponents<SphereCollider>())
                 {
                     Plugin.Log("sphere adjusted");
                     sphere.radius = radius;
@@ -87,36 +87,76 @@ namespace MMGuardStoneMod
         {
             Plugin.Log($"SetNoMonsterArea called: {enabled}");
 
-            if (enabled)
+            EffectArea NoMonsters = GetNoMonsterArea(pa);
+
+            if (null != NoMonsters)
             {
-                AddNoMonsterArea(pa);
+                Plugin.Log($"SetNoMonsterArea Got NoMonsterArea");
+
+                    // NoMonsters keeps monsters from "attempting" to navigate inside
+                    // Playerbase ensures that creatures don't spawn within the radius
+                    // however you can't build when it's enabled. 
+                    NoMonsters.m_type = enabled ? (EffectArea.Type.NoMonsters | EffectArea.Type.PlayerBase) : EffectArea.Type.None;
+
+
+                Plugin.Log($"SetEnabled - type set to {NoMonsters.m_type }");
+                
+                NoMonsters.enabled = enabled;
+
+                SphereCollider collider = NoMonsters.GetComponent<SphereCollider>();
+                if(null != collider)
+                {
+                    collider.enabled = enabled;
+                    collider.radius = pa.m_radius;
+                }
+
             }
-            else
-            {
-                // changing the effect area does seem to be enough to "fix"
-                RemoveNoMonsterArea(pa);
-            }
+
+
         }
 
-        private static EffectArea AddNoMonsterArea(PrivateArea pa)
+        private static EffectArea GetNoMonsterArea(PrivateArea pa)
         {
-            Plugin.Log("AddNoMonsterArea called");
-            EffectArea NewNoMonsters = null;
+            Plugin.Log("GetNoMonsterArea called");
+            EffectArea NoMonstersEffectArea = null;
             try
             {
-                NewNoMonsters = pa.gameObject.AddComponent<EffectArea>();
-                NewNoMonsters.name = Plugin.MonsterEffectArea;
-                NewNoMonsters.m_type = EffectArea.Type.NoMonsters | EffectArea.Type.PlayerBase;
-                Plugin.Log($"AddNoMonsterArea - type set to {NewNoMonsters.m_type }");
-                // you need a sphere collider attached to the EffectArea to define the radius
-                SphereCollider sphereCollider = NewNoMonsters.gameObject.AddComponent<SphereCollider>();
-                        
-                // make sure IsTrigger is set so physics don't apply. 
-                sphereCollider.isTrigger = true;
+                EffectArea[] effectAreas = pa.GetComponents<EffectArea>();
+                foreach(EffectArea effectArea in effectAreas)
+                {
+                    if (effectArea.name == Plugin.NoMonsterEffectAreaName)
+                    {
+                        Plugin.Log("GetNoMonsterArea found NoMonsterArea");
+                        NoMonstersEffectArea = effectArea;
+                        break;
+                    }
+                }
+                
+                // if we didn't find one, make one
+                if(null == NoMonstersEffectArea)
+                {
+                    Plugin.Log("GetNoMonsterArea Creating NoMonsterArea");
+                    NoMonstersEffectArea = pa.gameObject.AddComponent<EffectArea>();
 
-                // set the radius to the radius of the private area
-                Plugin.Log("AddNoMonsterArea - adjusting radius of SphereCollider");
-                sphereCollider.radius = pa.m_radius;
+                    NoMonstersEffectArea.name = Plugin.NoMonsterEffectAreaName;
+
+                    // initialize this with no affect at first...
+                    NoMonstersEffectArea.m_type = EffectArea.Type.None;
+
+                    // you need a sphere collider attached to the EffectArea to define the radius
+                    SphereCollider sphereCollider = NoMonstersEffectArea.gameObject.AddComponent<SphereCollider>();
+
+                    // set this off by default if we're making it
+                    sphereCollider.enabled = false;
+
+                    // make sure IsTrigger is set so physics don't apply. 
+                    sphereCollider.isTrigger = true;
+
+                    // set the radius to the radius of the private area
+                    Plugin.Log("GetNoMonsterArea - adjusting radius of SphereCollider");
+                    sphereCollider.radius = pa.m_radius;
+                }
+                
                
             }
             catch (Exception ex)
@@ -124,7 +164,7 @@ namespace MMGuardStoneMod
                 Plugin.LogError($"AddNoMonsterArea - {ex.Message}");
             }
 
-            return NewNoMonsters;
+            return NoMonstersEffectArea;
 
         }
         private static void RemoveNoMonsterArea(PrivateArea pa)
@@ -134,7 +174,7 @@ namespace MMGuardStoneMod
             EffectArea noMonstersArea = null;
             foreach(EffectArea effectArea in effectAreas)
             {
-                if(effectArea.name == Plugin.MonsterEffectArea)
+                if(effectArea.name == Plugin.NoMonsterEffectAreaName)
                 {
                     Plugin.Log("RemoveNoMonsterArea - Found effect area");
                     noMonstersArea = effectArea;
