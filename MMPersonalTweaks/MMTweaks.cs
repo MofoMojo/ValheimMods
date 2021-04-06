@@ -1,8 +1,9 @@
-﻿using BepInEx;
-using HarmonyLib;
+﻿using HarmonyLib;
+using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
+
 
 namespace MMPersonalTweaks
 {
@@ -198,7 +199,61 @@ namespace MMPersonalTweaks
 
         #endregion
 
-      
+        // Modify the QueueServerJoin method of ZSteamMatchmaking
+        // OnJoinIPConnect gets the text from the JoinIPPanel which sets m_joinIPAddress and perhaps m_joinHostPort
+        // If everything is on the up and up, it calls ZSteamMatchmaking.instance.QueueServerJoin(text + ":" + num);
+        // so hook here for getting the server:port combo
+        [HarmonyPatch(typeof(ZSteamMatchmaking), "QueueServerJoin")]
+        private static class QueueServerJoin_Patch
+        {
+            // check to see if it's enabled and if not, it won't patch for this mod
+            [HarmonyPrepare]
+            static bool IsRemeberLastConnectedIpEnabled()
+            {
+                bool enabled = Settings.RememberLastConnectedIpEnabled.Value;
+                Debug.Log($"RemeberLastConnectedIpEnabled: {enabled}");
+
+                return enabled;
+            }
+
+            // prefix attach to QueueServerJoin
+            // get the ipaddress and save it to the settings
+            [HarmonyPrefix]
+
+            public static void ZSteamMatchmaking_QueueServerJoin(string addr)
+            {
+                Debug.Log($"Setting LastConnectedIP to: {addr}");
+                Settings.LastConnectedIP.Value = addr;
+            }
+
+        }
+
+        [HarmonyPatch(typeof(FejdStartup), "OnJoinIPOpen")]
+        public static class OnJoinIPOpen_Patch
+        {
+            // check to see if it's enabled and if not, it won't patch for this mod
+            [HarmonyPrepare]
+            static bool IsRemeberLastConnectedIpEnabled()
+            {
+                bool enabled = Settings.RememberLastConnectedIpEnabled.Value;
+                Debug.Log($"RemeberLastConnectedIpEnabled: {enabled}");
+
+                return enabled;
+            }
+
+            // Set the value of the input field to the value stored in settings if it's not blank or null
+            // OnJoinIPOpen sets the IP panel to active and activates the input field...
+            // hook here to set m_joinIPAddress prior to this...
+            [HarmonyPrefix]
+            public static void FejdStartup_OnJoinIPOpen(ref InputField ___m_joinIPAddress)
+            {
+                string value = Settings.LastConnectedIP.Value;
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    ___m_joinIPAddress.text = value;
+                }
+            }
+        }
 
     }
 }

@@ -2,4 +2,3 @@ C:\Users\stuar\source\repos\MofoMojoValheimMods\MMShowPlayerStatsInRange\bin\Rel
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMShowPlayerStatsInRange\bin\Release\MMShowPlayerStatsInRange.pdb
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMShowPlayerStatsInRange\obj\Release\MMShowPlayerStatsInRange.dll
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMShowPlayerStatsInRange\obj\Release\MMShowPlayerStatsInRange.pdb
-C:\Users\stuar\source\repos\MofoMojoValheimMods\MMShowPlayerStatsInRange\obj\Release\MMShowPlayerStatsInRange.csprojAssemblyReference.cache
