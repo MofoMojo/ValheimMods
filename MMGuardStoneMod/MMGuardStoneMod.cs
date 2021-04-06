@@ -149,7 +149,15 @@ namespace MMGuardStoneMod
             try
             {
                 Debug.Log("DestroyNoMonsterArea");
-                EffectArea noMonsters = pa.gameObject.GetComponent<EffectArea>();
+                EffectArea noMonsters = null;
+                EffectArea[] effectAreas = pa.gameObject.GetComponents<EffectArea>();
+                foreach(EffectArea effectArea in effectAreas)
+                {
+                    if(effectArea.name == "NoMonsterArea")
+                    {
+                        noMonsters = effectArea;
+                    }
+                }
 
                 if (null != noMonsters)
                 {
