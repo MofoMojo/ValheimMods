@@ -6,3 +6,4 @@ C:\Users\stuar\source\repos\MofoMojoValheimMods\MMRecipeTweaks\obj\Release\MMRec
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMRecipeTweaks\obj\Release\MMRecipeTweaks.pdb
 C:\Users\stuar\source\repos\MofoMojoValheimMods\builds\release\MMRecipeTweaks.dll
 C:\Users\stuar\source\repos\MofoMojoValheimMods\builds\release\MMRecipeTweaks.pdb
+C:\Users\stuar\source\repos\MofoMojoValheimMods\MMRecipeTweaks\obj\Release\MMRecipeTweaks.csprojAssemblyReference.cache

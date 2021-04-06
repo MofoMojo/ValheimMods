@@ -1,5 +1,27 @@
 # MofoMojo's Mods
 
+##Releases
+###ExploreOnShipRadius
+https://stuartp.visualstudio.com/_git/MofoMojoValheimMods?path=%2FMMExploreOnShipRadius%2Fbin%2FRelease
+
+###PlayerMiniMapMod
+https://stuartp.visualstudio.com/_git/MofoMojoValheimMods?path=%2FMMPlayerMiniMapMod%2Fbin%2FRelease
+
+###ShowPlayerStatsInRange 
+https://stuartp.visualstudio.com/_git/MofoMojoValheimMods?path=%2FMMShowPlayerStatsInRange%2Fbin%2FRelease
+
+###Wishbone tweak
+https://stuartp.visualstudio.com/_git/MofoMojoValheimMods?path=%2FMMWishboneTweak%2Fbin%2FRelease
+
+###Personal tweaks
+https://stuartp.visualstudio.com/_git/MofoMojoValheimMods?path=%2FMMPersonalTweaks%2Fbin%2FRelease
+
+###GuardStone Tweaks
+https://stuartp.visualstudio.com/_git/MofoMojoValheimMods?path=%2FMMGuardStoneMod%2Fbin%2FRelease
+**Experimental - Creates a no monsters area with wards, but works a little sloppy on servers due to client/server behavior for AI/Spawns**
+
+
+#Details
 ##ExploreOnShipRadius
 Extends the ship radius when you're standing on a boat. I made this because an existing mod didn't work for players on the boat, just piloting the boat.
 
