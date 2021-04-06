@@ -7,8 +7,8 @@
     <ProjectGuid>{F674EE4E-A06A-4FAE-A8C9-AC732773225C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MMRecipeTweaks</RootNamespace>
-    <AssemblyName>MMRecipeTweaks</AssemblyName>
+    <RootNamespace>MofoMojo.MMRecipeTweaks</RootNamespace>
+    <AssemblyName>MofoMojo.MMRecipeTweaks</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

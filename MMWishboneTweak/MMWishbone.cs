@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 
-namespace MMWishboneTweak
+namespace MofoMojo.MMWishboneTweak
 {
     class MMWishbone
     {

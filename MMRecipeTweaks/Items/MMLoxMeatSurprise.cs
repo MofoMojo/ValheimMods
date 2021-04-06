@@ -1,7 +1,7 @@
 ﻿using JotunnLib.Entities;
 
 
-namespace MMRecipeTweaks
+namespace MofoMojo.MMRecipeTweaks
 {
     public class MMLoxMeatSurprise : PrefabConfig
     {

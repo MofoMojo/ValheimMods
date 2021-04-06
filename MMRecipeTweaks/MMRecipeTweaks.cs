@@ -5,7 +5,7 @@ using UnityEngine;
 using JotunnLib.Entities;
 using JotunnLib.Managers;
 
-namespace MMRecipeTweaks
+namespace MofoMojo.MMRecipeTweaks
 {
         public class MMRecipes : BaseUnityPlugin
         {

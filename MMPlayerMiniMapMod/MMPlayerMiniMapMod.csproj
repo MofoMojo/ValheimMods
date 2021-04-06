@@ -7,8 +7,8 @@
     <ProjectGuid>{BC08FAB6-E0C8-406D-82C4-5BDC58D21A7E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MMPlayerMiniMapMod</RootNamespace>
-    <AssemblyName>MMPlayerMiniMapMod</AssemblyName>
+    <RootNamespace>MofoMojo.MMPlayerMiniMapMod</RootNamespace>
+    <AssemblyName>MofoMojo.MMPlayerMiniMapMod</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

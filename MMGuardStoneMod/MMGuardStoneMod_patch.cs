@@ -3,7 +3,7 @@ using BepInEx;
 using HarmonyLib;
 using UnityEngine;
 
-namespace MMGuardStoneMod
+namespace MofoMojo.MMGuardStoneMod
 {
     class MMGuardWardTweaks
     {

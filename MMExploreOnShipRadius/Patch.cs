@@ -2,7 +2,7 @@
 using UnityEngine;
 using HarmonyLib;
 
-namespace MMExplorationTweaks
+namespace MofoMojo.MMExplorationTweaks
 {
     class Patch
     {

@@ -5,7 +5,7 @@ using HarmonyLib;
 using UnityEngine;
 
 
-namespace MMWishboneTweak
+namespace MofoMojo.MMWishboneTweak
 {
     [BepInPlugin("MofoMojo.MMWishboneTweak", Plugin.ModName, Plugin.Version)]
     public class Plugin : BaseUnityPlugin

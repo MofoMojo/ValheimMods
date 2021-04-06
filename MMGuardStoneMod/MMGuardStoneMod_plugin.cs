@@ -4,7 +4,7 @@ using BepInEx.Configuration;
 using HarmonyLib;
 using UnityEngine;
 
-namespace MMGuardStoneMod
+namespace MofoMojo.MMGuardStoneMod
 {
     [BepInPlugin("MofoMojo.MMGuardStoneMod", Plugin.ModName, Plugin.Version)]
     public class Plugin : BaseUnityPlugin
