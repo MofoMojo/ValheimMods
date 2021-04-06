@@ -7,3 +7,10 @@ C:\Users\stuar\source\repos\MofoMojoValheimMods\MMRecipeTweaks\obj\Release\MMRec
 C:\Users\stuar\source\repos\MofoMojoValheimMods\builds\release\MMRecipeTweaks.dll
 C:\Users\stuar\source\repos\MofoMojoValheimMods\builds\release\MMRecipeTweaks.pdb
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMRecipeTweaks\obj\Release\MMRecipeTweaks.csprojAssemblyReference.cache
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMRecipeTweaks\bin\release\MofoMojo.MMRecipeTweaks.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMRecipeTweaks\bin\release\MofoMojo.MMRecipeTweaks.pdb
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMRecipeTweaks\bin\release\JotunnLib.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMRecipeTweaks\obj\Release\MMRecipeTweaks.csprojAssemblyReference.cache
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMRecipeTweaks\obj\Release\MMRecipeTweaks.csproj.CopyComplete
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMRecipeTweaks\obj\Release\MofoMojo.MMRecipeTweaks.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMRecipeTweaks\obj\Release\MofoMojo.MMRecipeTweaks.pdb
