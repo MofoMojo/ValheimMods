@@ -321,7 +321,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MMGuardStoneMod_plugin.cs" />
-    <Compile Include="MMGuardStoneMod.cs" />
+    <Compile Include="MMGuardStoneMod_patch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

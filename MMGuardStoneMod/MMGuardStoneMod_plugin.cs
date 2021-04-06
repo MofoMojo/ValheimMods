@@ -11,6 +11,7 @@ namespace MMGuardStoneMod
     {
         public const string Version = "1.0";
         public const string ModName = "MMGuardStoneMod";
+        public const string MonsterEffectArea = "NoMonsterArea";
         Harmony _Harmony;
         public static Plugin Instance;
         public static LoggingLevel PluginLoggingLevel = LoggingLevel.None;
@@ -38,21 +39,25 @@ namespace MMGuardStoneMod
 
         public static void Log(string message)
         {
+            message = $"{ModName}: {message}";
             if (PluginLoggingLevel > LoggingLevel.None) Debug.Log(message);
         }
 
         public static void LogWarning(string message)
         {
+            message = $"{ModName}: {message}";
             if (PluginLoggingLevel > LoggingLevel.None) Debug.LogWarning(message);
         }
 
         public static void LogError(string message)
         {
+            message = $"{ModName}: {message}";
             if (PluginLoggingLevel > LoggingLevel.None) Debug.LogError(message);
         }
 
         public static void LogVerbose(string message)
         {
+            message = $"{ModName}: {message}";
             if (PluginLoggingLevel == LoggingLevel.Verbose) Debug.LogError(message);
         }
 
