@@ -2,3 +2,5 @@ C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPersonalTweaks\bin\Release\MMP
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPersonalTweaks\bin\Release\MMPersonalTweaks.pdb
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPersonalTweaks\obj\Release\MMPersonalTweaks.dll
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMPersonalTweaks\obj\Release\MMPersonalTweaks.pdb
+C:\Users\stuar\source\repos\MofoMojoValheimMods\builds\release\MMPersonalTweaks.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods\builds\release\MMPersonalTweaks.pdb

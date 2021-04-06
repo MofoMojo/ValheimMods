@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace MMPersonalTweaks
 {
-    class MMTweaks
+    class patch
     {
         #region OceanFishingMultiplier
         // This hooks into Pickup on Fish

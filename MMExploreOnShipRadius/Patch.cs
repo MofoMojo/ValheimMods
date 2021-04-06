@@ -15,7 +15,7 @@ namespace MMExplorationTweaks
             static bool IsExploreShipRadiusTweakEnabled()
             {
                 bool enabled = Settings.ExploreOnShipRadiusEnabled.Value;
-                Plugin.Log($"EnableExploreShipRadiusTweak {enabled}");
+                Plugin.Log($"EnableExploreShipRadiusTweak  {enabled}");
 
                 return enabled;
             }

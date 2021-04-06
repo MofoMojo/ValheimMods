@@ -4,4 +4,5 @@ C:\Users\stuar\source\repos\MofoMojoValheimMods\MMRecipeTweaks\bin\Release\Jotun
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMRecipeTweaks\obj\Release\MMRecipeTweaks.csproj.CopyComplete
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMRecipeTweaks\obj\Release\MMRecipeTweaks.dll
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMRecipeTweaks\obj\Release\MMRecipeTweaks.pdb
-C:\Users\stuar\source\repos\MofoMojoValheimMods\MMRecipeTweaks\obj\Release\MMRecipeTweaks.csprojAssemblyReference.cache
+C:\Users\stuar\source\repos\MofoMojoValheimMods\builds\release\MMRecipeTweaks.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods\builds\release\MMRecipeTweaks.pdb

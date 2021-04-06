@@ -2,3 +2,5 @@ C:\Users\stuar\source\repos\MofoMojoValheimMods\MMWishboneTweak\bin\Release\MMWi
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMWishboneTweak\bin\Release\MMWishboneTweak.pdb
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMWishboneTweak\obj\Release\MMWishboneTweak.dll
 C:\Users\stuar\source\repos\MofoMojoValheimMods\MMWishboneTweak\obj\Release\MMWishboneTweak.pdb
+C:\Users\stuar\source\repos\MofoMojoValheimMods\builds\release\MMWishboneTweak.dll
+C:\Users\stuar\source\repos\MofoMojoValheimMods\builds\release\MMWishboneTweak.pdb

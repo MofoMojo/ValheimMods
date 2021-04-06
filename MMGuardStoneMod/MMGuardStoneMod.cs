@@ -47,8 +47,6 @@ namespace MMGuardStoneMod
 
         }
 
-
-
         [HarmonyPatch(typeof(PrivateArea), "SetEnabled")]
         public class HarmonyPatch_SetEnabled
         {
@@ -65,6 +63,8 @@ namespace MMGuardStoneMod
             [HarmonyPostfix]
             private static void SetEnabled_PostFix(PrivateArea __instance, bool enabled)
             {
+                Plugin.Log($"GuardStone SetEnabled Called with {enabled}");
+
                 try
                 {
                     if (__instance.IsEnabled())
@@ -80,43 +80,8 @@ namespace MMGuardStoneMod
                 }
                 catch (Exception ex)
                 {
-                    Debug.Log($"Exception GuardStoneTweakEnabled: {ex.Message}");
+                    Debug.LogError($"Exception GuardStoneTweakEnabled: {ex.Message}");
                 }
-            }
-        }
-
-        [HarmonyPatch(typeof(PrivateArea), "Interact")]
-        public class HarmonyPatch_Interact
-        {
-            [HarmonyPrepare]
-            static bool IsGuardStoneTweakEnabled()
-            {
-                bool enabled = Settings.MMGuardStoneModEnabled.Value;
-                Debug.Log($"EnableGuardStoneTweak {enabled}");
-
-                return enabled;
-            }
-
-            // this is a postfix so it will enable the proper EventArea when the ward is activated and remove it when deactivated
-            [HarmonyPrefix]
-            private static bool Interact_PreFix(Humanoid human, bool hold, PrivateArea __instance, bool __result)
-            {
-                if (hold)
-                {
-                    __result = false;
-                    return false;
-                }
-                Player player = human as Player;
-                if (__instance.m_piece.IsCreator())
-                {
-                    __instance.m_nview.InvokeRPC("ToggleEnabled", player.GetPlayerID());
-                    __result = true;
-                    return false;
-                }
-                __instance.m_nview.InvokeRPC("TogglePermitted", player.GetPlayerID(), player.GetPlayerName());
-                __result = true;
-
-                return false;
             }
         }
 
@@ -146,8 +111,9 @@ namespace MMGuardStoneMod
 
                     if (pa.IsEnabled())
                     {
-                        Debug.Log("AddNoMonsterArea - EffectArea.Type.NoMonsters & EffectArea.Type.PlayerBase");
-                        NewNoMonsters.m_type = EffectArea.Type.NoMonsters & EffectArea.Type.PlayerBase;
+                        //Debug.Log("AddNoMonsterArea - EffectArea.Type.NoMonsters & EffectArea.Type.PlayerBase");
+                        Debug.Log("AddNoMonsterArea - EffectArea.Type.NoMonsters");
+                        NewNoMonsters.m_type = EffectArea.Type.NoMonsters;
                     }
                     else
                     {
