@@ -54,6 +54,14 @@ Birds drop an additional 1-3 feathers
 Fishing in the ocean biome provides 1-3 extra fish
 Remember the IP address and port of the last server you connected to
 
+##Guardstone Tweaks
+This creates a NoMonster EffectArea when the ward is activated and destroys it when it's deactivated. 
+In a Server/Client relationship the server must also have the mod and it's recommended that all clients have the mod due to behavior of spawns and the server needs to know about it as well. 
+Every client should have the mod, ever client should have the same radius.
+No monsters should spawn in the NoMonster EffectArea however any monsters in the radius, when activated, will STAY in the sphere and won't leave.
+This ONLY prevents monsters from targetting something inside the area from outside the area, and thus they won't move into it, however swarms of monsters will PUSH others into the area and once in, they will not leave.
+
+
 ### Toggle Keys
 Use the values here: https://docs.unity3d.com/ScriptReference/KeyCode.html to determine what can be used/specified as a toggle key
 
