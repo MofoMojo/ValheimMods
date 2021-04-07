@@ -22,11 +22,18 @@ namespace MofoMojo.MMGuardStoneMod
             Verbose
         }
 
-        public enum WardBehaviorType
+        public enum WardInteractBehavior
         {
+            Original,
             OwnerOnly,
             OwnerAndPermitted,
             All
+        }
+
+        public enum WardBehavior
+        {
+            Original,
+            NoMonsters
         }
 
         private void Awake()
@@ -76,15 +83,16 @@ namespace MofoMojo.MMGuardStoneMod
         public static ConfigEntry<Plugin.LoggingLevel> PluginLoggingLevel;
         public static ConfigEntry<float> GuardStoneRadius;
         public static ConfigEntry<KeyCode> InteractModifier;
-        public static ConfigEntry<Plugin.WardBehaviorType> WardInteractBehavior;
+        public static ConfigEntry<Plugin.WardInteractBehavior> WardInteractBehavior;
+        public static ConfigEntry<Plugin.WardBehavior> WardBehavior;
         public static void Init()
         {
             PluginLoggingLevel = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.LoggingLevel>("LoggingLevel", "PluginLoggingLevel", Plugin.LoggingLevel.None, "Supported values are None, Normal, Verbose");
             MMGuardStoneModEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMGuardStoneMod", "MMGuardStoneModEnabled", true, "Enables MMGuardStoneMod mod");
             GuardStoneRadius = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("MMGuardStoneMod", "GuardStoneRadius", 32f, "Sets the GuardStone radius");
             InteractModifier = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<KeyCode>("MMGuardStoneMod", "InteractModifier", KeyCode.LeftShift, "Sets the interact modifier for players to add themselves to permitted list");
-            WardInteractBehavior = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.WardBehaviorType>("MMGuardStoneMod", "WardBehavior", Plugin.WardBehaviorType.All, "Controls the behavior of the Wards. Must be the same between client and server");
-
+            WardInteractBehavior = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.WardInteractBehavior>("MMGuardStoneMod", "WardInteractBehavior", Plugin.WardInteractBehavior.All, "Controls the interaction behavior of the Wards. Must be the same between client and server");
+            WardBehavior = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.WardBehavior>("MMGuardStoneMod", "WardBehavior", Plugin.WardBehavior.NoMonsters, "Controls the behavior of the Wards. Must be the same between client and server");
         }
 
     }

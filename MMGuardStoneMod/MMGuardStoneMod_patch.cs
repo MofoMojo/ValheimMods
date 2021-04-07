@@ -39,6 +39,12 @@ namespace MofoMojo.MMGuardStoneMod
             [HarmonyPostfix]
             private static void PostFix(PrivateArea __instance)
             {
+                if(Settings.WardBehavior.Value == Plugin.WardBehavior.Original)
+                {
+                    Plugin.Log("WardBehavior.Original set, Attempting to remove any monster areas");
+                    RemoveNoMonsterArea(__instance);
+                    return;
+                }
                 SetNoMonsterArea(__instance, __instance.IsEnabled());
             }
 
@@ -75,6 +81,13 @@ namespace MofoMojo.MMGuardStoneMod
 
                 try
                 {
+                    if (Settings.WardBehavior.Value == Plugin.WardBehavior.Original)
+                    {
+                        Plugin.LogVerbose("WardBehavior.Original set, Attempting to remove any monster areas");
+                        RemoveNoMonsterArea(__instance);
+                        return;
+                    }
+
                     SetNoMonsterArea(__instance, enabled);
 
                 }
@@ -242,13 +255,16 @@ namespace MofoMojo.MMGuardStoneMod
             [HarmonyPrefix]
             public static bool Interact(Humanoid human, bool hold, PrivateArea __instance, ref bool __result)
             {
+                // if using the original interaction behavior then just return true and run the original code
+                if (Settings.WardInteractBehavior.Value == Plugin.WardInteractBehavior.Original) return true;
+
                 // default to a false just in case.
                 __result = false;
 
                 Plugin.Log("Patched Interact");
 
                 // if not allowing permitted players to activate/deactivate, just run the standard function
-                if (Settings.WardInteractBehavior.Value == Plugin.WardBehaviorType.OwnerOnly) return true;
+                if (Settings.WardInteractBehavior.Value == Plugin.WardInteractBehavior.OwnerOnly) return true;
 
                 if (hold)
                 {
@@ -264,7 +280,7 @@ namespace MofoMojo.MMGuardStoneMod
                 // or if ward mode is ownerandpermitted and is permitted or behavior is all AND modifier key is not being held....
                 if (__instance.m_piece.IsCreator()
                     ||
-                    ((Settings.WardInteractBehavior.Value == Plugin.WardBehaviorType.OwnerAndPermitted && __instance.IsPermitted(player.GetPlayerID())  ||  (Settings.WardInteractBehavior.Value == Plugin.WardBehaviorType.All))
+                    ((Settings.WardInteractBehavior.Value == Plugin.WardInteractBehavior.OwnerAndPermitted && __instance.IsPermitted(player.GetPlayerID())  ||  (Settings.WardInteractBehavior.Value == Plugin.WardInteractBehavior.All))
                     && !UtilityClass.CheckKeyHeld(Settings.InteractModifier.Value))
                     )
                 {
@@ -277,7 +293,7 @@ namespace MofoMojo.MMGuardStoneMod
                 Plugin.Log("Wasn't normal activation");
 
                 // if OwnerOnly then don't allow anyone to do anything else
-                if (Settings.WardInteractBehavior.Value == Plugin.WardBehaviorType.OwnerOnly)
+                if (Settings.WardInteractBehavior.Value == Plugin.WardInteractBehavior.OwnerOnly)
                 {
                     __result = false;
                     return false;
@@ -315,8 +331,11 @@ namespace MofoMojo.MMGuardStoneMod
             [HarmonyPrefix]
             public static bool RPC_ToggleEnabled(long uid, long playerID, PrivateArea __instance)
             {
+                // if using the original interaction behavior then just return true and run the original code
+                if (Settings.WardInteractBehavior.Value == Plugin.WardInteractBehavior.Original) return true;
+
                 ZLog.Log((object)("Toggle enabled from " + playerID + "  creator is " + __instance.m_piece.GetCreator()));
-                if (__instance.m_nview.IsOwner() && ((__instance.IsPermitted(playerID) && Settings.WardInteractBehavior.Value == Plugin.WardBehaviorType.OwnerAndPermitted) || (Settings.WardInteractBehavior.Value == Plugin.WardBehaviorType.All)))
+                if (__instance.m_nview.IsOwner() && ((__instance.IsPermitted(playerID) && Settings.WardInteractBehavior.Value == Plugin.WardInteractBehavior.OwnerAndPermitted) || (Settings.WardInteractBehavior.Value == Plugin.WardInteractBehavior.All)))
                 {
                     __instance.SetEnabled(!__instance.IsEnabled());
                 }
@@ -341,6 +360,9 @@ namespace MofoMojo.MMGuardStoneMod
             [HarmonyPrefix]
             public static bool GetHoverText(PrivateArea __instance, ref string __result)
             {
+                // if using the original interaction behavior then just return true and run the original code
+                if (Settings.WardInteractBehavior.Value == Plugin.WardInteractBehavior.Original) return true;
+
                 Plugin.LogVerbose("Executing Patched GetHoverText");
                 if (!__instance.m_nview.IsValid())
                 {
@@ -356,7 +378,7 @@ namespace MofoMojo.MMGuardStoneMod
                 StringBuilder stringBuilder = new StringBuilder(256);
 
                 // Player or owner hovering over so display activate/dectivate options
-                if (__instance.m_piece.IsCreator() || (Settings.WardInteractBehavior.Value == Plugin.WardBehaviorType.OwnerAndPermitted && __instance.IsPermitted(Player.m_localPlayer.GetPlayerID())) || Settings.WardInteractBehavior.Value == Plugin.WardBehaviorType.All)
+                if (__instance.m_piece.IsCreator() || (Settings.WardInteractBehavior.Value == Plugin.WardInteractBehavior.OwnerAndPermitted && __instance.IsPermitted(Player.m_localPlayer.GetPlayerID())) || Settings.WardInteractBehavior.Value == Plugin.WardInteractBehavior.All)
                 {
                     if (__instance.IsEnabled())
                     {
@@ -369,7 +391,7 @@ namespace MofoMojo.MMGuardStoneMod
                         stringBuilder.Append(__instance.m_name + " ($piece_guardstone_inactive )");
                         stringBuilder.Append("\n$piece_guardstone_owner:" + __instance.GetCreatorName());
                         stringBuilder.Append("\n[<color=yellow><b>$KEY_Use</b></color>] $piece_guardstone_activate");
-                        if (Settings.WardInteractBehavior.Value != Plugin.WardBehaviorType.OwnerOnly)
+                        if (Settings.WardInteractBehavior.Value != Plugin.WardInteractBehavior.OwnerOnly)
                         {
                             if(__instance.IsPermitted(Player.m_localPlayer.GetPlayerID()))
                             {
@@ -388,18 +410,18 @@ namespace MofoMojo.MMGuardStoneMod
                     // Player is not permitted and is not the owner and ward is active... do nothing
                     stringBuilder.Append(__instance.m_name + " ( $piece_guardstone_active )");
                     stringBuilder.Append("\n$piece_guardstone_owner:" + __instance.GetCreatorName());
-                    if (Settings.WardInteractBehavior.Value != Plugin.WardBehaviorType.OwnerOnly) stringBuilder.Append("\n[<color=yellow><b>" + Settings.InteractModifier.Value.ToString() + " - $KEY_Use</b></color>] $piece_guardstone_remove");
+                    if (Settings.WardInteractBehavior.Value != Plugin.WardInteractBehavior.OwnerOnly) stringBuilder.Append("\n[<color=yellow><b>" + Settings.InteractModifier.Value.ToString() + " - $KEY_Use</b></color>] $piece_guardstone_remove");
                 }
                 else 
                 {
                     // player is not permitted and is not the owner, but ward is inactive.... show modifier
                     stringBuilder.Append(__instance.m_name + " ( $piece_guardstone_inactive )");
                     stringBuilder.Append("\n$piece_guardstone_owner:" + __instance.GetCreatorName());
-                    if (Settings.WardInteractBehavior.Value != Plugin.WardBehaviorType.OwnerOnly) stringBuilder.Append("\n[<color=yellow><b>" + Settings.InteractModifier.Value.ToString() + " - $KEY_Use</b></color>] $piece_guardstone_add");
+                    if (Settings.WardInteractBehavior.Value != Plugin.WardInteractBehavior.OwnerOnly) stringBuilder.Append("\n[<color=yellow><b>" + Settings.InteractModifier.Value.ToString() + " - $KEY_Use</b></color>] $piece_guardstone_add");
                 }
                 __instance.AddUserList(stringBuilder);
                 __result = Localization.instance.Localize(stringBuilder.ToString());
-                Plugin.Log($"Result {__result}");
+                Plugin.LogVerbose($"Result {__result}");
                 return false;
             }
         }
