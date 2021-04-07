@@ -55,11 +55,39 @@ Fishing in the ocean biome provides 1-3 extra fish
 Remember the IP address and port of the last server you connected to
 
 ##Guardstone Tweaks
-This creates a NoMonster EffectArea when the ward is activated and destroys it when it's deactivated. 
-In a Server/Client relationship the server must also have the mod and it's recommended that all clients have the mod due to behavior of spawns and the server needs to know about it as well. 
-Every client should have the mod, ever client should have the same radius.
+This does several things. 
+
+###WardActivationBehavior
+Supports a *WardActivationBehavior* setting now with 4 different modes
+* All
+* OwnerAndPermitted
+* OwnerOnly
+* Original (Will revert to original OOTB behavior for permitted and activation)
+
+####All
+All players on the server can activate/deactivate wards and add/remove themselves as permitted players on wards
+####OwnerAndPermitted
+Owners and Permitted Players can activate and deactivate the wards
+####OwnerOnly
+Only owners can activate and deactivate the ward
+
+**Note:**
+When using All or OwnerAndPermitted, a SHIFT key modifier is used to allow players to add/remove themselves from the permitted list when the ward is deactivated.
+
+###WardBehavior
+Ward Behavior allows you to configure additional behaviors
+* Original
+* NoMonsters
+
+####Original
+Does not change the behavior of a ward
+####NoMonsters
+Creates a NoMonsters EffectArea attached to the ward. You cannot build when the ward is active. 
 No monsters should spawn in the NoMonster EffectArea however any monsters in the radius, when activated, will STAY in the sphere and won't leave.
 This ONLY prevents monsters from targetting something inside the area from outside the area, and thus they won't move into it, however swarms of monsters will PUSH others into the area and once in, they will not leave.
+
+**Note:**
+In a Server/Client relationship the server must also have the mod and it's recommended that all clients have the same settings due to behavior of spawns and client/server relationships.
 
 
 ### Toggle Keys
