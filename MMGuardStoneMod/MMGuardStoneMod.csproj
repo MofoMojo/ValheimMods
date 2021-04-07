@@ -323,6 +323,7 @@
     <Compile Include="MMGuardStoneMod_plugin.cs" />
     <Compile Include="MMGuardStoneMod_patch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UtilityClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

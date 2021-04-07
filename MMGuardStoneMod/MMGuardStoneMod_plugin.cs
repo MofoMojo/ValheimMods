@@ -3,6 +3,7 @@ using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
 using UnityEngine;
+using System;
 
 namespace MofoMojo.MMGuardStoneMod
 {
@@ -14,7 +15,6 @@ namespace MofoMojo.MMGuardStoneMod
         public const string NoMonsterEffectAreaName = "NoMonsterArea";
         Harmony _Harmony;
         public static Plugin Instance;
-        public static LoggingLevel PluginLoggingLevel = LoggingLevel.None;
         public enum LoggingLevel
         {
             None,
@@ -22,12 +22,18 @@ namespace MofoMojo.MMGuardStoneMod
             Verbose
         }
 
+        public enum WardBehaviorType
+        {
+            OwnerOnly,
+            OwnerAndPermitted,
+            All
+        }
+
         private void Awake()
         {
 
             Instance = this;
             Settings.Init();
-            PluginLoggingLevel = Settings.PluginLoggingLevel.Value;
 
             _Harmony = Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), null);
         }
@@ -40,25 +46,25 @@ namespace MofoMojo.MMGuardStoneMod
         public static void Log(string message)
         {
             message = $"{ModName}: {message}";
-            if (PluginLoggingLevel > LoggingLevel.None) Debug.Log(message);
+            if (Settings.PluginLoggingLevel.Value > LoggingLevel.None) Debug.Log(message);
         }
 
         public static void LogWarning(string message)
         {
             message = $"{ModName}: {message}";
-            if (PluginLoggingLevel > LoggingLevel.None) Debug.LogWarning(message);
+            if (Settings.PluginLoggingLevel.Value > LoggingLevel.None) Debug.LogWarning(message);
         }
 
         public static void LogError(string message)
         {
             message = $"{ModName}: {message}";
-            if (PluginLoggingLevel > LoggingLevel.None) Debug.LogError(message);
+            if (Settings.PluginLoggingLevel.Value > LoggingLevel.None) Debug.LogError(message);
         }
 
         public static void LogVerbose(string message)
         {
             message = $"{ModName}: {message}";
-            if (PluginLoggingLevel == LoggingLevel.Verbose) Debug.LogError(message);
+            if (Settings.PluginLoggingLevel.Value == LoggingLevel.Verbose) Debug.LogError(message);
         }
 
     }
@@ -69,11 +75,16 @@ namespace MofoMojo.MMGuardStoneMod
         public static ConfigEntry<bool> MMGuardStoneModEnabled;
         public static ConfigEntry<Plugin.LoggingLevel> PluginLoggingLevel;
         public static ConfigEntry<float> GuardStoneRadius;
+        public static ConfigEntry<KeyCode> InteractModifier;
+        public static ConfigEntry<Plugin.WardBehaviorType> WardInteractBehavior;
         public static void Init()
         {
+            PluginLoggingLevel = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.LoggingLevel>("LoggingLevel", "PluginLoggingLevel", Plugin.LoggingLevel.None, "Supported values are None, Normal, Verbose");
             MMGuardStoneModEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMGuardStoneMod", "MMGuardStoneModEnabled", true, "Enables MMGuardStoneMod mod");
             GuardStoneRadius = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("MMGuardStoneMod", "GuardStoneRadius", 32f, "Sets the GuardStone radius");
-            PluginLoggingLevel = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.LoggingLevel>("LoggingLevel", "PluginLoggingLevel", Plugin.LoggingLevel.None, "Supported values are None, Normal, Verbose");
+            InteractModifier = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<KeyCode>("MMGuardStoneMod", "InteractModifier", KeyCode.LeftShift, "Sets the interact modifier for players to add themselves to permitted list");
+            WardInteractBehavior = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.WardBehaviorType>("MMGuardStoneMod", "WardBehavior", Plugin.WardBehaviorType.All, "Controls the behavior of the Wards. Must be the same between client and server");
+
         }
 
     }
