@@ -38,9 +38,13 @@ namespace MofoMojo.MMShowPlayerStatsInRange
             public PlayerStatHealthLevel HealthLevel;
             public PlayerStatHealthLevel HealthPercentageLevel;
             public PlayerStatHealthLevel MonitorLevel;
+            public float Stamina;
+            public float MaxStamina;
+            public float StaminaPercentage;
             public bool WarnStamina;
             public bool WarnHealth;
             public List<StatusEffect> statusEffects;
+
         }
 
         enum PlayerStatHealthLevel
@@ -77,7 +81,7 @@ namespace MofoMojo.MMShowPlayerStatsInRange
 
         private void OnDestroy()
         {
-            if (_Harmony != null) _Harmony.UnpatchAll(null);
+            if (_Harmony != null) _Harmony.UnpatchSelf();
         }
 
         public static void Log(string message)
@@ -109,7 +113,7 @@ namespace MofoMojo.MMShowPlayerStatsInRange
         {
             // adjust this to display or hide the stats
             //             if (!modEnabled.Value || AedenthornUtils.IgnoreKeyPresses() || toggleClockKeyOnPress.Value || !PressedToggleKey()) return;
-            if (!Settings.ShowPlayerStatsInRange.Value || MofoMojo.UtilityClass.IgnoreKeyPresses() || !PressedToggleKey()) return;
+            if (!Settings.ShowPlayerStatsInRange.Value || MofoMojo.UtilityClass.IgnoreKeyPresses() || !PressedToggleKey(Settings.PlayerStatToggleKey.Value)) return;
             Log("Toggled ShowPlayerStatsInRange");
             bool show = Settings.showingPlayerStats.Value;
             Settings.showingPlayerStats.Value = !show;
@@ -265,6 +269,11 @@ namespace MofoMojo.MMShowPlayerStatsInRange
 
                         // set health level
                         float health = nearbyPlayer.GetHealth();
+                        float maxHealth = nearbyPlayer.GetMaxHealth();
+                        float stamina = nearbyPlayer.m_stamina;
+                        float maxStamina = nearbyPlayer.m_maxStamina;
+                        float staminaPercentage = stamina / maxStamina * 100;
+
                         if (health > Settings.PlayerStatHealthMediumValue.Value)
                         {
                             healthLevel = PlayerStatHealthLevel.Normal;
@@ -325,12 +334,17 @@ namespace MofoMojo.MMShowPlayerStatsInRange
                             styleColor = tempColor,
                             style = tempStyle,
                             Name = nearbyPlayer.GetPlayerName(),
-                            Health = nearbyPlayer.GetHealth(),
-                            MaxHealth = nearbyPlayer.GetMaxHealth(),
+                            Health = health,
+                            MaxHealth = maxHealth,
                             HealthPercentage = healthPercentage,
+                            Stamina = stamina,
+                            MaxStamina = maxStamina,
+                            StaminaPercentage = staminaPercentage,
                             WarnStamina = false,
                             statusEffects = (nearbyPlayer as Character).m_seman.GetStatusEffects()
+
                         };
+
 
                         playersStats.Add(playerId, playerStat);
                     }
@@ -342,31 +356,21 @@ namespace MofoMojo.MMShowPlayerStatsInRange
                         // https://docs.unity3d.com/Packages/com.unity.ugui@1.0/manual/StyledText.html
 
                         string htmlstyleColor = MofoMojo.UtilityClass.GetHtmlColorValue(playerStatus.styleColor);
-                        sb.Append($"<color={htmlstyleColor}>{playerStatus.Name}:  {playerStatus.Health.ToString("0.00")}/{playerStatus.MaxHealth.ToString("0.00")} - {playerStatus.HealthPercentage}% </color>");
-
-                        // only show the statuses if enabled. 
+                        sb.Append($"<color={htmlstyleColor}>{playerStatus.Name}:  HP - {playerStatus.Health.ToString("0.00")}/{playerStatus.MaxHealth.ToString("0.00")} - {playerStatus.HealthPercentage.ToString("0.00")}% </color>");
+                       
                         /*
-                        if (Settings.ShowPlayerStatuses.Value && playerStatus.statusEffects.Count != 0)
+                        if (Settings.ShowPlayerStamina.Value)
                         {
-                            sb.Append("<color=white>");
-
-                            foreach (StatusEffect statusEffect in playerStatus.statusEffects)
+                            sb.Append($"\n<color={htmlstyleColor}>");
+                            for (int i=0; i<playerStatus.Name.Length; i++)
                             {
-                                string text = Localization.instance.Localize(statusEffect.m_name);
-                                if (!String.IsNullOrEmpty(text))
-                                {
-                                    sb.Append($"| {text} |");
-                                }
-
+                                sb.Append("  ");
                             }
-
-                            sb.AppendLine("</color>");
-                        }
-                        else
-                        {
-                            sb.AppendLine();
+                            sb.Append($"  STA - {playerStatus.Stamina.ToString("0.00")}/{playerStatus.MaxStamina.ToString("0.00")} - {playerStatus.StaminaPercentage.ToString("0.00")}% </color>");
                         }
                         */
+                      
+
                         sb.AppendLine();
                         // Plugin.Log($"{sb.ToString()}");
                     }
@@ -384,22 +388,23 @@ namespace MofoMojo.MMShowPlayerStatsInRange
             return sb.ToString();
         }
 
-        private static bool CheckKeyHeld(string value)
+        private static bool CheckKeyHeld(KeyCode value)
         {
             try
             {
-                return Input.GetKey(value.ToLower());
+                return Input.GetKey(value);
             }
             catch
             {
                 return true;
             }
         }
-        private bool PressedToggleKey()
+
+        private bool PressedToggleKey(KeyCode key)
         {
             try
             {
-                return Input.GetKeyDown(Settings.PlayerStatToggleKey.Value.ToLower());
+                return Input.GetKeyDown(key);
             }
             catch
             {
@@ -445,7 +450,7 @@ namespace MofoMojo.MMShowPlayerStatsInRange
         public static ConfigEntry<string> PlayerStatFontName;
         public static ConfigEntry<int> PlayerStatFontSize;
         public static ConfigEntry<bool> showingPlayerStats;
-        public static ConfigEntry<string> PlayerStatToggleKey;
+        public static ConfigEntry<KeyCode> PlayerStatToggleKey;
         public static ConfigEntry<float> PlayerStatUpdateInterval;
         public static ConfigEntry<float> PlayerStatHealthPercentageWarningValue;
         public static ConfigEntry<float> PlayerStatHealthPercentageCriticalValue;
@@ -458,16 +463,18 @@ namespace MofoMojo.MMShowPlayerStatsInRange
         public static ConfigEntry<Color> PlayerStatHealthWarningColor;
         public static ConfigEntry<Color> PlayerStatHealthCriticalColor;
         public static ConfigEntry<Plugin.LoggingLevel> PluginLoggingLevel;
+        //public static ConfigEntry<bool> ShowPlayerStamina;
 
         // These are the settings that will be saved in the ..\plugins\mofomojo.cfg file
         public static void Init()
         {
             ShowPlayerStatsInRange = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("PlayerStats", "ShowPlayerStatsInRange", true, "When enabled, shows Player Stats in UI in range. Criticality wins. I.e. if your health percentage is 100, but your health is 25 then health level is medium");
             ShowPlayerStatsRadius = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("PlayerStats", "ShowPlayerStatsRadius", 64f, "Sets the radius for finding players");
+            //ShowPlayerStamina = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("PlayerStats", "ShowPlayerStamina", false, "When enabled, shows Player stamina as well (does not work for remote players)");
             PlayerStatLocation = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<string>("PlayerStats", "PlayerStatLocation", "50%,3%", "Location on the screen to show the player stats (x,y) or (x%,y%). Also, Use mouse cursor to change position in game");
             PlayerStatFontName = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<string>("PlayerStats", "PlayerStatFontName", "Norsebold", "Name of the font to use, possible values Norsebold, AveriaSerifLibre-Bold");
             PlayerStatFontSize = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("PlayerStats", "PlayerStatFontSize", 24, "Size of the font to use");
-            PlayerStatToggleKey = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<string>("PlayerStats", "PlayerStatToggleKey", "[", "Key to use for toggling player stats. https://docs.unity3d.com/ScriptReference/KeyCode.html");
+            PlayerStatToggleKey = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<KeyCode>("PlayerStats", "PlayerStatToggleKey", KeyCode.LeftBracket, "Key to use for toggling player stats. https://docs.unity3d.com/ScriptReference/KeyCode.html");
             PlayerStatHealthPercentageMediumValue = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("PlayerStats", "PlayerStatHealthPercentageMediumValue", 75f, "HealthPercentage to be considered medium. Anything higher is normal");
             PlayerStatHealthPercentageWarningValue = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("PlayerStats", "PlayerStatHealthPercentageWarningValue", 50f, "HealthPercentage to be considered warning. Anything higher is medium");
             PlayerStatHealthPercentageCriticalValue = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("PlayerStats", "PlayerStatHealthPercentageCriticalValue", 25f, "HealthPercentage to be considered critical.Anything higher is warning");

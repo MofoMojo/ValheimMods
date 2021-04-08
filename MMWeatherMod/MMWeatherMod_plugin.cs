@@ -1,17 +1,16 @@
 ﻿using System.Reflection;
 using BepInEx;
 using BepInEx.Configuration;
-using BepInEx.Logging;
 using HarmonyLib;
 using UnityEngine;
 
-namespace MofoMojo.MMPersonalTweaks
+namespace MofoMojo.MMWeatherMod
 {
-    [BepInPlugin("MofoMojo.MMPersonalTweaks", Plugin.ModName, Plugin.Version)]
+    [BepInPlugin("MofoMojo.MMWeatherMod", Plugin.ModName, Plugin.Version)]
     public class Plugin : BaseUnityPlugin
     {
         public const string Version = "1.0";
-        public const string ModName = "MofoMojo's Personal Tweaks";
+        public const string ModName = "MMWeatherMod";
         Harmony _Harmony;
         public static Plugin Instance;
         public static LoggingLevel PluginLoggingLevel = LoggingLevel.None;
@@ -21,7 +20,6 @@ namespace MofoMojo.MMPersonalTweaks
             Normal,
             Verbose
         }
-
 
         private void Awake()
         {
@@ -37,6 +35,7 @@ namespace MofoMojo.MMPersonalTweaks
         {
             if (_Harmony != null) _Harmony.UnpatchSelf();
         }
+
         public static void Log(string message)
         {
             message = $"{ModName}: {message}";
@@ -58,28 +57,23 @@ namespace MofoMojo.MMPersonalTweaks
         public static void LogVerbose(string message)
         {
             message = $"{ModName}: {message}";
-            if (PluginLoggingLevel == LoggingLevel.Verbose) Debug.LogError(message);
+            if (PluginLoggingLevel == LoggingLevel.Verbose) Debug.Log(message);
         }
+
     }
 
     internal static class Settings
     {
 
-        public static ConfigEntry<bool> FeatherMultiplierEnabled;
-        public static ConfigEntry<bool> FishingInOceanMultiplierEnabled;
-        public static ConfigEntry<bool> RememberLastConnectedIpEnabled;
-        public static ConfigEntry<string> LastConnectedIP;
+        public static ConfigEntry<bool> MMWeatherModEnabled;
         public static ConfigEntry<Plugin.LoggingLevel> PluginLoggingLevel;
+        public static ConfigEntry<int> PrayerFrequency;
 
-        // These are the settings that will be saved in the ..\plugins\mofomojo.cfg file
         public static void Init()
         {
-            FeatherMultiplierEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Tweaks", "FeatherMultiplierEnabled", true, "Birds will drop additional feathers");
-            FishingInOceanMultiplierEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Tweaks", "FishingInOceanMultiplierEnabled", true, "When fishing in the ocean, you get a multiplier on fish caught");
-            RememberLastConnectedIpEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Tweaks", "RememberLastConnectedIpEnabled", true, "Remember the last server/ip address connected - not implemented yet");
-            LastConnectedIP = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<string>("Tweaks", "LastConnectedIP", "", "This is the last connect string (used for storage)");
+            MMWeatherModEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMWeatherMod", "MMWeatherModEnabled", true, "Enables MMWeatherMod mod");
             PluginLoggingLevel = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.LoggingLevel>("LoggingLevel", "PluginLoggingLevel", Plugin.LoggingLevel.None, "Supported values are None, Normal, Verbose");
-
+            PrayerFrequency = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("MMWeatherMod", "InterpolateFreq", 60, "How many seconds must pass between attempts");
         }
 
     }

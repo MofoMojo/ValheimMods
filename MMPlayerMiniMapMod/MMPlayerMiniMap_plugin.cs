@@ -35,26 +35,30 @@ namespace MofoMojo.MMPlayerMiniMapMod
 
         private void OnDestroy()
         {
-            if (_Harmony != null) _Harmony.UnpatchAll(null);
+            if (_Harmony != null) _Harmony.UnpatchSelf();
         }
 
         public static void Log(string message)
         {
+            message = $"{ModName}: {message}";
             if (PluginLoggingLevel > LoggingLevel.None) Debug.Log(message);
         }
 
         public static void LogWarning(string message)
         {
+            message = $"{ModName}: {message}";
             if (PluginLoggingLevel > LoggingLevel.None) Debug.LogWarning(message);
         }
 
         public static void LogError(string message)
         {
+            message = $"{ModName}: {message}";
             if (PluginLoggingLevel > LoggingLevel.None) Debug.LogError(message);
         }
 
         public static void LogVerbose(string message)
         {
+            message = $"{ModName}: {message}";
             if (PluginLoggingLevel == LoggingLevel.Verbose) Debug.LogError(message);
         }
 
