@@ -68,12 +68,16 @@ namespace MofoMojo.MMRandomStartPosition
         public static ConfigEntry<bool> MMRandomStartPositionEnabled;
         public static ConfigEntry<Plugin.LoggingLevel> PluginLoggingLevel;
         public static ConfigEntry<bool> DisableValkryieRide;
+        public static ConfigEntry<float> MaxXDistance;
+        public static ConfigEntry<float> MaxZDistance;
 
         public static void Init()
         {
             MMRandomStartPositionEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMRandomStartPosition", "MMRandomStartPositionEnabled", true, "Enables MMRandomStartPosition mod");
-            PluginLoggingLevel = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.LoggingLevel>("LoggingLevel", "PluginLoggingLevel", Plugin.LoggingLevel.Normal, "Supported values are None, Normal, Verbose");
-            DisableValkryieRide = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMRandomStartPosition", "DisableHuginRide", true, "Disables the ride in with Hugin");
+            PluginLoggingLevel = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.LoggingLevel>("LoggingLevel", "PluginLoggingLevel", Plugin.LoggingLevel.None, "Supported values are None, Normal, Verbose");
+            DisableValkryieRide = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMRandomStartPosition", "DisableValkryieRide", false, "Disables the ride in with Hugin");
+            MaxXDistance = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("MMRandomStartPosition", "XDistance", 5000f, "Constrain X axis search from center of map. This is clamped between 0 and WorldGenerator.meadowsMaxDistance = 5000");
+            MaxZDistance = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("MMRandomStartPosition", "ZDistance", 5000f, "Constrain Z axis search from center of map. This is clamped between 0 and WorldGenerator.meadowsMaxDistance = 5000");
         }
 
     }

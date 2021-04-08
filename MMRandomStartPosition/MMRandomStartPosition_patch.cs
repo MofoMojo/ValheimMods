@@ -54,51 +54,56 @@ namespace MofoMojo.MMRandomStartPosition
                     // let the original code run
                     if(__instance.m_playerProfile.HaveLogoutPoint()) return true;
                     if (__instance.m_playerProfile.HaveCustomSpawnPoint()) return true;
-
-                    if(null != Player.m_localPlayer)
-                    {
-                        Player.m_localPlayer.m_firstSpawn = !Settings.DisableValkryieRide.Value;
-                    }
-
-                    Plugin.Log("Finding Spawn");
-                    // find a new starting position
-                    bool foundSpot = false;
                    
                     int x = 0;
                     float y = 0;
                     int z = 0;
                     Vector3 tempLocation = new Vector3(x, y, z);
+                    
+                    // meadows won't spawn out farther than this distance from the middle of the map
+                    float maxMeadowsDistance = WorldGenerator.meadowsMaxDistance;
+
+                    float maxX = UtilityClass.Clamp(Settings.MaxXDistance.Value, 0, maxMeadowsDistance);
+                    float maxz = UtilityClass.Clamp(Settings.MaxZDistance.Value, 0, maxMeadowsDistance);
 
                     while (spawnPoint == Vector3.zero)
-                    { 
-                        x = UnityEngine.Random.Range(-2500, 2020);
-                        z = UnityEngine.Random.Range(-1549, 908);
+                    {
+                        Plugin.Log("Finding Spawn");
+                        // set this as our bounds
+                        x = UnityEngine.Random.Range(-(int)Math.Round(maxX), (int)Math.Round(maxX));
+                        z = UnityEngine.Random.Range(-(int)Math.Round(maxz), (int)Math.Round(maxz));
+
+                        // note: In Vector3 X is LEFT to RIGHT on map? Y is HEIGHT and Z is TOP/BOTTOM???
                         tempLocation.x = x;
                         tempLocation.z = z;
-                        // note: In Vector3 X is LEFT to RIGHT on map? Y is HEIGHT and Z is TOP/BOTTOM???
-
-                        Vector3 newLocation = new Vector3(0, 0, 0);
-                        //y = ZoneSystem.instance.GetGroundHeight(tempLocation);
 
                         Heightmap.Biome biome = Heightmap.Biome.None;
 
                         float height = WorldGenerator.instance.GetHeight(tempLocation.x,tempLocation.z);
-                        Plugin.Log($"searching {tempLocation}");
-                        tempLocation.y = height;
-                        biome = WorldGenerator.instance.GetBiome(tempLocation);
-
-                        Plugin.Log($"foind {biome}");
-                        if (biome == Heightmap.Biome.Meadows)
+                        Plugin.LogVerbose($"searching {tempLocation}");
+                        // only search if the height is heigher than the water level as it still has a tendency to pull other biomes
+                        if (height > ZoneSystem.instance.m_waterLevel && height < WorldGenerator.mountainBaseHeightMin * 85)
                         {
-                            spawnPoint = tempLocation;
+                            Plugin.LogVerbose($"Checking {tempLocation}");
+                            tempLocation.y = height;
+
+                            biome = WorldGenerator.instance.GetBiome(tempLocation);
+
+                            //biome = Heightmap.FindBiome(tempLocation);
+
+                             Plugin.Log($"found {biome}");
+                            if (biome == Heightmap.Biome.Meadows)
+                            {
+                                Plugin.Log($"found spawnpoint {biome} @ {tempLocation}");
+                                spawnPoint = tempLocation;
+                            }
                         }
- 
                     }
 
+                    Plugin.LogVerbose("Waiting for area to be ready");
                     point = spawnPoint;
                     ZNet.instance.SetReferencePosition(point);
                     __result = ZNetScene.instance.IsAreaReady(point);
-                    Plugin.LogVerbose("Waiting for area to be ready");
                     return false;
 
                 }
@@ -111,5 +116,32 @@ namespace MofoMojo.MMRandomStartPosition
                 return true;
             }
         }
+
+        // Path Player OnSpawned to override the m_firstSpawn value on player awake if necessary
+        [HarmonyPatch(typeof(Player), "OnSpawned")]
+        static class Player_OnSpawned
+        {
+            [HarmonyPrepare]
+            static bool IsMMRandomStartPositionEnabled()
+            {
+                bool enabled = Settings.MMRandomStartPositionEnabled.Value & Settings.DisableValkryieRide.Value;
+                Plugin.Log($"MMRandomStartPositionEnabled & DisableValkryieRide: {enabled}");
+
+                return enabled;
+            }
+
+            [HarmonyPrefix]
+            static bool Prefix(Player __instance)
+            {
+                // DisableValkryieRide if this is first spawn and player wants to
+                if (null != Player.m_localPlayer)
+                {
+                    if (__instance.m_firstSpawn == true) __instance.m_firstSpawn = false;
+                }
+
+                return true;
+            }
+        }
     }
 }
+
