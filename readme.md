@@ -18,11 +18,16 @@ https://mofomojo.visualstudio.com/_git/MofoMojoValheimMods?path=%2FMMPersonalTwe
 
 ###GuardStone Tweaks
 https://mofomojo.visualstudio.com/_git/MofoMojoValheimMods?path=%2FMMGuardStoneMod%2Fbin%2FRelease
-
 **Experimental - Creates a no monsters area with wards, but works a little sloppy on servers due to client/server behavior for AI/Spawns**
+
+###MM's Prayers for Rain Mod
+https://mofomojo.visualstudio.com/MofoMojoValheimMods/_git/MofoMojoValheimMods?path=%2FMMWeatherMod%2Fbin%2FRelease
 
 
 #Details
+##MMWeatherMod
+Allows the player to /pray in the chat window to ask Odin to bless them with clear weather. It does not always work, sometimes you will anger Odin, and you must be seated and outside (or on a boat). 
+
 ##ExploreOnShipRadius
 Extends the ship radius when you're standing on a boat. I made this because an existing mod didn't work for players on the boat, just piloting the boat.
 
