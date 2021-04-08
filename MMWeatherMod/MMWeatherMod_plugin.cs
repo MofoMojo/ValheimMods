@@ -9,7 +9,7 @@ namespace MofoMojo.MMWeatherMod
     [BepInPlugin("MofoMojo.MMWeatherMod", Plugin.ModName, Plugin.Version)]
     public class Plugin : BaseUnityPlugin
     {
-        public const string Version = "1.0";
+        public const string Version = "1.1";
         public const string ModName = "MMWeatherMod";
         Harmony _Harmony;
         public static Plugin Instance;
@@ -73,7 +73,7 @@ namespace MofoMojo.MMWeatherMod
         {
             MMWeatherModEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMWeatherMod", "MMWeatherModEnabled", true, "Enables MMWeatherMod mod");
             PluginLoggingLevel = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.LoggingLevel>("LoggingLevel", "PluginLoggingLevel", Plugin.LoggingLevel.None, "Supported values are None, Normal, Verbose");
-            PrayerFrequency = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("MMWeatherMod", "InterpolateFreq", 60, "How many seconds must pass between attempts");
+            PrayerFrequency = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("MMWeatherMod", "PrayerFrequency", 60, "How many seconds must pass between attempts");
         }
 
     }

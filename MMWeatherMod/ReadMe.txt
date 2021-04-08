@@ -16,7 +16,7 @@ or ...
 • BepInEx - 
 
 :: INSTALLATION ::
-Place the MMWishboneTweak.dll in your \BepinEx\Plugins folder
+Place the MMWeatherMod.dll in your \BepinEx\Plugins folder
 Start Valheim Once and then exit. 
 Modify the \BepInEx\Config\MofoMojo.MMWeatherMod.cfg as you see fit.
 Play Valheim
