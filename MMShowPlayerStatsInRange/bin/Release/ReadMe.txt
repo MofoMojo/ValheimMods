@@ -34,12 +34,12 @@ PlayerStatHealthWarningColor;
 PlayerStatHealthCriticalColor;
 
 :: REQUIREMENTS ::
-• BepInEx - 
+• BepinEx - 
 
 :: INSTALLATION ::
 Place the MMWishboneTweak.dll in your \BepinEx\Plugins folder
 Start Valheim Once and then exit. 
-Modify the \BepInEx\Config\MofoMojo.MMWishboneTweak.cfg file to enable the mod.
+Modify the \BepinEx\Config\MofoMojo.MMWishboneTweak.cfg file to enable the mod.
 Play Valheim
 
 :: UNINSTALLATION ::
@@ -52,13 +52,9 @@ Remove the .DLL and the .CFG file from the \Plugins and \Config folders respecti
 
 
 ::  KNOWN ISSUES ::
-• IF you get the following error in your logs
-[Warning:   BepInEx] Config value of setting "PlayerStats.PlayerStatToggleKey" could not be parsed and will be ignored. Reason: Requested value '[' was not found.; Value: [
-BepinEx should fix this and reset to LeftBracket. After that, you can modify MofoMojo.MMWishboneTweak.cfg file and reset to preferred KeyCode value or use Configuration Manager plugin which makes this really easy. 
-This occurs because I changed 1.1 to use KeyCode instead of a string value.
+• None
 
 ::  CREDITS Template::
 ♦ https://www.youtube.com/watch?v=p_gsFASlvRw
 ♦ https://harmony.pardeike.net/ - Harmony Documentation
 ♦ https://github.com/Valheim-Modding/Wiki/wiki - Valheim modding
-♦ https://github.com/aedenthorn/ValheimMods - Aedenthorn's repo
