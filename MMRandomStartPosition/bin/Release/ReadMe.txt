@@ -1,4 +1,4 @@
-﻿MofoMojo's Random First Spawn Start Position v1.1
+﻿MofoMojo's Random First Spawn Start Position v1.2
 
 Are you interested in a potentially real challenge?
 Care if you spawn on the middle of a small island in the map?
@@ -50,6 +50,7 @@ for the mountain start (if you use a mod which alters that, it should hopefully 
 to try and ensure you're not just placed in the water somewhere. I can't feasibly test this out very extensively but seems to be working! :D
 
 :: VERSIONS ::
+1.2 Fixed a random range bug I introduced so on 1.1 all locations were south west of 0,0
 1.1 Added minimum ranges, renamed XDistance and ZDistance to MaxXDistance and MaxZDistance
 1.0 Initial Release
 
