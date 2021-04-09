@@ -1,25 +1,35 @@
-﻿MofoMojo's Random First Spawn Start Position v1.2
+﻿MofoMojo's Random First Spawn Start Position v1.3
 
 Are you interested in a potentially real challenge?
 Care if you spawn on the middle of a small island in the map?
 Care if you spawn sandwiched between a Black Forest, the Meadows and a Draugr village? What about in one?
-Tired of spawning in the dead center of the map and wish you'd wake up in some Meadows elsewhere?
+Tired of spawning in the dead center of the map and wish you'd wake up in some other location?
 
 If you answered yes to that last question, this is for you!!!
 
-The mod supports specifying a maximum distance from center of the map along the X and Z axis and will
-look for Meadows locations anywhere within that area. Meadows are constrained within 5000 distance from the center of the map
-so the value is clamped to this distance, however if you're using a mod that alters the WorldGenerator.meadowsMaxDistance
-then it will honor that distance
+The mod now supports specifying a Biome type that you'd like to spawn in. 
 
-You can now specify a minimum distance to spawn from 0,0 in the .cfg file
+The mod supports specifying a minimum/maximum distance from center of the map along the X and Z axis and will
+look for locations anywhere within that area. Some biomes are constrained within a certain distance from the center of the map
+so the value is clamped to this distance, however you can override this check if you wish. 
 
 You can also disable the Valkyrie intro ride if you just want to pop up as quick as possible in your new homeland. 
 
-This mod ONLY randomizes YOUR first spawn into a map and sets your respawn point there. 
+You can now specify a BiomeAreaType to have better control over the "zone" area you're starting in
+You can now specify a Biome to override Meadows. Good luck with this! May be a good idea for a seasoned character who got tired of retirement.
+
+This mod ONLY randomizes YOUR first spawn into a map and sets your respawn point there. It does NOT mark this location on the map. 
 
 If you die, you'll respawn there. Congratulations it's your death day!!!
 
+:: NOTES ::
+BiomeAreaType let's you specify the "area type" of the Zone you'll be spawning into. There are 3 types
+
+Median - Means you're more likely to be surrounded  by this biome area 
+Edge - Means you're more likely to spawn near the edges and borders of other biomes or other places
+Everything - Means you're ok with whatever the RNG gods decide...
+
+Biome setting let's you specify the type of Biome you prefer. Want to go truly random? Set it to None or BiomesMax and it'll place you in the first matching BiomeAreaType it finds. Why? Why do you want to do this?
 
 :: REQUIREMENTS ::
 • BepInEx - 
@@ -43,13 +53,17 @@ Remove the .DLL and the .CFG file from the \Plugins and \Config folders respecti
 
 ::  KNOWN ISSUES ::
 • Can put you in hostile situations
-• Sometimes it will put you in another biome because it's VERY close to the Meadows. You know... you've been sailing in the water and 
-seen instances where you've passed through a biome that just wasn't there... yeah... like that. Only, I try to keep you dry. 
-• World Generation is a fickle beast. I try to ensure that the location it puts you is a little below the minimum height
-for the mountain start (if you use a mod which alters that, it should hopefully pick it up) and above the ZoneSystem.instance.m_waterLevel
-to try and ensure you're not just placed in the water somewhere. I can't feasibly test this out very extensively but seems to be working! :D
+• Sometimes it will put you in another biome because it's VERY close to the one you asked for. You know... you've been sailing in the water and 
+	seen instances where you've passed through a biome that just wasn't there... yeah... like that. Only, I try to keep you dry. 
+• World Generation is a fickle beast. I try to ensure that the location it puts you is a little above the ZoneSystem.instance.m_waterLevel
+	to try and ensure you're not just placed in the water somewhere. I can't feasibly test this out very extensively but seems to be working! :D
 
 :: VERSIONS ::
+1.3 Added BiomeArea type. Supported values are Median, Edge, Everything
+	With the extension of supporting other biomes and biomearea types, there's a chance we won't find anything
+	So added loop check. If we iterate through more than MaxSpawnPointChecks without finding a suitable place, default to the original behavior. 
+	This gets reset with each new start
+
 1.2 Fixed a random range bug I introduced so on 1.1 all locations were south west of 0,0
 1.1 Added minimum ranges, renamed XDistance and ZDistance to MaxXDistance and MaxZDistance
 1.0 Initial Release
@@ -78,7 +92,7 @@ PluginLoggingLevel = Normal
 # Default value: true
 MMRandomStartPositionEnabled = true
 
-## Disables the ride in with Hugin
+## Disables the ride in with Valkryie
 # Setting type: Boolean
 # Default value: false
 DisableValkryieRide = true

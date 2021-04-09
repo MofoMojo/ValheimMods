@@ -32,6 +32,7 @@ Remove the .DLL and the .CFG file from the \Plugins and \Config folders respecti
 • You must be outside
 • You must be seated or sitting or in a boat
 • You can't always get what you want...
+• Currently behaves inconsistently in multiplayer sessions. One user has one weather, another might have another. Will investigate. I recommend for single player sessions only.
 
 ::  CREDITS Template::
 ♦ https://www.youtube.com/watch?v=p_gsFASlvRw
