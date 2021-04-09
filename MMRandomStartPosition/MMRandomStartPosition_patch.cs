@@ -7,6 +7,7 @@ namespace MofoMojo.MMRandomStartPosition
     class MMRandomStartPosition_patch
     {
         private static Vector3 spawnPoint = Vector3.zero;
+        private const int MinDistanceBetweenSearchScope = 200;
         
         [HarmonyPatch(typeof(EnvMan), "Awake")]
         static class Game_Awake
@@ -60,18 +61,31 @@ namespace MofoMojo.MMRandomStartPosition
                     int z = 0;
                     Vector3 tempLocation = new Vector3(x, y, z);
                     
-                    // meadows won't spawn out farther than this distance from the middle of the map
+                    // meadows won't spawn out farther than this distance from the middle of the map so no point supporting a number higher than this
                     float maxMeadowsDistance = WorldGenerator.meadowsMaxDistance;
 
-                    float maxX = UtilityClass.Clamp(Settings.MaxXDistance.Value, 0, maxMeadowsDistance);
-                    float maxz = UtilityClass.Clamp(Settings.MaxZDistance.Value, 0, maxMeadowsDistance);
+                    // make sure max is > 100
+                    float maxX = (Settings.MaxXDistance.Value > MinDistanceBetweenSearchScope) ? Settings.MinXDistance.Value : 0;
+                    float maxZ = (Settings.MaxZDistance.Value > MinDistanceBetweenSearchScope) ? Settings.MinZDistance.Value : 0;
+
+                    // clamp max to the maxMeadowsDistance value
+                    maxX = UtilityClass.Clamp(Settings.MaxXDistance.Value, 0, maxMeadowsDistance);
+                    maxZ = UtilityClass.Clamp(Settings.MaxZDistance.Value, 0, maxMeadowsDistance);
+
+                    // ensure minX is < maxX - 100 to ensure there's space to find something
+                    float minX = (Settings.MinXDistance.Value < maxX - MinDistanceBetweenSearchScope) ? Settings.MinXDistance.Value : 0;
+                    float minZ = (Settings.MinZDistance.Value < maxZ - MinDistanceBetweenSearchScope) ? Settings.MinZDistance.Value : 0;
 
                     while (spawnPoint == Vector3.zero)
                     {
                         Plugin.Log("Finding Spawn");
                         // set this as our bounds
-                        x = UnityEngine.Random.Range(-(int)Math.Round(maxX), (int)Math.Round(maxX));
-                        z = UnityEngine.Random.Range(-(int)Math.Round(maxz), (int)Math.Round(maxz));
+                        x = UnityEngine.Random.Range((int)Math.Round(minX), (int)Math.Round(maxX));
+                        z = UnityEngine.Random.Range((int)Math.Round(minZ), (int)Math.Round(maxZ));
+
+                        // using the range above, now randomly decide to to switch one to negative or leave positive. This provides a potential range of distance in the spawn away from 0,0
+                        if (UnityEngine.Random.Range(1, 2) == 1) x = -x;
+                        if (UnityEngine.Random.Range(1, 2) == 1) z = -z;
 
                         // note: In Vector3 X is LEFT to RIGHT on map? Y is HEIGHT and Z is TOP/BOTTOM???
                         tempLocation.x = x;

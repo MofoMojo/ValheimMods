@@ -23,8 +23,13 @@ https://mofomojo.visualstudio.com/_git/MofoMojoValheimMods?path=%2FMMGuardStoneM
 ###MM's Prayers for Rain Mod
 https://mofomojo.visualstudio.com/MofoMojoValheimMods/_git/MofoMojoValheimMods?path=%2FMMWeatherMod%2Fbin%2FRelease
 
+###MM's Random First Spawn Start Position
+https://mofomojo.visualstudio.com/MofoMojoValheimMods/_git/MofoMojoValheimMods.Experimental?path=%2FMMRandomStartPosition%2Fbin%2FRelease
 
 #Details
+##MMRandomStartPosition
+Randomizes a players first spawn location on every map started. Players will no longer (most likely) be starting in the center of the map and their spawn locations will be different from others (assuming they're running this mod too).
+
 ##MMWeatherMod
 Allows the player to /pray in the chat window to ask Odin to bless them with clear weather. It does not always work, sometimes you will anger Odin, and you must be seated and outside (or on a boat). 
 

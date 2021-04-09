@@ -1,4 +1,4 @@
-﻿MofoMojo's Random First Spawn Start Position
+﻿MofoMojo's Random First Spawn Start Position v1.1
 
 Are you interested in a potentially real challenge?
 Care if you spawn on the middle of a small island in the map?
@@ -11,6 +11,8 @@ The mod supports specifying a maximum distance from center of the map along the 
 look for Meadows locations anywhere within that area. Meadows are constrained within 5000 distance from the center of the map
 so the value is clamped to this distance, however if you're using a mod that alters the WorldGenerator.meadowsMaxDistance
 then it will honor that distance
+
+You can now specify a minimum distance to spawn from 0,0 in the .cfg file
 
 You can also disable the Valkyrie intro ride if you just want to pop up as quick as possible in your new homeland. 
 
@@ -47,22 +49,26 @@ seen instances where you've passed through a biome that just wasn't there... yea
 for the mountain start (if you use a mod which alters that, it should hopefully pick it up) and above the ZoneSystem.instance.m_waterLevel
 to try and ensure you're not just placed in the water somewhere. I can't feasibly test this out very extensively but seems to be working! :D
 
+:: VERSIONS ::
+1.1 Added minimum ranges, renamed XDistance and ZDistance to MaxXDistance and MaxZDistance
+1.0 Initial Release
+
 ::  CREDITS Template::
 ♦ https://www.youtube.com/watch?v=p_gsFASlvRw
 ♦ https://harmony.pardeike.net/ - Harmony Documentation
 ♦ https://github.com/Valheim-Modding/Wiki/wiki - Valheim modding
 
 Sample Settings:
-﻿## Settings file was created by plugin MMRandomStartPosition v1.0
+﻿## Settings file was created by plugin MMRandomStartPosition v1.1
 ## Plugin GUID: MofoMojo.MMRandomStartPosition
 
 [LoggingLevel]
 
 ## Supported values are None, Normal, Verbose
 # Setting type: LoggingLevel
-# Default value: Normal
+# Default value: None
 # Acceptable values: None, Normal, Verbose
-PluginLoggingLevel = None
+PluginLoggingLevel = Normal
 
 [MMRandomStartPosition]
 
@@ -73,15 +79,25 @@ MMRandomStartPositionEnabled = true
 
 ## Disables the ride in with Hugin
 # Setting type: Boolean
-# Default value: true
-DisableValkryieRide = false
+# Default value: false
+DisableValkryieRide = true
 
 ## Constrain X axis search from center of map. This is clamped between 0 and WorldGenerator.meadowsMaxDistance = 5000
 # Setting type: Single
 # Default value: 5000
-XDistance = 5000
+MaxXDistance = 5000
 
 ## Constrain Z axis search from center of map. This is clamped between 0 and WorldGenerator.meadowsMaxDistance = 5000
 # Setting type: Single
 # Default value: 5000
-ZDistance = 5000
+MaxZDistance = 5000
+
+## Constrain X axis search from center of map. This is the minimum distance you wish to be away from center X/0 position
+# Setting type: Single
+# Default value: 100
+MinXDistance = 2000
+
+## Constrain Z axis search from center of map. This is the minimum distance you wish to be away from center z/0 position
+# Setting type: Single
+# Default value: 100
+MinZDistance = 2000
