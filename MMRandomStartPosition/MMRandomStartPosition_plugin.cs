@@ -9,7 +9,7 @@ namespace MofoMojo.MMRandomStartPosition
     [BepInPlugin("MofoMojo.MMRandomStartPosition", Plugin.ModName, Plugin.Version)]
     public class Plugin : BaseUnityPlugin
     {
-        public const string Version = "1.1";
+        public const string Version = "1.2";
         public const string ModName = "MMRandomStartPosition";
         Harmony _Harmony;
         public static Plugin Instance;
@@ -77,7 +77,7 @@ namespace MofoMojo.MMRandomStartPosition
         {
             MMRandomStartPositionEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMRandomStartPosition", "MMRandomStartPositionEnabled", true, "Enables MMRandomStartPosition mod");
             PluginLoggingLevel = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.LoggingLevel>("LoggingLevel", "PluginLoggingLevel", Plugin.LoggingLevel.None, "Supported values are None, Normal, Verbose");
-            DisableValkryieRide = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMRandomStartPosition", "DisableValkryieRide", false, "Disables the ride in with Hugin");
+            DisableValkryieRide = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMRandomStartPosition", "DisableValkryieRide", false, "Disables the ride in on the Valkyrie");
             MaxXDistance = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("MMRandomStartPosition", "MaxXDistance", 5000f, "Constrain X axis search from center of map. This is clamped between 0 and WorldGenerator.meadowsMaxDistance = 5000");
             MaxZDistance = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("MMRandomStartPosition", "MaxZDistance", 5000f, "Constrain Z axis search from center of map. This is clamped between 0 and WorldGenerator.meadowsMaxDistance = 5000");
             MinXDistance = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("MMRandomStartPosition", "MinXDistance", 100f, "Constrain X axis search from center of map. This is the minimum distance you wish to be away from center X/0 position");

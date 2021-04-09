@@ -52,6 +52,7 @@ namespace MofoMojo.MMRandomStartPosition
 
                 try
                 {
+                    UnityEngine.Random.InitState(DateTime.Now.Year + DateTime.Now.Day + DateTime.Now.Month + DateTime.Now.Millisecond);
                     // let the original code run
                     if(__instance.m_playerProfile.HaveLogoutPoint()) return true;
                     if (__instance.m_playerProfile.HaveCustomSpawnPoint()) return true;
@@ -84,8 +85,8 @@ namespace MofoMojo.MMRandomStartPosition
                         z = UnityEngine.Random.Range((int)Math.Round(minZ), (int)Math.Round(maxZ));
 
                         // using the range above, now randomly decide to to switch one to negative or leave positive. This provides a potential range of distance in the spawn away from 0,0
-                        if (UnityEngine.Random.Range(1, 2) == 1) x = -x;
-                        if (UnityEngine.Random.Range(1, 2) == 1) z = -z;
+                        if (UnityEngine.Random.Range(1, 3) == 1) x = -x;
+                        if (UnityEngine.Random.Range(1, 3) == 1) z = -z;
 
                         // note: In Vector3 X is LEFT to RIGHT on map? Y is HEIGHT and Z is TOP/BOTTOM???
                         tempLocation.x = x;
@@ -105,14 +106,43 @@ namespace MofoMojo.MMRandomStartPosition
 
                             //biome = Heightmap.FindBiome(tempLocation);
 
-                             Plugin.Log($"found {biome}");
+                            Plugin.Log($"found {biome}");
                             if (biome == Heightmap.Biome.Meadows)
                             {
-                                Plugin.Log($"found spawnpoint {biome} @ {tempLocation}");
+                                Plugin.Log($"found new spawnpoint {biome} @ {tempLocation}");
                                 spawnPoint = tempLocation;
+
+                               /* // register a starter location nearby
+                                foreach (ZoneSystem.ZoneLocation item in ZoneSystem.instance.m_locations)
+                                {
+                                    //if (item.m_prefabName == "StartTemple")
+                                    if (item.m_prefabName == "Eikthyrnir") 
+                                    {
+                                        //Remove previous locations of this?
+                                        //ZoneSystem.instance.RemoveUnplacedLocations(item);
+
+                                        ZoneSystem.instance.RegisterLocation(item, spawnPoint, true);
+                                        break;
+                                    }
+                                }
+
+                                // register a starter location nearby
+                                // just a method to dump these starter locations out when verbose is enabled and only then
+                                if(Settings.PluginLoggingLevel.Value == Plugin.LoggingLevel.Verbose)
+                                { 
+                                    foreach (ZoneSystem.ZoneLocation item in ZoneSystem.instance.m_locations)
+                                    {
+                                        Plugin.LogVerbose($"ZoneLocation Name: {item.m_prefabName}");
+                                    }
+                                }
+                                */
+
                             }
                         }
                     }
+
+
+
 
                     Plugin.LogVerbose("Waiting for area to be ready");
                     point = spawnPoint;
