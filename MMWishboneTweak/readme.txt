@@ -16,6 +16,8 @@ Deathsquitos 60
 
 Silver, Mud Piles, and Buried Chests remain at their defaults of 20. 
 
+To disable detection, set value to 0. 
+
 :: REQUIREMENTS ::
 • BepInEx - 
 
@@ -29,8 +31,7 @@ Play Valheim
 Remove the .DLL and the .CFG file from the \Plugins and \Config folders respectively.
 
 :: UPGRADING ::
-Replace the binary
-You may want to delete the original .cfg before running Valheim but no problems should arise, except some values have moved and/or changed locations.
+Just replace the binary
 
 :: FEATURES ::
 • It does the things
