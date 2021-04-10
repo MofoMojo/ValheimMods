@@ -10,8 +10,8 @@ namespace MofoMojo.MMWishboneTweak
     [BepInPlugin("MofoMojo.MMWishboneTweak", Plugin.ModName, Plugin.Version)]
     public class Plugin : BaseUnityPlugin
     {
-        public const string Version = "1.0";
-        public const string ModName = "Wishbone Tweaks";
+        public const string Version = "1.2";
+        public const string ModName = "MM's Wishbone Tweaks";
         Harmony _Harmony;
         public static Plugin Instance;
         public static LoggingLevel PluginLoggingLevel = LoggingLevel.None;
@@ -19,7 +19,8 @@ namespace MofoMojo.MMWishboneTweak
         {
             None,
             Normal,
-            Verbose
+            Verbose,
+            Debug
         }
 
 
@@ -55,8 +56,13 @@ namespace MofoMojo.MMWishboneTweak
 
         public static void LogVerbose(string message)
         {
-            if(PluginLoggingLevel == LoggingLevel.Verbose) Debug.LogError(message);
-        }        
+            if(PluginLoggingLevel >= LoggingLevel.Verbose) Debug.Log(message);
+        }
+
+        public static void LogDebug(string message)
+        {
+            if (PluginLoggingLevel == LoggingLevel.Debug) Debug.Log(message);
+        }
 
     }
 
@@ -65,12 +71,24 @@ namespace MofoMojo.MMWishboneTweak
        
         public static ConfigEntry<bool> WishBoneTweakEnabled;
         public static ConfigEntry<Plugin.LoggingLevel> PluginLoggingLevel;
+        public static ConfigEntry<float> DetectTinDistance;
+        public static ConfigEntry<float> DetectCopperDistance;
+        public static ConfigEntry<float> DetectDeathsquitoDistance;
+        public static ConfigEntry<float> DetectSilverDistance;
+        public static ConfigEntry<float> DetectMudPileDistance;
+        public static ConfigEntry<float> DetectBuriedDistance;
 
         // These are the settings that will be saved in the ..\plugins\mofomojo.cfg file
         public static void Init()
         {
             WishBoneTweakEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Wishbone", "WishBoneTweakEnabled", true, "Allows the Wishbone to find Tin and Copper");
             PluginLoggingLevel = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.LoggingLevel>("LoggingLevel", "PluginLoggingLevel", Plugin.LoggingLevel.None , "Supported values are None, Normal, Verbose");
+            DetectTinDistance = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("WishboneDestructibles", "DetectTinDistance", 25f, "Allows the Wishbone to find Tin (Value > 0) and at what distance");
+            DetectCopperDistance = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("WishboneDestructibles", "DetectCopperDistance", 60f, "Allows the Wishbone to find Copper (Value > 0) and at what distance");
+            DetectSilverDistance = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("WishboneDestructibles", "DetectSilverDistance", 20f, "Allows the Wishbone to find Silver (Value > 0) and at what distance");
+            DetectMudPileDistance = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("WishboneDestructibles", "DetectMudPileDistance", 20f, "Allows the Wishbone to find Mud Piles (Value > 0) and at what distance");
+            DetectBuriedDistance = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("WishbonePieces", "DetectBuriedDistance", 20f, "Allows the Wishbone to find Buried Objects (Value > 0) and at what distance");
+            DetectDeathsquitoDistance = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("WishboneHumanoids", "DetectDeathsquitoDistance", 60f, "Allows the Wishbone to find Deathquitos (Value > 0) and at what distance");
         }
 
     }

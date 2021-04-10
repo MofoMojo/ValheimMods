@@ -331,6 +331,7 @@
     <Content Include="ModAssets\2021-04-05 16_48_36-Valheim.png" />
     <Content Include="ModAssets\2021-04-05 16_48_36-Valheim_text.png" />
     <Content Include="ModAssets\ReadMe.txt" />
+    <Content Include="readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
