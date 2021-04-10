@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
+using UnityEngine;
 
 //https://valheim.fandom.com/wiki/Localization
 
@@ -186,26 +187,34 @@ namespace MofoMojo.MMWeatherMod
                         // record the current prayed time now that an attempt has been made
                         // it still may not succeed
                         prayedTime = DateTime.Now;
-                        
-                        // 66% chance of failure
-                        if (UnityEngine.Random.Range(1, 100) < 66)
+
+                        // 66% chance of failure by default
+                        List<string> trophies = player.GetTrophies();
+                        float trophyImpact = Settings.TrophyKillInfluence.Value ? trophies.Count * 2 : 0;
+                        float chanceOfSuccess = Settings.SuccessChance.Value + trophyImpact;
+                        float roll = UnityEngine.Random.Range(1f, 100f);
+                        Plugin.LogVerbose($"Chance of success {chanceOfSuccess}, Rolled: {roll}");
+                        if(roll > chanceOfSuccess)
                         {
+                            // you failed...
 
-                            // 25% chance that odin will not feel favorable toward you and cause a thunderstorm
-                            if (UnityEngine.Random.Range(1, 100) > 25)
+                            // 25% chance you'll anger Odin if he doesn't hear your prayers
+                            if (UnityEngine.Random.Range(1f, 100f) > Settings.AngryChance.Value)
                             {
-
                                 //MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, "You sense Odin is not willing at this time...");
                                 //msg_cantoffer	Your offering is not answered
                                 MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, Localization.instance.Localize("$msg_cantoffer"));
                                 return false;
                             }
+                            else
+                            {
 
-                            //MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, "Odin is angered...");
-                            //tutorial_cold_topic	Be wary of the weather
-                            MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, Localization.instance.Localize("$tutorial_cold_topic"));
-                            weather = "ThunderStorm";
-                            Plugin.Log($"Angered Odin... getting {weather}");
+                                //MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, "Odin is angered...");
+                                //tutorial_cold_topic	Be wary of the weather
+                                MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, Localization.instance.Localize("$tutorial_cold_topic"));
+                                weather = GetWorstWeatherForBiome(player.GetCurrentBiome());
+                                Plugin.Log($"Angered Odin... getting {weather}");
+                            }
                         }
                         else
                         {
@@ -217,10 +226,11 @@ namespace MofoMojo.MMWeatherMod
 
 
                         EnvMan envMan = EnvMan.instance;
+
                         EnvSetup newEnvironment = envMan.GetEnv(weather);
                         if (null != newEnvironment)
                         {
-                            EnvSetup currentEnvironment = envMan.GetCurrentEnvironment();
+                            //EnvSetup currentEnvironment = envMan.GetCurrentEnvironment();
                             envMan.QueueEnvironment(newEnvironment);
 
 
@@ -240,6 +250,47 @@ namespace MofoMojo.MMWeatherMod
 
                 // go ahead and execute the real method
                 return true;
+            }
+
+            /*
+                    Clear
+                    Twilight_Clear
+                    Misty
+                    Darklands_dark
+                    Heath clear
+                    DeepForest Mist
+                    GDKing
+                    Rain
+                    LightRain
+                    ThunderStorm
+                    Eikthyr
+                    GoblinKing
+                    nofogts
+                    SwampRain
+                    Bonemass
+                    Snow
+                    Twilight_Snow
+                    Twilight_SnowStorm
+                    SnowStorm
+                    Moder
+                    Ashrain
+                    Crypt
+                    SunkenCrypt
+                    */
+
+            public static string GetWorstWeatherForBiome(Heightmap.Biome biome)
+            {
+                switch(biome)
+                {
+                    case Heightmap.Biome.Mountain:
+                    case Heightmap.Biome.DeepNorth:
+                        return "SnowStorm";
+                    case Heightmap.Biome.AshLands:
+                        return "Ashrain";
+                    default:
+                        return "Thunderstorm";
+                }
+
             }
         }
     }

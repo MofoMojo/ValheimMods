@@ -62,6 +62,9 @@ namespace MofoMojo.MMRandomStartPosition
                     if (__instance.m_playerProfile.HaveLogoutPoint()) return true;
                     if (__instance.m_playerProfile.HaveCustomSpawnPoint()) return true;
 
+                    // get the HomePoint for the player. It's Vector3.Zero by default
+                    spawnPoint = __instance.m_playerProfile.GetHomePoint();
+
                     // if we've executed on this more than MaxSpawnPointChecks times, just return true
                     if (SpawnCheckCount > Settings.MaxSpawnPointChecks.Value)
                     {
@@ -184,7 +187,7 @@ namespace MofoMojo.MMRandomStartPosition
                                 {
                                     Plugin.Log($"found new spawnpoint {biome} @ {tempLocation}");
                                     spawnPoint = tempLocation;
-
+                                    __instance.m_playerProfile.SetHomePoint(spawnPoint + Vector3.up * 2f);
                                     // register a starter location nearby
                                     // just a method to dump these starter locations out when verbose is enabled and only then
                                     if (Settings.PluginLoggingLevel.Value == Plugin.LoggingLevel.Verbose)
@@ -217,9 +220,11 @@ namespace MofoMojo.MMRandomStartPosition
                     }
 
                     Plugin.Log("Waiting for area to be ready");
-                    point = spawnPoint;
+
+                    point = spawnPoint + Vector3.up * 2f;
                     ZNet.instance.SetReferencePosition(point);
                     __result = ZNetScene.instance.IsAreaReady(point);
+
                     return false;
 
                 }

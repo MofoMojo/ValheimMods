@@ -1,4 +1,6 @@
-﻿MofoMojo's Random First Spawn Start Position v1.3
+﻿MofoMojo's Random First Spawn Start Position v1.4
+
+Please update to 1.4 (See Known Issues)
 
 Are you interested in a potentially real challenge?
 Care if you spawn on the middle of a small island in the map?
@@ -57,8 +59,12 @@ Remove the .DLL and the .CFG file from the \Plugins and \Config folders respecti
 	seen instances where you've passed through a biome that just wasn't there... yeah... like that. Only, I try to keep you dry. 
 • World Generation is a fickle beast. I try to ensure that the location it puts you is a little above the ZoneSystem.instance.m_waterLevel
 	to try and ensure you're not just placed in the water somewhere. I can't feasibly test this out very extensively but seems to be working! :D
+• Versions 1.3 and prior didn't set the HomePoint permanently for your character. This creates an issue where if you log out and back on and THEN die you might get teleported elsewhere. Should be fixed in 1.4 and later
+	however characters started prior to 1.4 will likely encounter this issue. Sorry!!!!
 
 :: VERSIONS ::
+1.4 Calling SetHomePoint after initial spawn point is identified
+	Calling GetHomePoint death after game is reloaded. This combo should ensure no random relocations after death. Odin was not pleased with 1.3 and prior
 1.3 Added BiomeArea type. Supported values are Median, Edge, Everything
 	With the extension of supporting other biomes and biomearea types, there's a chance we won't find anything
 	So added loop check. If we iterate through more than MaxSpawnPointChecks without finding a suitable place, default to the original behavior. 
