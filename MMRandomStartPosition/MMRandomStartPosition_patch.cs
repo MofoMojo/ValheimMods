@@ -59,11 +59,17 @@ namespace MofoMojo.MMRandomStartPosition
                     UnityEngine.Random.InitState(DateTime.Now.Year + DateTime.Now.Day + DateTime.Now.Month + DateTime.Now.Millisecond);
                     // let the original code run
                     if (!Settings.MMRandomStartPositionEnabled.Value) return true;
+                    Plugin.LogVerbose("Does Player HaveLogoutPoint?");
                     if (__instance.m_playerProfile.HaveLogoutPoint()) return true;
+
+                    Plugin.LogVerbose("Does Player HaveCustomSpawnPoint?");
                     if (__instance.m_playerProfile.HaveCustomSpawnPoint()) return true;
 
                     // get the HomePoint for the player. It's Vector3.Zero by default
+                    Plugin.LogVerbose("Does Player GetHomePoint?");
                     spawnPoint = __instance.m_playerProfile.GetHomePoint();
+
+                    Plugin.LogVerbose($"HomePoint is {spawnPoint}");
 
                     // if we've executed on this more than MaxSpawnPointChecks times, just return true
                     if (SpawnCheckCount > Settings.MaxSpawnPointChecks.Value)
@@ -219,11 +225,11 @@ namespace MofoMojo.MMRandomStartPosition
                         }
                     }
 
-                    Plugin.Log("Waiting for area to be ready");
 
                     point = spawnPoint + Vector3.up * 2f;
                     ZNet.instance.SetReferencePosition(point);
                     __result = ZNetScene.instance.IsAreaReady(point);
+                    Plugin.Log($"Waiting for area to be ready. Spawnpoint {point}");
 
                     return false;
 

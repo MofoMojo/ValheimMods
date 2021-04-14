@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMWeatherMod", "MMWeatherMo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMRandomStartPosition", "MMRandomStartPosition\MMRandomStartPosition.csproj", "{8C7A4F05-DA20-410D-8D83-B2FA83602E96}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMServerMessages", "MMServerMessages\MMServerMessages.csproj", "{855A63BE-5589-43BD-A81F-430AD92E74DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +72,10 @@ Global
 		{8C7A4F05-DA20-410D-8D83-B2FA83602E96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C7A4F05-DA20-410D-8D83-B2FA83602E96}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C7A4F05-DA20-410D-8D83-B2FA83602E96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{855A63BE-5589-43BD-A81F-430AD92E74DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{855A63BE-5589-43BD-A81F-430AD92E74DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{855A63BE-5589-43BD-A81F-430AD92E74DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{855A63BE-5589-43BD-A81F-430AD92E74DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

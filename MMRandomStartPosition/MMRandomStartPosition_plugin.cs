@@ -9,7 +9,7 @@ namespace MofoMojo.MMRandomStartPosition
     [BepInPlugin("MofoMojo.MMRandomStartPosition", Plugin.ModName, Plugin.Version)]
     public class Plugin : BaseUnityPlugin
     {
-        public const string Version = "1.4";
+        public const string Version = "1.5";
         public const string ModName = "MMRandomStartPosition";
         Harmony _Harmony;
         public static Plugin Instance;

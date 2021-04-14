@@ -1,6 +1,6 @@
-﻿MofoMojo's Random First Spawn Start Position v1.4
+﻿MofoMojo's Random First Spawn Start Position v1.5
 
-Please update to 1.4 (See Known Issues)
+Please update to 1.4/1.5 (See Known Issues)
 
 Are you interested in a potentially real challenge?
 Care if you spawn on the middle of a small island in the map?
@@ -63,6 +63,7 @@ Remove the .DLL and the .CFG file from the \Plugins and \Config folders respecti
 	however characters started prior to 1.4 will likely encounter this issue. Sorry!!!!
 
 :: VERSIONS ::
+1.5 Reissue 1.4 (Nexus code wasn't updated)
 1.4 Calling SetHomePoint after initial spawn point is identified
 	Calling GetHomePoint death after game is reloaded. This combo should ensure no random relocations after death. Odin was not pleased with 1.3 and prior
 1.3 Added BiomeArea type. Supported values are Median, Edge, Everything
@@ -80,7 +81,7 @@ Remove the .DLL and the .CFG file from the \Plugins and \Config folders respecti
 ♦ https://github.com/Valheim-Modding/Wiki/wiki - Valheim modding
 
 Sample Settings:
-﻿## Settings file was created by plugin MMRandomStartPosition v1.1
+## Settings file was created by plugin MMRandomStartPosition v1.5
 ## Plugin GUID: MofoMojo.MMRandomStartPosition
 
 [LoggingLevel]
@@ -89,7 +90,7 @@ Sample Settings:
 # Setting type: LoggingLevel
 # Default value: None
 # Acceptable values: None, Normal, Verbose
-PluginLoggingLevel = Normal
+PluginLoggingLevel = Verbose
 
 [MMRandomStartPosition]
 
@@ -98,27 +99,50 @@ PluginLoggingLevel = Normal
 # Default value: true
 MMRandomStartPositionEnabled = true
 
-## Disables the ride in with Valkryie
+## Disables the ride in on the Valkyrie
 # Setting type: Boolean
 # Default value: false
-DisableValkryieRide = true
+DisableValkryieRide = false
 
-## Constrain X axis search from center of map. This is clamped between 0 and WorldGenerator.meadowsMaxDistance = 5000
+## Constrain X axis search from center of map. This is clamped between 0 and 10000
 # Setting type: Single
 # Default value: 5000
 MaxXDistance = 5000
 
-## Constrain Z axis search from center of map. This is clamped between 0 and WorldGenerator.meadowsMaxDistance = 5000
+## Constrain Z axis search from center of map. This is clamped between 0 and 10000
 # Setting type: Single
 # Default value: 5000
 MaxZDistance = 5000
 
 ## Constrain X axis search from center of map. This is the minimum distance you wish to be away from center X/0 position
 # Setting type: Single
-# Default value: 100
-MinXDistance = 2000
+# Default value: 500
+MinXDistance = 500
 
 ## Constrain Z axis search from center of map. This is the minimum distance you wish to be away from center z/0 position
 # Setting type: Single
-# Default value: 100
-MinZDistance = 2000
+# Default value: 500
+MinZDistance = 500
+
+## Attempts to spawns you into this type of Biome
+# Setting type: Biome
+# Default value: Meadows
+# Acceptable values: None, Meadows, Swamp, Mountain, BlackForest, Plains, AshLands, DeepNorth, Ocean, Mistlands, BiomesMax
+Biome = Meadows
+
+## Attempts to spawn you into this type of BiomeArea
+# Setting type: BiomeArea
+# Default value: Median
+# Acceptable values: Edge, Median, Everything
+BiomeAreaType = Median
+
+## The maximum number of times mod will search for a good spawnpoint before handing off to normal spawn code
+# Setting type: Int32
+# Default value: 1000
+MaxSpawnPointChecks = 1000
+
+## The mod attempts to set biome search constraints based on values in WorldGenerator. Set this to true to disable these constraints.
+# Setting type: Boolean
+# Default value: false
+IgnoreWorldGeneratorConstraints = false
+
