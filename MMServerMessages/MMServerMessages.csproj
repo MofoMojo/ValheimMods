@@ -320,7 +320,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MMServerMessages_Patch.cs" />
     <Compile Include="MMServerMessages_plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
