@@ -16,7 +16,7 @@ namespace MofoMojo.MMRecipeTweaks
     [BepInDependency("com.bepinex.plugins.jotunnlib")]
     public class Plugin : BaseUnityPlugin
     {
-        public const string Version = "1.0";
+        public const string Version = "1.1";
         public const string ModName = "MMRecipeTweaks";
         Harmony _Harmony;
         public static Plugin Instance;
@@ -127,7 +127,8 @@ namespace MofoMojo.MMRecipeTweaks
             if (Settings.FishingRodRecipeEnabled.Value) registerFishingRod();
             if (Settings.FishingBaitRecipeEnabled.Value) registerFishingBait();
             if (Settings.ChainsRecipeEnabled.Value) registerChainsRecipe();
-
+            if (Settings.LeatherRecipeEnabled.Value) registerLeatherRecipe();
+            if (Settings.LeatherScrapsRecipeEnabled.Value) registerLeatherScrapsRecipe();
         }
 
         private void registerLoxMeatSurprise()
@@ -279,6 +280,67 @@ namespace MofoMojo.MMRecipeTweaks
             });
         }
 
+        private void registerLeatherRecipe()
+        {
+            ObjectManager.Instance.RegisterRecipe(new RecipeConfig()
+            {
+                // Name of the recipe (defaults to "Recipe_YourItem")
+                Name = "Recipe_MMDeerHide",
+
+                // Name of the prefab for the crafted item
+                Item = "DeerHide",
+
+                Amount = 1,
+
+                // Name of the prefab for the crafting station we wish to use
+                // Can set this to null or leave out if you want your recipe to be craftable in your inventory
+                CraftingStation = "piece_workbench",
+
+                // List of requirements to craft your item
+                Requirements = new PieceRequirementConfig[]
+                {
+                    new PieceRequirementConfig()
+                    {
+                        // Prefab name of requirement
+                        Item = "LeatherScraps",
+
+                        // Amount required
+                        Amount = 3
+                    }
+    }
+            });
+        }
+
+        private void registerLeatherScrapsRecipe()
+        {
+            ObjectManager.Instance.RegisterRecipe(new RecipeConfig()
+            {
+                // Name of the recipe (defaults to "Recipe_YourItem")
+                Name = "Recipe_LeatherScraps",
+
+                // Name of the prefab for the crafted item
+                Item = "LeatherScraps",
+
+                Amount = 3,
+
+                // Name of the prefab for the crafting station we wish to use
+                // Can set this to null or leave out if you want your recipe to be craftable in your inventory
+                CraftingStation = "piece_workbench",
+
+                // List of requirements to craft your item
+                Requirements = new PieceRequirementConfig[]
+                            {
+                    new PieceRequirementConfig()
+                    {
+                        // Prefab name of requirement
+                        Item = "DeerHide",
+
+                        // Amount required
+                        Amount = 1
+                    }
+                }
+            });
+        }
 
     }
 
@@ -290,12 +352,17 @@ namespace MofoMojo.MMRecipeTweaks
         public static ConfigEntry<bool> FishingBaitRecipeEnabled;
         public static ConfigEntry<bool> ChainsRecipeEnabled;
         public static ConfigEntry<bool> BronzeTweakEnabled;
+        public static ConfigEntry<bool> LeatherScrapsRecipeEnabled;
+        public static ConfigEntry<bool> LeatherRecipeEnabled;
         public static ConfigEntry<Plugin.LoggingLevel> PluginLoggingLevel;
         // These are the settings that will be saved in the ..\plugins\mofomojo.cfg file
         public static void Init()
         {
             PluginLoggingLevel = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.LoggingLevel>("LoggingLevel", "PluginLoggingLevel", Plugin.LoggingLevel.None, "Supported values are None, Normal, Verbose");
             FishingRodRecipeEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "FishingRodRecipeEnabled", true, "Enables  a recipe for Fishing Rods");
+            LeatherScrapsRecipeEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "LeatherScrapsRecipeEnabled", true, "Enables  a recipe for converting Leather to LeatherScraps");
+            LeatherRecipeEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "LeatherRecipeEnabled", true, "Enables  a recipe for converting LeatherScraps to Leather");
+
             FishingBaitRecipeEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "FishingBaitRecipeEnabled", true, "Enables  a recipe for bait made from Necktails");
             LoxMeatSurpriseRecipeEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "LoxMeatSurpriseRecipeEnabled", true, "Enables a recipe and item for Lox Meat Surprise");
             ChainsRecipeEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "ChainsRecipeEnabled", true, "Enables a recipe for making chains (4 Iron = 1 chain)");

@@ -1,6 +1,6 @@
-﻿MofoMojo's Random First Spawn Start Position v1.5
+﻿MofoMojo's Random First Spawn Start Position v1.6
 
-Please update to 1.4/1.5 (See Known Issues)
+Please update to at least 1.4/1.5 (See Known Issues)
 
 Are you interested in a potentially real challenge?
 Care if you spawn on the middle of a small island in the map?
@@ -8,6 +8,8 @@ Care if you spawn sandwiched between a Black Forest, the Meadows and a Draugr vi
 Tired of spawning in the dead center of the map and wish you'd wake up in some other location?
 
 If you answered yes to that last question, this is for you!!!
+
+Want to wake up in a new location EVERY... TIME... YOU ... DIE? (See new 1.6 feature)
 
 The mod now supports specifying a Biome type that you'd like to spawn in. 
 
@@ -63,6 +65,8 @@ Remove the .DLL and the .CFG file from the \Plugins and \Config folders respecti
 	however characters started prior to 1.4 will likely encounter this issue. Sorry!!!!
 
 :: VERSIONS ::
+1.6 At request of Redjparasite and backed up by emulegs, added RandomSpawnOnDeath config parameter. 
+	Setting this to true will cause you to randomly respawn whenever you die. Enjoy the added difficulty you masochists. 
 1.5 Reissue 1.4 (Nexus code wasn't updated)
 1.4 Calling SetHomePoint after initial spawn point is identified
 	Calling GetHomePoint death after game is reloaded. This combo should ensure no random relocations after death. Odin was not pleased with 1.3 and prior
@@ -81,7 +85,7 @@ Remove the .DLL and the .CFG file from the \Plugins and \Config folders respecti
 ♦ https://github.com/Valheim-Modding/Wiki/wiki - Valheim modding
 
 Sample Settings:
-## Settings file was created by plugin MMRandomStartPosition v1.5
+## Settings file was created by plugin MMRandomStartPosition v1.6
 ## Plugin GUID: MofoMojo.MMRandomStartPosition
 
 [LoggingLevel]
@@ -102,7 +106,7 @@ MMRandomStartPositionEnabled = true
 ## Disables the ride in on the Valkyrie
 # Setting type: Boolean
 # Default value: false
-DisableValkryieRide = false
+DisableValkryieRide = true
 
 ## Constrain X axis search from center of map. This is clamped between 0 and 10000
 # Setting type: Single
@@ -146,3 +150,7 @@ MaxSpawnPointChecks = 1000
 # Default value: false
 IgnoreWorldGeneratorConstraints = false
 
+## If true, You will generate a new respawn point on every death
+# Setting type: Boolean
+# Default value: false
+RandomSpawnOnDeath = false

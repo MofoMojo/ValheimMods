@@ -63,11 +63,11 @@ namespace MofoMojo.MMRandomStartPosition
                     if (__instance.m_playerProfile.HaveLogoutPoint()) return true;
 
                     Plugin.LogVerbose("Does Player HaveCustomSpawnPoint?");
-                    if (__instance.m_playerProfile.HaveCustomSpawnPoint()) return true;
+                    if (__instance.m_playerProfile.HaveCustomSpawnPoint() && !Settings.RandomSpawnOnDeath.Value) return true;
 
                     // get the HomePoint for the player. It's Vector3.Zero by default
                     Plugin.LogVerbose("Does Player GetHomePoint?");
-                    spawnPoint = __instance.m_playerProfile.GetHomePoint();
+                    if(!Settings.RandomSpawnOnDeath.Value) spawnPoint = __instance.m_playerProfile.GetHomePoint();
 
                     Plugin.LogVerbose($"HomePoint is {spawnPoint}");
 
@@ -267,6 +267,17 @@ namespace MofoMojo.MMRandomStartPosition
                 }
 
                 return true;
+            }
+
+            [HarmonyPostfix]
+            static void Postfix(Player __instance)
+            {
+                // DisableValkryieRide if this is first spawn and player wants to
+                if (null != Player.m_localPlayer && Settings.MMRandomStartPositionEnabled.Value)
+                {
+                    //clear the original spawnpoint just in case...
+                    spawnPoint = Vector3.zero;
+                }
             }
         }
     }
