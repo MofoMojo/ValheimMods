@@ -7,12 +7,16 @@ using System.Linq;
 using System.Collections.Generic;
 using System;
 
+// Not working on this anymore now that a redux of Planting Plus has been released
+// https://www.nexusmods.com/valheim/mods/1042
+// Note: Did not get my tree spawning working.. with it enabled, when you picked up an item it would trigger recipe update and that would break with a nullreferenceexception
+
 namespace MofoMojo.MMPlantingPositive
 {
     [BepInPlugin("MofoMojo.MMPlantingPositive", Plugin.ModName, Plugin.Version)]
     public class Plugin : BaseUnityPlugin
     {
-        public const string Version = "1.0";
+        public const string Version = "0.1";
         public const string ModName = "MMPlantingPositive";
         Harmony _Harmony;
         public static Plugin Instance;
@@ -157,7 +161,7 @@ namespace MofoMojo.MMPlantingPositive
                 if (null != tempPrefab && null != tempItemDrop)
                 {
                     // check to see if we already know a recipe for this prefab
-                    if (!cultivatorItemDrop.m_itemData.m_shared.m_buildPieces.m_pieces.Contains(tempPrefab.gameObject))
+                    if (!cultivatorItemDrop.m_itemData.m_shared.m_buildPieces.m_pieces.Contains(tempPrefab))
                     {
                         Plugin.LogDebug($"{prefabName} instantiated GameObject Name: {tempPrefab.gameObject.name}");
 
@@ -174,7 +178,7 @@ namespace MofoMojo.MMPlantingPositive
                         }
 
                         // create the piece. This is recipe
-                        Piece tempPiece = tempPrefab.gameObject.AddComponent<Piece>();
+                        Piece tempPiece = tempPrefab.AddComponent<Piece>();
                         tempPiece.m_name = recipeName;
                         tempPiece.m_description = description;
                         tempPiece.m_category = Piece.PieceCategory.Misc;
@@ -239,6 +243,7 @@ namespace MofoMojo.MMPlantingPositive
 
                 // rename the sapling prefab 
                 tempPrefab.name = prefabName;
+                
 
                 // is this required?
                 tempPrefab.hideFlags = HideFlags.HideInHierarchy;
@@ -261,7 +266,8 @@ namespace MofoMojo.MMPlantingPositive
                             tempPlant.m_needCultivatedGround = false;
                             tempPlant.m_minScale = 0.75f;
                             tempPlant.m_maxScale = 1.25f;
-                            tempPlant.m_grownPrefabs = grownPrefabs.ToArray();
+                            tempPlant.m_grownPrefabs = grownPrefabs.ToArray<GameObject>();
+                            //tempPlant.m_grownPrefabs = (GameObject[])new GameObject[1] { ZNetScene.instance.GetPrefab(grownPrefabNames[0]) };
 
                             if (respawnTime > 0)
                             {
@@ -295,11 +301,11 @@ namespace MofoMojo.MMPlantingPositive
 
                         //since this is a new item, kind of, add an instance to the ObjectDB?
                         gameObject = tempPrefab;
-                        ZNetScene.instance.m_prefabs.Add(gameObject);
-                        ObjectDB.instance.m_items.Add(gameObject);
+                        ZNetScene.instance.m_prefabs.Add(tempPrefab);
+                        ObjectDB.instance.m_items.Add(tempPrefab);
 
                         // now attempt to add the recipe
-                        cultivatorItemDrop.m_itemData.m_shared.m_buildPieces.m_pieces.Add(gameObject);
+                        cultivatorItemDrop.m_itemData.m_shared.m_buildPieces.m_pieces.Add(tempPrefab);
                         Plugin.LogDebug($"Added recipe {recipeName}, {prefabName}, {itemDropName}, {description}");
                     }
                     else
