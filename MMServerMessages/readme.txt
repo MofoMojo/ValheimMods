@@ -1,4 +1,4 @@
-﻿MofoMojo's Sleep and MotD (Message of the Day) Dedicated Server Mod 1.0
+﻿MofoMojo's Sleep and MotD (Message of the Day) Dedicated Server Mod 1.1
 
 This mod solves two problems I wanted to achieve for my dedicated server. 
 
@@ -44,8 +44,8 @@ Settings refresh every 5 minutes (can configure)
 
 :: TODO ::
 Consider allowing admins to configure MOTD and SLEEP messages remotely
-Consider a way to perform Sleep check without being in the Game Update() loop
-Consider a way to do the MOTD check without being in the Game Update() loop
+Consider a way to perform Sleep check without being in the Game Update() loop (done)
+Consider a way to do the MOTD check without being in the Game Update() loop )(done)
 Consider a way to show message only once a day per login rather than once after each login
 Entertain removing dedicated requirement
 
@@ -53,6 +53,8 @@ Entertain removing dedicated requirement
 Not aware of any at this time...
 
 :: VERSIONS :: 
+1.2 Added force of showing new message of the day to players when it changes
+1.1 Added config refreshing
 1.0 Initial Release
 
 ::  THANKS ::

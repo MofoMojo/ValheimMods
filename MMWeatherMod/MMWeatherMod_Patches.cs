@@ -20,7 +20,7 @@ namespace MofoMojo.MMWeatherMod
             static bool IsMMWeatherModEnabled()
             {
                 bool enabled = Settings.MMWeatherModEnabled.Value;
-                Plugin.Log($"HideMapToggleEnabled: {enabled}");
+                Plugin.Log($"MMWeatherModEnabled: {enabled}");
 
                 return enabled;
             }
@@ -86,7 +86,7 @@ namespace MofoMojo.MMWeatherMod
             static bool IsMMWeatherModEnabled()
             {
                 bool enabled = Settings.MMWeatherModEnabled.Value;
-                Plugin.Log($"HideMapToggleEnabled: {enabled}");
+                Plugin.Log($"MMWeatherModEnabled: {enabled}");
 
                 return enabled;
             }
@@ -224,9 +224,10 @@ namespace MofoMojo.MMWeatherMod
                         }
 
 
-
+                        // get the instance
                         EnvMan envMan = EnvMan.instance;
 
+                        // get the new weather envsetup
                         EnvSetup newEnvironment = envMan.GetEnv(weather);
                         if (null != newEnvironment)
                         {
@@ -237,7 +238,7 @@ namespace MofoMojo.MMWeatherMod
                            // m_nview.GetZDO().Set("prayed_time", prayedTime.ToBinary());
                         }
 
-                        
+                        // no need to run the original method, return false
                         return false;
                     }
 

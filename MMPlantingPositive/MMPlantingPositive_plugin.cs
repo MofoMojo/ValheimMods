@@ -93,6 +93,9 @@ namespace MofoMojo.MMPlantingPositive
 
         public void Update()
         {
+            // disabling the mod to ensure it doesn't run...
+            ((Behaviour)this).enabled = false;
+
             // don't do anything if we've already handled it all
             if (done) return;
 
@@ -350,8 +353,8 @@ namespace MofoMojo.MMPlantingPositive
 
         public static void Init()
         {
-            MMPlantingPositiveEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMPlantingPositive", "MMPlantingPositiveEnabled", true, "Enables MMPlantingPositive mod");
-            PluginLoggingLevel = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.LoggingLevel>("LoggingLevel", "PluginLoggingLevel", Plugin.LoggingLevel.Debug, "Supported values are None, Normal, Verbose");
+            MMPlantingPositiveEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMPlantingPositive", "MMPlantingPositiveEnabled", false, "Enables MMPlantingPositive mod");
+            PluginLoggingLevel = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.LoggingLevel>("LoggingLevel", "PluginLoggingLevel", Plugin.LoggingLevel.None, "Supported values are None, Normal, Verbose");
 
             RaspberryAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("PickableAmounts", "RaspberryAmount", 10, "How many are required to plant");
             BlueberryAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("PickableAmounts", "BlueberryAmount", 10, "How many are required to plant");
