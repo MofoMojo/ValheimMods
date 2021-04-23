@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
@@ -23,6 +24,12 @@ namespace MofoMojo.MMWeatherMod
                 Plugin.Log($"MMWeatherModEnabled: {enabled}");
 
                 return enabled;
+            }
+
+            [HarmonyPrefix]
+            static void Prefix(EnvMan __instance)
+            {
+                ZRoutedRpc.instance.Register<string>("QueueEnvironment", Chat_InputText.RPC_QueueEnvironment);
             }
 
             [HarmonyPostfix]
@@ -125,19 +132,6 @@ namespace MofoMojo.MMWeatherMod
                             {
                                 weather = "Clear";
                             }
-
-                            //try to match up to valid environment name
-                            foreach(string environmentName in environmentNames)
-                            {
-                                // the environment names are case sensitive. Find the correct case
-                                if (environmentName.ToLower() == weather.ToLower())
-                                {
-                                    weather = environmentName;
-                                    Plugin.LogVerbose($"Weather found: {weather}");
-                                    break;
-                                }
-                            }
-
                         }
                         else
                         {
@@ -223,20 +217,16 @@ namespace MofoMojo.MMWeatherMod
                             MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, Localization.instance.Localize("$tutorial_stemple4_topic"));
                         }
 
-
-                        // get the instance
-                        EnvMan envMan = EnvMan.instance;
-
-                        // get the new weather envsetup
-                        EnvSetup newEnvironment = envMan.GetEnv(weather);
-                        if (null != newEnvironment)
+                        //envMan.QueueEnvironment(newEnvironment);
+                        foreach(Player playingPlayer in Player.GetAllPlayers())
                         {
-                            //EnvSetup currentEnvironment = envMan.GetCurrentEnvironment();
-                            envMan.QueueEnvironment(newEnvironment);
-
-
-                           // m_nview.GetZDO().Set("prayed_time", prayedTime.ToBinary());
+                            if(player.GetCurrentBiome() == playingPlayer.GetCurrentBiome())
+                            {
+                                ZNetPeer peer = ZNet.instance.GetPeerByPlayerName(player.name);
+                                ZRoutedRpc.instance.InvokeRoutedRPC(peer.m_uid, "QueueEnvironment", weather);
+                            }
                         }
+                        
 
                         // no need to run the original method, return false
                         return false;
@@ -253,6 +243,25 @@ namespace MofoMojo.MMWeatherMod
                 return true;
             }
 
+            public static int GetWeatherIndex(string weather)
+            {
+                int selectedWeatherIndex = -1;
+
+                //try to match up to valid environment name
+                foreach (string environmentName in environmentNames)
+                {
+                    // the environment names are case sensitive. Find the correct case
+                    if (environmentName.ToLower() == weather.ToLower())
+                    {
+                        weather = environmentName;
+                        selectedWeatherIndex = environmentNames.IndexOf(weather);
+                        Plugin.LogVerbose($"Weather found: {weather}");
+                        break;
+                    }
+                }
+
+                return selectedWeatherIndex;
+            }
             /*
                     Clear
                     Twilight_Clear
@@ -291,6 +300,29 @@ namespace MofoMojo.MMWeatherMod
                     default:
                         return "Thunderstorm";
                 }
+
+            }
+
+            //note: supported types of parameters for an RPCS call are based on types specified in Zrpc Serializable, so you can't just use things like EnvSetup as a parameter by default...
+            public static void RPC_QueueEnvironment(long senderId, string weather)
+            {
+                int selectedWeatherIndex = GetWeatherIndex(weather);
+                Plugin.LogVerbose($"RPC_QueueEnvironment for: {weather}");
+
+                if (selectedWeatherIndex != -1)
+                {
+                    // get the new weather envsetup
+                    EnvSetup newEnvironment = EnvMan.instance.GetEnv(environmentNames[selectedWeatherIndex]);
+                    if (null != newEnvironment)
+                    {
+                        //envMan.QueueEnvironment(newEnvironment);
+                        Plugin.LogVerbose($"Calling QueueEnvironment for: {weather}");
+                        EnvMan.instance.QueueEnvironment(newEnvironment);
+                        return;
+                    }
+                }
+
+                Plugin.LogVerbose($"RPC_QueueEnvironment: {weather} not found");
 
             }
         }

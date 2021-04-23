@@ -9,7 +9,7 @@ namespace MofoMojo.MMRandomStartPosition
     [BepInPlugin("MofoMojo.MMRandomStartPosition", Plugin.ModName, Plugin.Version)]
     public class Plugin : BaseUnityPlugin
     {
-        public const string Version = "1.7";
+        public const string Version = "1.8";
         public const string ModName = "MMRandomStartPosition";
         Harmony _Harmony;
         public static Plugin Instance;
@@ -64,7 +64,7 @@ namespace MofoMojo.MMRandomStartPosition
 
     internal static class Settings
     {
-
+        public static ConfigEntry<int> nexusId;
         public static ConfigEntry<bool> MMRandomStartPositionEnabled;
         public static ConfigEntry<Plugin.LoggingLevel> PluginLoggingLevel;
         public static ConfigEntry<bool> DisableValkryieRide;
@@ -96,6 +96,7 @@ namespace MofoMojo.MMRandomStartPosition
             IgnoreWorldGeneratorConstraints = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMRandomStartPosition", "IgnoreWorldGeneratorConstraints", false, "The mod attempts to set biome search constraints based on values in WorldGenerator. Set this to true to disable these constraints.");
             RandomSpawnOnDeath = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMRandomStartPosition", "RandomSpawnOnDeath", false, "If true, You will generate a new respawn point on every death");
             IgnoreWaterDepthCheck = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMRandomStartPosition", "IgnoreWaterDepthCheck", false, "If true, this will not ignore water depth level for spawn checks. I don't recommend this you masochist!!!");
+            nexusId = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("General", "NexusID", 952, "Nexus mod ID for updates");
         }
 
     }

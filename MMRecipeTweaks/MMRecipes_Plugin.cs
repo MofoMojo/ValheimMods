@@ -344,6 +344,8 @@ namespace MofoMojo.MMRecipeTweaks
 
     }
 
+
+
     internal static class Settings
     {
 

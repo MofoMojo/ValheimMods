@@ -324,6 +324,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Items\MMLoxMeatSurprise.cs" />
+    <Compile Include="Items\MMSleepingBag.cs" />
     <Compile Include="MMRecipes_Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

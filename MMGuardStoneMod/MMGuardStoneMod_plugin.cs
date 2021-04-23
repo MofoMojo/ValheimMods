@@ -71,7 +71,7 @@ namespace MofoMojo.MMGuardStoneMod
         public static void LogVerbose(string message)
         {
             message = $"{ModName}: {message}";
-            if (Settings.PluginLoggingLevel.Value == LoggingLevel.Verbose) Debug.LogError(message);
+            if (Settings.PluginLoggingLevel.Value == LoggingLevel.Verbose) Debug.Log(message);
         }
 
     }

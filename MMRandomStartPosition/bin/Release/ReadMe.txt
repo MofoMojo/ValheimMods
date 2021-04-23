@@ -1,4 +1,4 @@
-﻿MofoMojo's Random First Spawn Start Position v1.6
+﻿MofoMojo's Random First Spawn Start Position v1.8
 
 Please update to at least 1.4/1.5 (See Known Issues)
 
@@ -65,6 +65,9 @@ Remove the .DLL and the .CFG file from the \Plugins and \Config folders respecti
 	however characters started prior to 1.4 will likely encounter this issue. Sorry!!!!
 
 :: VERSIONS ::
+1.8 I must be tired...
+1.7 At request of emulegs, added IgnoreWaterDepthCheck parameter. 
+Mod previously attempted to always spawn you on terrain higher than the base water depth. This ignores that if set to true. 
 1.6 At request of Redjparasite and backed up by emulegs, added RandomSpawnOnDeath config parameter. 
 	Setting this to true will cause you to randomly respawn whenever you die. Enjoy the added difficulty you masochists. 
 1.5 Reissue 1.4 (Nexus code wasn't updated)

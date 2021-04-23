@@ -19,7 +19,8 @@ namespace MofoMojo.MMServerMessages
         public static float m_refresh = 0;
         public static float m_sleepTimer = 0;
         public static float m_motdTimer = 0;
- 
+        public static ConfigEntry<int> nexusId;
+
         public static ConfigEntry<bool> MMServerMessagesEnabled;
         public static ConfigEntry<Plugin.LoggingLevel> MMServerMessagesPluginLoggingLevel;
 
@@ -145,6 +146,7 @@ namespace MofoMojo.MMServerMessages
             MessageOfTheDayCheckInterval = ((BaseUnityPlugin)Instance).Config.Bind<float>("MessageOfTheDay", "MessageOfTheDayCheckInterval", 13, "How often, in seconds, to check for new clients to send the MOTD");
             MessageOfTheDayType = ((BaseUnityPlugin)Instance).Config.Bind<MessageHud.MessageType>("MessageOfTheDay", "MessageOfTheDayType", MessageHud.MessageType.Center, "Message Type you want displayed");
             MessageOfTheDay = ((BaseUnityPlugin)Instance).Config.Bind<string>("MessageOfTheDay", "MessageOfTheDay", "Welcome to our Dedicated Valheim Server\nGipta!!!", "Message you wish to announce when players log on");
+            nexusId = ((BaseUnityPlugin)Instance).Config.Bind<int>("General", "NexusID", 952, "Nexus mod ID for updates");
         }
 
         // comparing UpdateSaving

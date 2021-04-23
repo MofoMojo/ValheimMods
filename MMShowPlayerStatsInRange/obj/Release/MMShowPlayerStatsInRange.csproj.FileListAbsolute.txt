@@ -8,3 +8,4 @@ C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMShowPlayerStatsIn
 C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMShowPlayerStatsInRange\bin\Release\MofoMojo.MMShowPlayerStatsInRange.pdb
 C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMShowPlayerStatsInRange\obj\Release\MofoMojo.MMShowPlayerStatsInRange.dll
 C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMShowPlayerStatsInRange\obj\Release\MofoMojo.MMShowPlayerStatsInRange.pdb
+C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMShowPlayerStatsInRange\obj\Release\MMShowPlayerStatsInRange.csprojAssemblyReference.cache

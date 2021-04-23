@@ -64,7 +64,7 @@ namespace MofoMojo.MMWeatherMod
 
     internal static class Settings
     {
-
+        public static ConfigEntry<int> nexusId;
         public static ConfigEntry<bool> MMWeatherModEnabled;
         public static ConfigEntry<Plugin.LoggingLevel> PluginLoggingLevel;
         public static ConfigEntry<int> PrayerFrequency;
@@ -80,6 +80,7 @@ namespace MofoMojo.MMWeatherMod
             SuccessChance = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("MMWeatherMod", "SuccessChance", 33f, "What are the odds Odin will grant your prayer wish");
             AngryChance = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("MMWeatherMod", "AngryChance", 25f, "What are the odds you'll anger Odin if your prayer is unsuccessful");
             TrophyKillInfluence = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMWeatherMod", "TrophyKillInfluence", true, "Each new mob type you've slain gives you a 2% increase in success");
+            nexusId = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("General", "NexusID", 946, "Nexus mod ID for updates");
         }
 
     }

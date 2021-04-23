@@ -68,7 +68,7 @@ namespace MofoMojo.MMWishboneTweak
 
     internal static class Settings
     {
-       
+        public static ConfigEntry<int> nexusId;
         public static ConfigEntry<bool> WishBoneTweakEnabled;
         public static ConfigEntry<Plugin.LoggingLevel> PluginLoggingLevel;
         public static ConfigEntry<float> DetectTinDistance;
@@ -89,6 +89,7 @@ namespace MofoMojo.MMWishboneTweak
             DetectMudPileDistance = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("WishboneDestructibles", "DetectMudPileDistance", 20f, "Allows the Wishbone to find Mud Piles (Value > 0) and at what distance");
             DetectBuriedDistance = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("WishbonePieces", "DetectBuriedDistance", 20f, "Allows the Wishbone to find Buried Objects (Value > 0) and at what distance");
             DetectDeathsquitoDistance = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("WishboneHumanoids", "DetectDeathsquitoDistance", 60f, "Allows the Wishbone to find Deathquitos (Value > 0) and at what distance");
+            nexusId = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("General", "NexusID", 906, "Nexus mod ID for updates");
         }
 
     }
