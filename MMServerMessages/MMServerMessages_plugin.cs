@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿
+using System.Reflection;
 using BepInEx;
 using BepInEx.Configuration;
 using UnityEngine;
@@ -10,14 +11,16 @@ namespace MofoMojo.MMServerMessages
     [BepInPlugin("MofoMojo.MMServerMessages", ModName, Version)]
     public class Plugin : BaseUnityPlugin
     {
-        public const string Version = "1.0";
+        public static string previousMotd = string.Empty;
+        public const string Version = "1.1";
         public const string ModName = "MMServerMessages";
         public static Plugin Instance;
         public static LoggingLevel PluginLoggingLevel = LoggingLevel.None;
         public static float m_refresh = 0;
         public static float m_sleepTimer = 0;
         public static float m_motdTimer = 0;
- 
+        public static ConfigEntry<int> nexusId;
+
         public static ConfigEntry<bool> MMServerMessagesEnabled;
         public static ConfigEntry<Plugin.LoggingLevel> MMServerMessagesPluginLoggingLevel;
 
@@ -51,6 +54,7 @@ namespace MofoMojo.MMServerMessages
 
             LoadConfig();
             PluginLoggingLevel = MMServerMessagesPluginLoggingLevel.Value;
+            previousMotd = MessageOfTheDay.Value;
 
         }
 
@@ -119,7 +123,14 @@ namespace MofoMojo.MMServerMessages
 
             Config.Reload();
             LoadConfig();
-            LogVerbose("Config reloaded");
+            LogVerbose($"Config reloaded. MOTD = '{MessageOfTheDay.Value}'");
+
+            if(previousMotd != MessageOfTheDay.Value)
+            {
+                previousMotd = MessageOfTheDay.Value;
+                CheckMotd(Time.deltaTime, true);
+            }
+
         }
 
         public void LoadConfig()
@@ -135,6 +146,7 @@ namespace MofoMojo.MMServerMessages
             MessageOfTheDayCheckInterval = ((BaseUnityPlugin)Instance).Config.Bind<float>("MessageOfTheDay", "MessageOfTheDayCheckInterval", 13, "How often, in seconds, to check for new clients to send the MOTD");
             MessageOfTheDayType = ((BaseUnityPlugin)Instance).Config.Bind<MessageHud.MessageType>("MessageOfTheDay", "MessageOfTheDayType", MessageHud.MessageType.Center, "Message Type you want displayed");
             MessageOfTheDay = ((BaseUnityPlugin)Instance).Config.Bind<string>("MessageOfTheDay", "MessageOfTheDay", "Welcome to our Dedicated Valheim Server\nGipta!!!", "Message you wish to announce when players log on");
+            nexusId = ((BaseUnityPlugin)Instance).Config.Bind<int>("General", "NexusID", 952, "Nexus mod ID for updates");
         }
 
         // comparing UpdateSaving
@@ -145,7 +157,7 @@ namespace MofoMojo.MMServerMessages
             // check every 10 seconds
             if (m_sleepTimer > SleepCheckInterval.Value)
             {
-                LogDebug("CheckSleepers");
+                LogDebug($"CheckSleepers Note: Refresh {m_refresh}");
                 // reset the sleep checker
                 m_sleepTimer = 0f;
 
@@ -183,14 +195,14 @@ namespace MofoMojo.MMServerMessages
         }
 
         // comparing UpdateSaving
-        public static void CheckMotd(float dt)
+        public static void CheckMotd(float dt, bool ignoreSeen = false)
         {
             m_motdTimer += dt;
 
-            // check every 10 seconds
-            if (m_motdTimer < MessageOfTheDayCheckInterval.Value) return;
+            // check every 10 seconds and return if lower than the interval and ignoreSeen is false.
+            if (m_motdTimer < MessageOfTheDayCheckInterval.Value && !ignoreSeen) return;
 
-            LogDebug("Checking Motd");
+            LogDebug($"Checking Motd. Note: Refresh {m_refresh}");
 
             // reset the motd timer
             m_motdTimer = 0f;
@@ -211,7 +223,8 @@ namespace MofoMojo.MMServerMessages
                     // get last Message OF The Day displayed time
                     bool SeenMOTD = characterZDO.GetBool("mm_shownmotd", false);
 
-                    if (!SeenMOTD)
+                    // if the message hasn't been seen OR we're ignoring that it's been seen....
+                    if (!SeenMOTD || ignoreSeen)
                     {
                         //GetPeerByPlayerName
                         string playerName = characterZDO.GetString("playerName");

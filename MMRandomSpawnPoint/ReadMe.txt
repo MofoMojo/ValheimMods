@@ -1,30 +1,42 @@
-﻿MofoMojo's Random First Spawn Start Position v1.8
+﻿﻿MofoMojo's Random Spawn/Respawn Mod v2.0
 
-Please update to at least 1.4/1.5 (See Known Issues)
+2.0 Release!!!
+
+Note: I have renamed the plugin binary!!! Please take special note of this if you are upgrading!!!
 
 Are you interested in a potentially real challenge?
 Care if you spawn on the middle of a small island in the map?
 Care if you spawn sandwiched between a Black Forest, the Meadows and a Draugr village? What about in one?
+Want to wake up in a new location EVERY... TIME... YOU ... DIE (only an option)
 Tired of spawning in the dead center of the map and wish you'd wake up in some other location?
 
 If you answered yes to that last question, this is for you!!!
 
-Want to wake up in a new location EVERY... TIME... YOU ... DIE? (See new 1.6 feature)
+:: FEATURES ::
+• Spawn in new and horrifying conditions
+• Instantly die over and over because it placed you in a Draugr village
+• Run away for your life and immediately out of stamina and die to a pack of boar!!!
+• You do NOT have to run this on a dedicated server to take advantage of this system on a dedicated server. Just install, activate, join the dedicated server and profit!!!
+• Specify a Biome type that you'd like to spawn in on start of a new game or your death
+• Specify whether you should respawn in a new location on every death
+• Specify whether you should respawn (on death) in a new location ONLY if you don't have a bed
+• Specify whether you should only spawn in random location at the start of the game 
+	(um... this is done by just having RandomSpawnOnDeath and RandomSpawnOnDeathIfNoBed settings to their defaults of false)
+• Disable the Valkrie intro ride if you just want to pop into a game as quick as possible.
+• Capability to reset your homepoint (death respawn) to the StartTemple if you wish to respawn normally before uninstalling the mod
 
-The mod now supports specifying a Biome type that you'd like to spawn in. 
 
 The mod supports specifying a minimum/maximum distance from center of the map along the X and Z axis and will
 look for locations anywhere within that area. Some biomes are constrained within a certain distance from the center of the map
 so the value is clamped to this distance, however you can override this check if you wish. 
 
-You can also disable the Valkyrie intro ride if you just want to pop up as quick as possible in your new homeland. 
+You can specify a BiomeAreaType to have better control over the "zone" area you're starting in
+You can specify a Biome to override Meadows. Good luck with this! May be a good idea for a seasoned character who got tired of retirement.
 
-You can now specify a BiomeAreaType to have better control over the "zone" area you're starting in
-You can now specify a Biome to override Meadows. Good luck with this! May be a good idea for a seasoned character who got tired of retirement.
+This mod randomizes YOUR first spawn into a map and sets your respawn point there. It does NOT mark this location on the map. 
+You can use this mod to force a random re-spawn location on Death if you don't have a bed, or for harder games, on each death.
 
-This mod ONLY randomizes YOUR first spawn into a map and sets your respawn point there. It does NOT mark this location on the map. 
-
-If you die, you'll respawn there. Congratulations it's your death day!!!
+Congratulations it's your death day!!!
 
 :: NOTES ::
 BiomeAreaType let's you specify the "area type" of the Zone you'll be spawning into. There are 3 types
@@ -39,21 +51,21 @@ Biome setting let's you specify the type of Biome you prefer. Want to go truly r
 • BepInEx - 
 
 :: INSTALLATION ::
-Place the MofoMojo.MMRandomStartPosition.dll in your \BepinEx\Plugins folder
+Place the MofoMojo.MMRandomSpawnPoint.dll in your \BepinEx\Plugins folder
 Start Valheim and hold on to your pants
 Modify the \BepInEx\Config\MofoMojo.MMRandomStartPosition.cfg file to enable the mod.
 Play Valheim
 Profit... or die.
 
-:: UNINSTALLATION ::
-Remove the .DLL and the .CFG file from the \Plugins and \Config folders respectively.
+:: UPGRADING ::
+If upgrading from 1.x, remove the MofoMojo.MMRandomStartPosition.DLL and backup the .CFG file (if you want to preserve settings) from the original version of the mod before running this mod
+You'll need to at least start the game to get the new .CFG file. If you want to preserve settings, you'll need to manually copy them
 
-:: FEATURES ::
-• Spawn in new and horrifying conditions
-• Instantly die over and over because it placed you in a Draugr village
-• Run away for your life and immediately out of stamina and die to a pack of boar!!!
-• Disable the Valkyrie ride for an even quicker death
-• You do NOT have to run this on a dedicated server to take advantage of this system on a dedicated server. Just install, activate, join the dedicated server and profit!!!
+:: UNINSTALLATION ::
+If you want to reset your home point (where you spawn) back to the StartTemple, issue the following in chat (not console)
+/resethomepoint
+
+Then, remove the MofoMojo.MMRandomSpawnPoint.dll and MofoMojo.MMRandomSpawnPoint.CFG file from the \Plugins and \Config folders respectively.
 
 ::  KNOWN ISSUES ::
 • Can put you in hostile situations
@@ -61,13 +73,15 @@ Remove the .DLL and the .CFG file from the \Plugins and \Config folders respecti
 	seen instances where you've passed through a biome that just wasn't there... yeah... like that. Only, I try to keep you dry. 
 • World Generation is a fickle beast. I try to ensure that the location it puts you is a little above the ZoneSystem.instance.m_waterLevel
 	to try and ensure you're not just placed in the water somewhere. I can't feasibly test this out very extensively but seems to be working! :D
-• Versions 1.3 and prior didn't set the HomePoint permanently for your character. This creates an issue where if you log out and back on and THEN die you might get teleported elsewhere. Should be fixed in 1.4 and later
-	however characters started prior to 1.4 will likely encounter this issue. Sorry!!!!
 
 :: VERSIONS ::
-1.8 I must be tired...
+2.0 A sort of re-write, and renamed the plugin. Sorry for the confusion there. 
+	Added /resethomepoint
+	Added RandomSpawnOnDeath option - will trigger a random respawn location when you die, bed set or not. If true, this setting takes precedence over RandomSpawnOnDeathIfNoBed
+	Added RandomSpawnOnDeathIfNoBed option - will trigger a random respawn location when you die IF you don't have an active bed location
+	At suggestion of Nibelung44, added "Hugin takes pity on you..." message if you end up getting spawned in the center of the map because no suitable spawn point could be found.
 1.7 At request of emulegs, added IgnoreWaterDepthCheck parameter. 
-Mod previously attempted to always spawn you on terrain higher than the base water depth. This ignores that if set to true. 
+	Mod previously attempted to always spawn you on terrain higher than the base water depth. This ignores that if set to true. 
 1.6 At request of Redjparasite and backed up by emulegs, added RandomSpawnOnDeath config parameter. 
 	Setting this to true will cause you to randomly respawn whenever you die. Enjoy the added difficulty you masochists. 
 1.5 Reissue 1.4 (Nexus code wasn't updated)

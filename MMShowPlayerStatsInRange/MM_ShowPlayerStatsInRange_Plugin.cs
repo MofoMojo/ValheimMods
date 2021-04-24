@@ -443,7 +443,7 @@ namespace MofoMojo.MMShowPlayerStatsInRange
 
     internal static class Settings
     {
-
+        public static ConfigEntry<int> nexusId;
         public static ConfigEntry<bool> ShowPlayerStatsInRange;
         public static ConfigEntry<float> ShowPlayerStatsRadius;
         public static ConfigEntry<string> PlayerStatLocation;
@@ -489,6 +489,7 @@ namespace MofoMojo.MMShowPlayerStatsInRange
             PlayerStatUpdateInterval = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("PlayerStats", "PlayerStatUpdateInterval", 30f, "How often to update. This value represents frames, so if you're getting 30 FPS and the value is 30, you'll update every second.");
             showingPlayerStats = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("PlayerStats", "showingPlayerStats", true, "Used by mod, don't modify");
             PluginLoggingLevel = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.LoggingLevel>("LoggingLevel", "PluginLoggingLevel", Plugin.LoggingLevel.None, "Supported values are None, Normal, Verbose");
+            nexusId = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("General", "NexusID", 939, "Nexus mod ID for updates");
         }
 
     }

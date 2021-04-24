@@ -174,7 +174,7 @@ namespace MofoMojo.MMRandomStartPosition
                             Plugin.LogVerbose($"Initial coords: {tempLocation}");
                             
                             // only search here if the height is heigher than the water level as it still has a tendency to pull other biomes
-                            if (height > ZoneSystem.instance.m_waterLevel) // && height < WorldGenerator.mountainBaseHeightMin * 85)
+                            if (height > ZoneSystem.instance.m_waterLevel || Settings.IgnoreWaterDepthCheck.Value) // && height < WorldGenerator.mountainBaseHeightMin * 85)
                             {
                                 tempLocation.y = height;
 
