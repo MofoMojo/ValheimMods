@@ -10,9 +10,6 @@ namespace MofoMojo.MMGuardStoneMod
     class MMGuardWardTweaks
     {
 
-        private static List<GameObject> m_NoMonsterSpheres = new List<GameObject>();
-
-
         // this hooks into PrivateArea type's Awake method
         [HarmonyPatch(typeof(PrivateArea), "Awake")]
         public class HarmonyPatch_Awake
@@ -46,7 +43,7 @@ namespace MofoMojo.MMGuardStoneMod
                 if(Settings.WardBehavior.Value == Plugin.WardBehavior.Original)
                 {
                     Plugin.Log("WardBehavior.Original set, Attempting to remove any monster areas");
-                    RemoveNoMonsterArea(__instance);
+                    RemoveForceFieldForPrivateArea(__instance);
                     return;
                 }
                 SetNoMonsterArea(__instance, __instance.IsEnabled());
@@ -90,7 +87,7 @@ namespace MofoMojo.MMGuardStoneMod
                     if (Settings.WardBehavior.Value == Plugin.WardBehavior.Original)
                     {
                         Plugin.LogVerbose("WardBehavior.Original set, Attempting to remove any monster areas");
-                        RemoveNoMonsterArea(__instance);
+                        RemoveForceFieldForPrivateArea(__instance);
                         return;
                     }
 
@@ -104,35 +101,11 @@ namespace MofoMojo.MMGuardStoneMod
             }
         }
 
-        private static void ToOpaqueMode(ref Material material)
-        {
-            material.SetOverrideTag("RenderType", "");
-            material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-            material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-            material.SetInt("_ZWrite", 1);
-            material.DisableKeyword("_ALPHATEST_ON");
-            material.DisableKeyword("_ALPHABLEND_ON");
-            material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-            material.renderQueue = -1;
-        }
-
-        private static void ToFadeMode(ref Material material)
-        {
-            material.SetOverrideTag("RenderType", "Transparent");
-            material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-            material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-            material.SetInt("_ZWrite", 0);
-            material.DisableKeyword("_ALPHATEST_ON");
-            material.EnableKeyword("_ALPHABLEND_ON");
-            material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-            material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
-        }
-
         private static void SetNoMonsterArea(PrivateArea pa, bool enabled)
         {
             Plugin.Log($"SetNoMonsterArea called: {enabled}");
 
-            GameObject sphere = GetNoMonsterArea(pa);
+            SphereCollider sphere = GetAForceFieldForPrivateArea(pa);
             EffectArea NoMonsters = sphere.GetComponent<EffectArea>();
 
             if (null != NoMonsters)
@@ -158,124 +131,124 @@ namespace MofoMojo.MMGuardStoneMod
                 }
                 else
                 {
-                    RemoveNoMonsterArea(pa);
+                    RemoveForceFieldForPrivateArea(pa);
                 }
                 NoMonsters.m_type = enabled ? (EffectArea.Type.NoMonsters | EffectArea.Type.PlayerBase) : EffectArea.Type.None;
             }
 
         }
 
-        private static GameObject[] GetSpheresInRange(Vector3 point, float radius)
+        private static SphereCollider[] GetForceFieldsInRange(Vector3 point, float radius)
         {
-            List<GameObject> spheres = new List<GameObject>();
-            foreach(GameObject gameObject in m_NoMonsterSpheres)
+            List<SphereCollider> forceFields = new List<SphereCollider>();
+
+            // look for any SphereColliders
+            foreach (SphereCollider sphereCollider in GameObject.FindObjectsOfType<SphereCollider>())
             {
-                if(Vector3.Distance(point, gameObject.transform.position) < radius)
+                // see if their parent name is MMForceField
+                if (sphereCollider.name == "MMForceField" && Vector3.Distance(point, sphereCollider.transform.position) < radius)
                 {
-                    spheres.Add(gameObject);
+                    // add to collection of items of forcefields in range
+                        Plugin.Log("Found MMForceField");
+                        forceFields.Add(sphereCollider);
                 }
             }
 
-            return spheres.ToArray();
+            return forceFields.ToArray();
         }
 
-        private static GameObject GetSphereInRange(Vector3 point, float radius)
+        private static SphereCollider GetForceFieldInRange(Vector3 point, float radius)
         {
-            foreach (GameObject gameObject in m_NoMonsterSpheres)
-            {
-                if (Vector3.Distance(point, gameObject.transform.position) < radius)
-                {
-                    return gameObject;
-                }
-            }
-
+            SphereCollider[] forcefields = GetForceFieldsInRange(point, radius);
+            
+            if (forcefields.Length > 0) return forcefields[0];
+            
             return null;
         }
 
-        private static GameObject GetNoMonsterArea(PrivateArea pa)
+        private static SphereCollider GetAForceFieldForPrivateArea(PrivateArea pa)
         {
-            Plugin.Log("GetNoMonsterArea called");
-            GameObject sphere = null;
-
-            EffectArea NoMonstersEffectArea = null;
+            Plugin.Log("GetAForceFieldForPrivateArea called");
+            SphereCollider forceField = null;
+             
             try
             {
-                sphere = GetSphereInRange(pa.transform.position, 1);
+                forceField = GetForceFieldInRange(pa.transform.position, 2);
 
                 // if we didn't find one, make one
-                if (null == sphere)
+                if (null == forceField)
                 {
-                    Plugin.Log("GetNoMonsterArea Creating NoMonsterArea");
-                    sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    sphere.name = "MMForceField";
-                    sphere.transform.position = pa.transform.position;
-                    sphere.transform.localScale = pa.transform.localScale;
-
-                    // https://forum.unity.com/threads/change-rendering-mode-via-script.476437/
-                    Material temp = sphere.GetComponent<Renderer>().material;
-
-                    // set a transparent color
-                    temp.color = new Color(0, 0, 0, 0.25f);
-
-                    // if you don't do this, it'll still be opaque.
-                    temp.SetOverrideTag("RenderType", "Transparent");
-                    temp.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                    temp.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                    temp.SetInt("_ZWrite", 0);
-                    temp.DisableKeyword("_ALPHATEST_ON");
-                    temp.EnableKeyword("_ALPHABLEND_ON");
-                    temp.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-                    temp.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
-
-                    SphereCollider sphereCollider = sphere.GetComponent<SphereCollider>();
-
-                    NoMonstersEffectArea = sphere.gameObject.AddComponent<EffectArea>();
-
-                    NoMonstersEffectArea.name = Plugin.NoMonsterEffectAreaName;
-
-                    // initialize this with no affect at first...
-                    NoMonstersEffectArea.m_type = EffectArea.Type.None;
-
-                    // you need a sphere collider attached to the EffectArea to define the radius
-                    //SphereCollider sphereCollider = NoMonstersEffectArea.gameObject.AddComponent<SphereCollider>();
-
-                    // set this off by default if we're making it
-                    sphereCollider.enabled = false;
-
-                    // make sure IsTrigger is set so physics don't apply. 
-                    sphereCollider.isTrigger = true;
-
-                    // set the radius to the radius of the private area
-                    Plugin.Log("GetNoMonsterArea - adjusting radius of SphereCollider");
-                    sphereCollider.radius = pa.m_radius;
-
-                    m_NoMonsterSpheres.Add(sphere);
-
+                    Plugin.Log("GetAForceFieldForPrivateArea Creating ForceField");
+                    forceField = CreateForceField(pa.transform.position, pa.m_radius);
                 }
-
-
             }
             catch (Exception ex)
             {
-                Plugin.LogError($"AddNoMonsterArea - {ex.Message}");
+                Plugin.LogError($"GetAForceFieldForPrivateArea - {ex.Message}");
             }
 
-            return sphere;
+            return forceField;
 
         }
 
-        //no need for this but will keep around in case code changes and requires it
-        private static void RemoveNoMonsterArea(PrivateArea pa)
+        private static SphereCollider CreateForceField(Vector3 location, float radius)
         {
-            Plugin.Log("RemoveNoMonsterArea");
-            GameObject[] spheres = null;
-            EffectArea noMonstersArea = null;
+            GameObject forceField = null;
 
-            spheres = GetSpheresInRange(pa.transform.position, 1);
+            EffectArea NoMonstersEffectArea = null;
 
-            foreach(GameObject sphere in spheres)
+            forceField = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            forceField.name = "MMForceField";
+            forceField.transform.position = location;
+
+            // https://forum.unity.com/threads/change-rendering-mode-via-script.476437/
+            Material sphereMaterial = forceField.GetComponent<Renderer>().material;
+
+            // set a transparent color
+            sphereMaterial.color = new Color(0, 0, 0, 0);
+
+            // if you don't do this, it'll still be opaque.
+            sphereMaterial.SetOverrideTag("RenderType", "Transparent");
+            sphereMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            sphereMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            sphereMaterial.SetInt("_ZWrite", 0);
+            sphereMaterial.DisableKeyword("_ALPHATEST_ON");
+            sphereMaterial.EnableKeyword("_ALPHABLEND_ON");
+            sphereMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            sphereMaterial.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+
+            SphereCollider sphereCollider = forceField.GetComponent<SphereCollider>();
+            sphereCollider.name = "MMForceField";
+
+            // set the radius to the radius of the private area
+            Plugin.Log("GetNoMonsterArea - adjusting radius of SphereCollider");
+            sphereCollider.radius = radius;
+
+            NoMonstersEffectArea = forceField.gameObject.AddComponent<EffectArea>();
+
+            NoMonstersEffectArea.name = Plugin.NoMonsterEffectAreaName;
+
+            // initialize this with no affect at first...
+            NoMonstersEffectArea.m_type = EffectArea.Type.None;
+
+            // set this off by default if we're making it
+            sphereCollider.enabled = false;
+
+            // make sure IsTrigger is set so physics don't apply. 
+            sphereCollider.isTrigger = true;
+
+            return sphereCollider;
+        }
+
+        //no need for this but will keep around in case code changes and requires it
+        private static void RemoveForceFieldForPrivateArea(PrivateArea pa)
+        {
+            Plugin.Log("RemoveForceFieldForPrivateArea");
+            SphereCollider[] forceFields = GetForceFieldsInRange(pa.transform.position, 2);
+
+            foreach(SphereCollider forceField in forceFields)
             {
-                noMonstersArea = sphere.GetComponent<EffectArea>();
+                EffectArea noMonstersArea = forceField.GetComponent<EffectArea>();
 
                 if (null != noMonstersArea)
                 {
@@ -283,16 +256,16 @@ namespace MofoMojo.MMGuardStoneMod
                     SphereCollider[] colliders = noMonstersArea.GetComponents<SphereCollider>();
                     for (int i = 0; i < colliders.Length; i++)
                     {
-                        Plugin.Log("RemoveNoMonsterArea - Destroying SphereCollider");
+                        Plugin.Log("RemoveForceFieldForPrivateArea - Destroying SphereCollider");
                         GameObject.Destroy(colliders[i]);
                     }
 
                     // destroy the object
-                    Plugin.Log("RemoveNoMonsterArea - Destroying EffectArea");
+                    Plugin.Log("RemoveForceFieldForPrivateArea - Destroying EffectArea");
                     GameObject.Destroy(noMonstersArea);
                 }
-                m_NoMonsterSpheres.Remove(sphere);
-                GameObject.Destroy(sphere);
+                Plugin.Log("RemoveForceFieldForPrivateArea - Destroying forceField");
+                GameObject.Destroy(forceField);
             }
         }
 
