@@ -55,6 +55,8 @@ namespace MofoMojo.MMGuardStoneMod
                 {
                     Plugin.Log("sphere adjusted");
                     sphere.radius = radius;
+                    sphere.isTrigger = true;
+                    sphere.material = null;
                 }
             }
 
@@ -123,6 +125,9 @@ namespace MofoMojo.MMGuardStoneMod
                 {
                     collider.enabled = enabled;
                     collider.radius = pa.m_radius;
+                    //added
+                    collider.isTrigger = true;
+                    collider.material = null;
                 }
 
             }
@@ -169,6 +174,10 @@ namespace MofoMojo.MMGuardStoneMod
                     // set the radius to the radius of the private area
                     Plugin.Log("GetNoMonsterArea - adjusting radius of SphereCollider");
                     sphereCollider.radius = pa.m_radius;
+
+                    //added
+                    sphereCollider.material = null;
+
                     /*
                     try { 
                         GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);

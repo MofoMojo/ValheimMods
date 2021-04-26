@@ -10,7 +10,7 @@ namespace MofoMojo.MMPersonalTweaks
     [BepInPlugin("MofoMojo.MMPersonalTweaks", Plugin.ModName, Plugin.Version)]
     public class Plugin : BaseUnityPlugin
     {
-        public const string Version = "1.0";
+        public const string Version = "1.1";
         public const string ModName = "MofoMojo's Personal Tweaks";
         Harmony _Harmony;
         public static Plugin Instance;
