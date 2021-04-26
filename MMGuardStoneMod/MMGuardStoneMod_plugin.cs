@@ -4,6 +4,7 @@ using BepInEx.Configuration;
 using HarmonyLib;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 namespace MofoMojo.MMGuardStoneMod
 {
@@ -13,13 +14,18 @@ namespace MofoMojo.MMGuardStoneMod
         public const string Version = "1.0";
         public const string ModName = "MMGuardStoneMod";
         public const string NoMonsterEffectAreaName = "NoMonsterArea";
+        public static Material ForceField = null;
+
         Harmony _Harmony;
         public static Plugin Instance;
+
+
         public enum LoggingLevel
         {
             None,
             Normal,
-            Verbose
+            Verbose,
+            Debug
         }
 
         public enum WardInteractBehavior
@@ -38,11 +44,11 @@ namespace MofoMojo.MMGuardStoneMod
 
         private void Awake()
         {
-
-            Instance = this;
+             Instance = this;
             Settings.Init();
 
             _Harmony = Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), null);
+
         }
 
         private void OnDestroy()
@@ -72,6 +78,12 @@ namespace MofoMojo.MMGuardStoneMod
         {
             message = $"{ModName}: {message}";
             if (Settings.PluginLoggingLevel.Value == LoggingLevel.Verbose) Debug.Log(message);
+        }
+
+        public static void LogDebug(string message)
+        {
+            message = $"{ModName}: {message}";
+            if (Settings.PluginLoggingLevel.Value == LoggingLevel.Debug) Debug.Log(message);
         }
 
     }

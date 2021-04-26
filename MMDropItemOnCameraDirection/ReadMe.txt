@@ -13,6 +13,7 @@ and if so, drops the item in the direction the camera is facing, NOT your charac
 • This mod alters the _Humanoid_ class' DropItem method whenever the Humanoid _IS_ the player, otherwise it runs the original. 
 • It will likely be incompatible with any other mod that alters this method specifically
 • This mod does NOT alter the ItemDrop class' DropItem method. 
+• The mod only affects dropping items from inventory. It does not affect spawning items via consoles/other mods
 • Anyone that wants to add this into their own mod to provide this capability, it's a pretty easy change. 
 • Here's my code that I modified. The GameCamera.transform is used instead of the base.transform. 
 

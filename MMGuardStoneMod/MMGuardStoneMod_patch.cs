@@ -3,12 +3,16 @@ using System.Text;
 using BepInEx;
 using HarmonyLib;
 using UnityEngine;
-using UnityEditor;
+using System.Collections.Generic;
 
 namespace MofoMojo.MMGuardStoneMod
 {
     class MMGuardWardTweaks
     {
+
+        private static List<GameObject> m_NoMonsterSpheres = new List<GameObject>();
+
+
         // this hooks into PrivateArea type's Awake method
         [HarmonyPatch(typeof(PrivateArea), "Awake")]
         public class HarmonyPatch_Awake
@@ -100,11 +104,36 @@ namespace MofoMojo.MMGuardStoneMod
             }
         }
 
+        private static void ToOpaqueMode(ref Material material)
+        {
+            material.SetOverrideTag("RenderType", "");
+            material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+            material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+            material.SetInt("_ZWrite", 1);
+            material.DisableKeyword("_ALPHATEST_ON");
+            material.DisableKeyword("_ALPHABLEND_ON");
+            material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            material.renderQueue = -1;
+        }
+
+        private static void ToFadeMode(ref Material material)
+        {
+            material.SetOverrideTag("RenderType", "Transparent");
+            material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            material.SetInt("_ZWrite", 0);
+            material.DisableKeyword("_ALPHATEST_ON");
+            material.EnableKeyword("_ALPHABLEND_ON");
+            material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+        }
+
         private static void SetNoMonsterArea(PrivateArea pa, bool enabled)
         {
             Plugin.Log($"SetNoMonsterArea called: {enabled}");
 
-            EffectArea NoMonsters = GetNoMonsterArea(pa);
+            GameObject sphere = GetNoMonsterArea(pa);
+            EffectArea NoMonsters = sphere.GetComponent<EffectArea>();
 
             if (null != NoMonsters)
             {
@@ -113,49 +142,94 @@ namespace MofoMojo.MMGuardStoneMod
                 // NoMonsters keeps monsters from "attempting" to navigate inside
                 // Playerbase ensures that creatures don't spawn within the radius
                 // however you can't build when it's enabled. 
-                NoMonsters.m_type = enabled ? (EffectArea.Type.NoMonsters | EffectArea.Type.PlayerBase) : EffectArea.Type.None;
 
-
-                Plugin.Log($"SetEnabled - type set to {NoMonsters.m_type }");
-
-                NoMonsters.enabled = enabled;
-
-                SphereCollider collider = NoMonsters.GetComponent<SphereCollider>();
-                if (null != collider)
+                if(enabled)
                 {
-                    collider.enabled = enabled;
-                    collider.radius = pa.m_radius;
-                    //added
-                    collider.isTrigger = true;
-                    collider.material = null;
+                    NoMonsters.enabled = enabled;
+                    
+                    // layer modelled after the ForceField in the Vendor_BlackForest scene.
+                    NoMonsters.gameObject.layer = 14;
+                    SphereCollider collider = NoMonsters.GetComponent<SphereCollider>();
+                    if (null != collider)
+                    {
+                        collider.enabled = enabled;
+                        collider.radius = pa.m_radius;
+                    }
                 }
-
+                else
+                {
+                    RemoveNoMonsterArea(pa);
+                }
+                NoMonsters.m_type = enabled ? (EffectArea.Type.NoMonsters | EffectArea.Type.PlayerBase) : EffectArea.Type.None;
             }
 
         }
 
-        private static EffectArea GetNoMonsterArea(PrivateArea pa)
+        private static GameObject[] GetSpheresInRange(Vector3 point, float radius)
+        {
+            List<GameObject> spheres = new List<GameObject>();
+            foreach(GameObject gameObject in m_NoMonsterSpheres)
+            {
+                if(Vector3.Distance(point, gameObject.transform.position) < radius)
+                {
+                    spheres.Add(gameObject);
+                }
+            }
+
+            return spheres.ToArray();
+        }
+
+        private static GameObject GetSphereInRange(Vector3 point, float radius)
+        {
+            foreach (GameObject gameObject in m_NoMonsterSpheres)
+            {
+                if (Vector3.Distance(point, gameObject.transform.position) < radius)
+                {
+                    return gameObject;
+                }
+            }
+
+            return null;
+        }
+
+        private static GameObject GetNoMonsterArea(PrivateArea pa)
         {
             Plugin.Log("GetNoMonsterArea called");
+            GameObject sphere = null;
+
             EffectArea NoMonstersEffectArea = null;
             try
             {
-                EffectArea[] effectAreas = pa.GetComponents<EffectArea>();
-                foreach (EffectArea effectArea in effectAreas)
-                {
-                    if (effectArea.name == Plugin.NoMonsterEffectAreaName)
-                    {
-                        Plugin.Log("GetNoMonsterArea found NoMonsterArea");
-                        NoMonstersEffectArea = effectArea;
-                        break;
-                    }
-                }
+                sphere = GetSphereInRange(pa.transform.position, 1);
 
                 // if we didn't find one, make one
-                if (null == NoMonstersEffectArea)
+                if (null == sphere)
                 {
                     Plugin.Log("GetNoMonsterArea Creating NoMonsterArea");
-                    NoMonstersEffectArea = pa.gameObject.AddComponent<EffectArea>();
+                    sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    sphere.name = "MMForceField";
+                    sphere.transform.position = pa.transform.position;
+                    sphere.transform.localScale = pa.transform.localScale;
+
+                    // https://forum.unity.com/threads/change-rendering-mode-via-script.476437/
+                    Material temp = sphere.GetComponent<Renderer>().material;
+
+                    // set a transparent color
+                    temp.color = new Color(0, 0, 0, 0.25f);
+
+                    // if you don't do this, it'll still be opaque.
+                    temp.SetOverrideTag("RenderType", "Transparent");
+                    temp.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                    temp.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                    temp.SetInt("_ZWrite", 0);
+                    temp.DisableKeyword("_ALPHATEST_ON");
+                    temp.EnableKeyword("_ALPHABLEND_ON");
+                    temp.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                    temp.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+
+                    SphereCollider sphereCollider = sphere.GetComponent<SphereCollider>();
+
+                    NoMonstersEffectArea = sphere.gameObject.AddComponent<EffectArea>();
 
                     NoMonstersEffectArea.name = Plugin.NoMonsterEffectAreaName;
 
@@ -163,7 +237,7 @@ namespace MofoMojo.MMGuardStoneMod
                     NoMonstersEffectArea.m_type = EffectArea.Type.None;
 
                     // you need a sphere collider attached to the EffectArea to define the radius
-                    SphereCollider sphereCollider = NoMonstersEffectArea.gameObject.AddComponent<SphereCollider>();
+                    //SphereCollider sphereCollider = NoMonstersEffectArea.gameObject.AddComponent<SphereCollider>();
 
                     // set this off by default if we're making it
                     sphereCollider.enabled = false;
@@ -175,29 +249,7 @@ namespace MofoMojo.MMGuardStoneMod
                     Plugin.Log("GetNoMonsterArea - adjusting radius of SphereCollider");
                     sphereCollider.radius = pa.m_radius;
 
-                    //added
-                    sphereCollider.material = null;
-
-                    /*
-                    try { 
-                        GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-
-                        Transform transform = sphere.GetComponent<Transform>();
-                        transform = sphereCollider.transform;
-                        
-                        Material mats = Resources.Load("ForceField.mat", typeof(Material)) as Material;
-                        if (null != mats) Plugin.Log("Loaded Forcefield Material");
-
-                        Renderer render = sphere.GetComponent<Renderer>();
-                        render.material = mats;
-
-
-                    }
-                    catch(Exception ex)
-                    {
-                        Plugin.LogError($"Problem loading material/mesh {ex}");
-                    }
-                    */
+                    m_NoMonsterSpheres.Add(sphere);
 
                 }
 
@@ -208,7 +260,7 @@ namespace MofoMojo.MMGuardStoneMod
                 Plugin.LogError($"AddNoMonsterArea - {ex.Message}");
             }
 
-            return NoMonstersEffectArea;
+            return sphere;
 
         }
 
@@ -216,37 +268,32 @@ namespace MofoMojo.MMGuardStoneMod
         private static void RemoveNoMonsterArea(PrivateArea pa)
         {
             Plugin.Log("RemoveNoMonsterArea");
-            EffectArea[] effectAreas = pa.GetComponents<EffectArea>();
+            GameObject[] spheres = null;
             EffectArea noMonstersArea = null;
-            foreach (EffectArea effectArea in effectAreas)
+
+            spheres = GetSpheresInRange(pa.transform.position, 1);
+
+            foreach(GameObject sphere in spheres)
             {
-                if (effectArea.name == Plugin.NoMonsterEffectAreaName)
+                noMonstersArea = sphere.GetComponent<EffectArea>();
+
+                if (null != noMonstersArea)
                 {
-                    Plugin.Log("RemoveNoMonsterArea - Found effect area");
-                    noMonstersArea = effectArea;
-                    break;
+                    // destroy the colliders
+                    SphereCollider[] colliders = noMonstersArea.GetComponents<SphereCollider>();
+                    for (int i = 0; i < colliders.Length; i++)
+                    {
+                        Plugin.Log("RemoveNoMonsterArea - Destroying SphereCollider");
+                        GameObject.Destroy(colliders[i]);
+                    }
+
+                    // destroy the object
+                    Plugin.Log("RemoveNoMonsterArea - Destroying EffectArea");
+                    GameObject.Destroy(noMonstersArea);
                 }
+                m_NoMonsterSpheres.Remove(sphere);
+                GameObject.Destroy(sphere);
             }
-
-
-            if (null != noMonstersArea)
-            {
-                // destroy the colliders
-                SphereCollider[] colliders = noMonstersArea.GetComponents<SphereCollider>();
-                for (int i = 0; i < colliders.Length; i++)
-                {
-                    Plugin.Log("RemoveNoMonsterArea - Destroying SphereCollider");
-                    GameObject.Destroy(colliders[i]);
-                }
-
-                // destroy the object
-                Plugin.Log("RemoveNoMonsterArea - Destroying EffectArea");
-                GameObject.Destroy(noMonstersArea);
-            }
-
-
-
-
         }
 
         [HarmonyPatch(typeof(PrivateArea), "Interact")]
@@ -372,7 +419,7 @@ namespace MofoMojo.MMGuardStoneMod
                 // if using the original interaction behavior then just return true and run the original code
                 if (Settings.WardInteractBehavior.Value == Plugin.WardInteractBehavior.Original) return true;
 
-                Plugin.LogVerbose("Executing Patched GetHoverText");
+                Plugin.LogDebug("Executing Patched GetHoverText");
                 if (!__instance.m_nview.IsValid())
                 {
                     __result = "";
@@ -430,7 +477,7 @@ namespace MofoMojo.MMGuardStoneMod
                 }
                 __instance.AddUserList(stringBuilder);
                 __result = Localization.instance.Localize(stringBuilder.ToString());
-                Plugin.LogVerbose($"Result {__result}");
+                Plugin.LogDebug($"Result {__result}");
                 return false;
             }
         }
