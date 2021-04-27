@@ -57,7 +57,8 @@ namespace MofoMojo.MMGuardStoneMod
                     Plugin.Log("sphere adjusted");
                     sphere.radius = radius;
                     sphere.isTrigger = true;
-                    sphere.material = null;
+                    sphere.enabled = pa.IsEnabled();
+                    sphere.name = Plugin.SphereColliderName;
                 }
             }
 
@@ -106,6 +107,12 @@ namespace MofoMojo.MMGuardStoneMod
             Plugin.Log($"SetNoMonsterArea called: {enabled}");
 
             SphereCollider sphere = GetAForceFieldForPrivateArea(pa);
+
+            if(null == sphere)
+            {
+                return;
+            }
+
             EffectArea NoMonsters = sphere.GetComponent<EffectArea>();
 
             if (null != NoMonsters)
@@ -119,7 +126,8 @@ namespace MofoMojo.MMGuardStoneMod
                 if(enabled)
                 {
                     NoMonsters.enabled = enabled;
-                    
+                    NoMonsters.m_type = enabled ? (EffectArea.Type.NoMonsters | EffectArea.Type.PlayerBase) : EffectArea.Type.None;
+
                     // layer modelled after the ForceField in the Vendor_BlackForest scene.
                     NoMonsters.gameObject.layer = 14;
                     SphereCollider collider = NoMonsters.GetComponent<SphereCollider>();
@@ -127,18 +135,18 @@ namespace MofoMojo.MMGuardStoneMod
                     {
                         collider.enabled = enabled;
                         collider.radius = pa.m_radius;
+                        collider.name = Plugin.SphereColliderName;
                     }
                 }
                 else
                 {
                     RemoveForceFieldForPrivateArea(pa);
                 }
-                NoMonsters.m_type = enabled ? (EffectArea.Type.NoMonsters | EffectArea.Type.PlayerBase) : EffectArea.Type.None;
+                
             }
 
         }
-
-        private static SphereCollider[] GetForceFieldsInRange(Vector3 point, float radius)
+        private static List<SphereCollider> GetForceFieldsInRange(Vector3 point, float radius)
         {
             List<SphereCollider> forceFields = new List<SphereCollider>();
 
@@ -154,14 +162,19 @@ namespace MofoMojo.MMGuardStoneMod
                 }
             }
 
-            return forceFields.ToArray();
+            return forceFields;
         }
 
         private static SphereCollider GetForceFieldInRange(Vector3 point, float radius)
         {
-            SphereCollider[] forcefields = GetForceFieldsInRange(point, radius);
-            
-            if (forcefields.Length > 0) return forcefields[0];
+            Plugin.Log("GetForceFieldInRange called");
+            List<SphereCollider> forcefields = GetForceFieldsInRange(point, radius);
+
+            if (forcefields.Count > 0)
+            {
+                Plugin.Log("GetForceFieldInRange returning forcefield");
+                return forcefields[0];
+            }
             
             return null;
         }
@@ -176,11 +189,13 @@ namespace MofoMojo.MMGuardStoneMod
                 forceField = GetForceFieldInRange(pa.transform.position, 2);
 
                 // if we didn't find one, make one
-                if (null == forceField)
+                if (null == forceField && pa.IsEnabled())
                 {
-                    Plugin.Log("GetAForceFieldForPrivateArea Creating ForceField");
+                    Plugin.Log("GetAForceFieldForPrivateArea - forcefield not found but PA is active and enabled. Creating ForceField");
                     forceField = CreateForceField(pa.transform.position, pa.m_radius);
+                    forceField.enabled = pa.IsEnabled();
                 }
+
             }
             catch (Exception ex)
             {
@@ -193,12 +208,11 @@ namespace MofoMojo.MMGuardStoneMod
 
         private static SphereCollider CreateForceField(Vector3 location, float radius)
         {
-            GameObject forceField = null;
-
-            EffectArea NoMonstersEffectArea = null;
+            GameObject forceField;
+            EffectArea NoMonstersEffectArea;
 
             forceField = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            forceField.name = "MMForceField";
+            forceField.name = Plugin.SphereColliderName;
             forceField.transform.position = location;
 
             // https://forum.unity.com/threads/change-rendering-mode-via-script.476437/
@@ -218,7 +232,7 @@ namespace MofoMojo.MMGuardStoneMod
             sphereMaterial.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
 
             SphereCollider sphereCollider = forceField.GetComponent<SphereCollider>();
-            sphereCollider.name = "MMForceField";
+            sphereCollider.name = Plugin.SphereColliderName;
 
             // set the radius to the radius of the private area
             Plugin.Log("GetNoMonsterArea - adjusting radius of SphereCollider");
@@ -230,6 +244,8 @@ namespace MofoMojo.MMGuardStoneMod
 
             // initialize this with no affect at first...
             NoMonstersEffectArea.m_type = EffectArea.Type.None;
+
+            NoMonstersEffectArea.enabled = false;
 
             // set this off by default if we're making it
             sphereCollider.enabled = false;
@@ -244,7 +260,7 @@ namespace MofoMojo.MMGuardStoneMod
         private static void RemoveForceFieldForPrivateArea(PrivateArea pa)
         {
             Plugin.Log("RemoveForceFieldForPrivateArea");
-            SphereCollider[] forceFields = GetForceFieldsInRange(pa.transform.position, 2);
+            List<SphereCollider> forceFields = GetForceFieldsInRange(pa.transform.position, 2);
 
             foreach(SphereCollider forceField in forceFields)
             {
@@ -403,6 +419,7 @@ namespace MofoMojo.MMGuardStoneMod
                     __result = "";
                     return false;
                 }
+
                 __instance.ShowAreaMarker();
                 StringBuilder stringBuilder = new StringBuilder(256);
 
@@ -422,11 +439,11 @@ namespace MofoMojo.MMGuardStoneMod
                         stringBuilder.Append("\n[<color=yellow><b>$KEY_Use</b></color>] $piece_guardstone_activate");
                         if (Settings.WardInteractBehavior.Value != Plugin.WardInteractBehavior.OwnerOnly)
                         {
-                            if(__instance.IsPermitted(Player.m_localPlayer.GetPlayerID()))
+                            if(__instance.IsPermitted(Player.m_localPlayer.GetPlayerID()) && !__instance.m_piece.IsCreator())
                             {
-                                stringBuilder.Append("\n[<color=yellow><b>" + Settings.InteractModifier.Value.ToString() + " - $KEY_Use</b></color>] $piece_guardstone_remove");
+                                  stringBuilder.Append("\n[<color=yellow><b>" + Settings.InteractModifier.Value.ToString() + " - $KEY_Use</b></color>] $piece_guardstone_remove");
                             }
-                            else
+                            else if (!__instance.m_piece.IsCreator())
                             {
                                 stringBuilder.Append("\n[<color=yellow><b>" + Settings.InteractModifier.Value.ToString() + " - $KEY_Use</b></color>] $piece_guardstone_add");
                             }

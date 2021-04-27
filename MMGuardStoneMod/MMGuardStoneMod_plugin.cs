@@ -14,6 +14,7 @@ namespace MofoMojo.MMGuardStoneMod
         public const string Version = "1.0";
         public const string ModName = "MMGuardStoneMod";
         public const string NoMonsterEffectAreaName = "NoMonsterArea";
+        public const string SphereColliderName = "MMForceField";
         public static Material ForceField = null;
 
         Harmony _Harmony;
@@ -101,7 +102,7 @@ namespace MofoMojo.MMGuardStoneMod
         {
             PluginLoggingLevel = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.LoggingLevel>("LoggingLevel", "PluginLoggingLevel", Plugin.LoggingLevel.None, "Supported values are None, Normal, Verbose");
             MMGuardStoneModEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMGuardStoneMod", "MMGuardStoneModEnabled", true, "Enables MMGuardStoneMod mod");
-            GuardStoneRadius = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("MMGuardStoneMod", "GuardStoneRadius", 32f, "Sets the GuardStone radius");
+            GuardStoneRadius = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("MMGuardStoneMod", "GuardStoneRadius", 16f, "Sets the GuardStone radius");
             InteractModifier = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<KeyCode>("MMGuardStoneMod", "InteractModifier", KeyCode.LeftShift, "Sets the interact modifier for players to add themselves to permitted list");
             WardInteractBehavior = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.WardInteractBehavior>("MMGuardStoneMod", "WardInteractBehavior", Plugin.WardInteractBehavior.All, "Controls the interaction behavior of the Wards. Must be the same between client and server");
             WardBehavior = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.WardBehavior>("MMGuardStoneMod", "WardBehavior", Plugin.WardBehavior.NoMonsters, "Controls the behavior of the Wards. Must be the same between client and server");
