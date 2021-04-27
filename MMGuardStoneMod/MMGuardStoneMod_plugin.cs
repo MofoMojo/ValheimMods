@@ -11,7 +11,7 @@ namespace MofoMojo.MMGuardStoneMod
     [BepInPlugin("MofoMojo.MMGuardStoneMod", Plugin.ModName, Plugin.Version)]
     public class Plugin : BaseUnityPlugin
     {
-        public const string Version = "1.0";
+        public const string Version = "1.1";
         public const string ModName = "MMGuardStoneMod";
         public const string NoMonsterEffectAreaName = "NoMonsterArea";
         public const string SphereColliderName = "MMForceField";
