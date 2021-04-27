@@ -34,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMPlantingPositive", "MMPla
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMRandomSpawnPoint", "MMRandomSpawnPoint\MMRandomSpawnPoint.csproj", "{D3EEA594-BA1C-4CDB-8FE2-5168AC9BB73F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMDropItemOnCameraDirection", "MMDropItemOnCameraDirection\MMDropItemOnCameraDirection.csproj", "{5FC7508A-6BB4-40DA-8701-7B0D002DDAE5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -88,6 +90,10 @@ Global
 		{D3EEA594-BA1C-4CDB-8FE2-5168AC9BB73F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3EEA594-BA1C-4CDB-8FE2-5168AC9BB73F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3EEA594-BA1C-4CDB-8FE2-5168AC9BB73F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FC7508A-6BB4-40DA-8701-7B0D002DDAE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FC7508A-6BB4-40DA-8701-7B0D002DDAE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FC7508A-6BB4-40DA-8701-7B0D002DDAE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FC7508A-6BB4-40DA-8701-7B0D002DDAE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
