@@ -12,7 +12,7 @@ namespace MofoMojo.MMServerMessages
     public class Plugin : BaseUnityPlugin
     {
         public static string previousMotd = string.Empty;
-        public const string Version = "1.1";
+        public const string Version = "1.2";
         public const string ModName = "MMServerMessages";
         public static Plugin Instance;
         public static LoggingLevel PluginLoggingLevel = LoggingLevel.None;
