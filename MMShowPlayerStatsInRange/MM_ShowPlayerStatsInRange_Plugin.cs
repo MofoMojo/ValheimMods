@@ -11,7 +11,9 @@ namespace MofoMojo.MMShowPlayerStatsInRange
     [BepInPlugin("MofoMojo.MMShowPlayerStatsInRange", Plugin.ModName, Plugin.Version)]
     public class Plugin : BaseUnityPlugin
     {
-        public const string Version = "1.0";
+        public const string Version = "1.1";
+        // 1.1 Minimized "Normal" logging
+
         public const string ModName = "Show PlayerStats In Range";
         Harmony _Harmony;
         public static bool IsDebug = false;
@@ -293,7 +295,7 @@ namespace MofoMojo.MMShowPlayerStatsInRange
 
                         // set monitor level based on most critical
                         monitorLevel = (healthLevel == healthPercentageLevel) ? healthLevel : (healthLevel > healthPercentageLevel ? healthLevel : healthPercentageLevel);
-                        Plugin.Log($"Player: {nearbyPlayer.GetPlayerName()}, HealthLevel: {healthLevel}, HealthPercentageLevel: {healthPercentageLevel}, MonitorLevel: {monitorLevel}");
+                        Plugin.LogVerbose($"Player: {nearbyPlayer.GetPlayerName()}, HealthLevel: {healthLevel}, HealthPercentageLevel: {healthPercentageLevel}, MonitorLevel: {monitorLevel}");
 
                         // do color logic here
                         switch (monitorLevel)
