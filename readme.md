@@ -2,29 +2,38 @@
 
 ##Releases
 ###ExploreOnShipRadius
-https://mofomojo.visualstudio.com/_git/MofoMojoValheimMods?path=%2FMMExploreOnShipRadius%2Fbin%2FRelease
+https://github.com/MofoMojo/ValheimMods/tree/master/MMExploreOnShipRadius/bin/Release
 
 ###PlayerMiniMapMod
-https://mofomojo.visualstudio.com/_git/MofoMojoValheimMods?path=%2FMMPlayerMiniMapMod%2Fbin%2FRelease
+https://github.com/MofoMojo/ValheimMods/tree/master/MMPlayerMiniMapMod/bin/Release
 
 ###ShowPlayerStatsInRange 
-https://mofomojo.visualstudio.com/_git/MofoMojoValheimMods?path=%2FMMShowPlayerStatsInRange%2Fbin%2FRelease
+https://github.com/MofoMojo/ValheimMods/tree/master/MMShowPlayerStatsInRange/bin/Release
 
 ###Wishbone tweak
-https://mofomojo.visualstudio.com/_git/MofoMojoValheimMods?path=%2FMMWishboneTweak%2Fbin%2FRelease
+https://github.com/MofoMojo/ValheimMods/tree/master/MMWishboneTweak/bin/Release
 
 ###Personal tweaks
-https://mofomojo.visualstudio.com/_git/MofoMojoValheimMods?path=%2FMMPersonalTweaks%2Fbin%2FRelease
+https://github.com/MofoMojo/ValheimMods/tree/master/MMPersonalTweaks/bin/Release
 
 ###GuardStone Tweaks
-https://mofomojo.visualstudio.com/_git/MofoMojoValheimMods?path=%2FMMGuardStoneMod%2Fbin%2FRelease
-**Experimental - Creates a no monsters area with wards, but works a little sloppy on servers due to client/server behavior for AI/Spawns**
+https://github.com/MofoMojo/ValheimMods/tree/master/MMGuardStoneMod/bin/Release
+**Experimental - Creates a no monsters area with wards, but works a little sloppy on servers due to client/server behavior 
 
 ###MM's Prayers for Rain Mod
-https://mofomojo.visualstudio.com/MofoMojoValheimMods/_git/MofoMojoValheimMods?path=%2FMMWeatherMod%2Fbin%2FRelease
+https://github.com/MofoMojo/ValheimMods/tree/master/MMWeatherMod/bin/Release
 
 ###MM's Random First Spawn Start Position
-https://mofomojo.visualstudio.com/MofoMojoValheimMods/_git/MofoMojoValheimMods.Experimental?path=%2FMMRandomStartPosition%2Fbin%2FRelease
+https://github.com/MofoMojo/ValheimMods/tree/master/MMRandomSpawnPoint/bin/Release
+
+###MM's Drop Item using Camera Direction
+https://github.com/MofoMojo/ValheimMods/tree/master/MMDropItemOnCameraDirection/bin/Release
+
+###MM's Personal Recipe Tweaks
+https://github.com/MofoMojo/ValheimMods/tree/master/MMRecipeTweaks/bin/Release
+
+###MM's Personal Server Messages
+https://github.com/MofoMojo/ValheimMods/tree/master/MMServerMessages/bin/Release
 
 #Details
 ##MMRandomStartPosition
@@ -45,6 +54,8 @@ FishingRodRecipe requires Wood and LinenThread. Yes, this is fairly late game an
 * Chains requires 4 iron
 * LoxMeatSurprise requires CarrotSoup and LoxPie
 * BronzeTweak gives you 3 bronze for 1 tin and 2 copper, or 15 for 5 tin and 10 copper
+* Convert 3 LeatherScraps into 1 DeerHide
+* Convert 1 DeerHide into 3 LeatherScraps
 
 ##ShowPlayerStatsInRange 
 PlayerStats will show health data for all nearby players within a given range of you. It allows you to configure various health and healthpercentage levels with customizable levels of criticality. As for coloring, the most critical level wins. In other words, if your health is considered critical, but your health percentage is Medium, then stats are colored with critical coloring. if your health percentage is critical, but your health level indicates it should be normal then the coloring will be critical.
@@ -104,3 +115,12 @@ In a Server/Client relationship the server must also have the mod and it's recom
 Use the values here: https://docs.unity3d.com/ScriptReference/KeyCode.html to determine what can be used/specified as a toggle key
 
 **Note: The default settings are the settings that I use**
+
+## Useful Tutorial and other Sites
+https://valheim-modding.github.io/Jotunn/home/tutorials/overview.html
+https://www.youtube.com/watch?v=p_gsFASlvRw - The video that started this adventure for me
+https://harmony.pardeike.net/ - Harmony Documentation
+https://github.com/Valheim-Modding/Wiki/wiki - Valheim modding
+https://jotunnlib.github.io/jotunnlib/conceptual/prefabs/prefab-list.html
+https://morevalheim.com/
+https://github.com/Valheim-Modding/Wiki/wiki/Valheim-Unity-Project-Guide
