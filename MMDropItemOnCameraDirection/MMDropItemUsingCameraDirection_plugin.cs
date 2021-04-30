@@ -9,7 +9,7 @@ namespace MofoMojo.MMDropItemUsingCameraDirection
     [BepInPlugin("MofoMojo.MMDropItemUsingCameraDirection", Plugin.ModName, Plugin.Version)]
     public class Plugin : BaseUnityPlugin
     {
-        public const string Version = "1.0";
+        public const string Version = "1.1";
         public const int nexusId = 1101;
         public const string ModName = "MMDropItemUsingCameraDirection";
         Harmony _Harmony;
@@ -21,6 +21,13 @@ namespace MofoMojo.MMDropItemUsingCameraDirection
             Normal,
             Verbose,
             Debug
+        }
+
+        public enum DropModifierBehavior
+        {
+            None,
+            CameraDirection,
+            CharacterFacing
         }
 
         private void Awake()
@@ -75,13 +82,17 @@ namespace MofoMojo.MMDropItemUsingCameraDirection
         public static ConfigEntry<int> nexusId;
         public static ConfigEntry<bool> MMDropItemUsingCameraDirection;
         public static ConfigEntry<Plugin.LoggingLevel> PluginLoggingLevel;
+        public static ConfigEntry<Plugin.DropModifierBehavior> DropModifierBehavior;
+        public static ConfigEntry<KeyCode> DropModifierKey;
 
-        
+
         public static void Init()
         {
             MMDropItemUsingCameraDirection = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("MMDropItemUsingCameraDirection", "MMDropItemUsingCameraDirection", true, "Enables MMDropItemUsingCameraDirection mod");
             PluginLoggingLevel = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.LoggingLevel>("LoggingLevel", "PluginLoggingLevel", Plugin.LoggingLevel.None, "Supported values are None, Normal, Verbose");
             nexusId = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("General", "NexusID", 1101, "Nexus mod ID for updates. Do not modify.");
+            DropModifierBehavior = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.DropModifierBehavior>("MMDropItemUsingCameraDirection", "DropModifierBehavior", Plugin.DropModifierBehavior.None, "Specify to use a modifier for drop behavior, and whether modififier applies to Camera Dropping or Character Dropping");
+            DropModifierKey = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<KeyCode>("MMDropItemUsingCameraDirection", "DropModifierKey", KeyCode.LeftShift, "Specify to use a modifier for drop behavior, and whether the modififier applies to Camera Dropping or Character Dropping");
         }
 
     }
@@ -105,6 +116,13 @@ namespace MofoMojo.MMDropItemUsingCameraDirection
             // return and run the original if disabled or if this is not the player
             if (!Settings.MMDropItemUsingCameraDirection.Value || !__instance.IsPlayer()) return true;
 
+            // run the original code if the player has chosen to use Character Facing modifier and the modifier key is being held
+            if (Settings.DropModifierBehavior.Value == Plugin.DropModifierBehavior.CharacterFacing && UtilityClass.CheckKeyHeld(Settings.DropModifierKey.Value)) return true;
+
+            // run the original code if the player has chosen to use Camera Facing modifier and the modifier key is NOT being held
+            if (Settings.DropModifierBehavior.Value == Plugin.DropModifierBehavior.CameraDirection && !UtilityClass.CheckKeyHeld(Settings.DropModifierKey.Value)) return true;
+
+            // run the updated code...
             if (amount == 0)
             {
                 __result = false;
@@ -135,6 +153,7 @@ namespace MofoMojo.MMDropItemUsingCameraDirection
             if (amount == item.m_stack)
             {
                 ZLog.Log((object)("drop all " + amount + "  " + item.m_stack));
+                Plugin.LogVerbose("drop all " + amount + "  " + item.m_stack);
                 if (!inventory.RemoveItem(item))
                 {
                     ZLog.Log((object)"Was not removed");
@@ -145,6 +164,7 @@ namespace MofoMojo.MMDropItemUsingCameraDirection
             else
             {
                 ZLog.Log((object)("drop some " + amount + "  " + item.m_stack));
+                Plugin.Log("drop some " + amount + "  " + item.m_stack);
                 inventory.RemoveItem(item, amount);
             }
 

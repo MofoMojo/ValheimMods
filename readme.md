@@ -103,9 +103,8 @@ Ward Behavior allows you to configure additional behaviors
 #### Original
 Does not change the behavior of a ward
 #### NoMonsters
-Creates a NoMonsters EffectArea attached to the ward. You cannot build when the ward is active. 
-No monsters should spawn in the NoMonster EffectArea however any monsters in the radius, when activated, will STAY in the sphere and won't leave.
-This ONLY prevents monsters from targetting something inside the area from outside the area, and thus they won't move into it, however swarms of monsters will PUSH others into the area and once in, they will not leave.
+Creates a NoMonsters EffectArea attached to the ward. 
+No monsters should spawn in the NoMonster EffectArea and as of the latest implementation, should be able to enter and leave the NoMonster area but will not be able to target anything in the area. 
 
 **Note:**
 In a Server/Client relationship the server must also have the mod and it's recommended that all clients have the same settings due to behavior of spawns and client/server relationships.

@@ -7,3 +7,8 @@ C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMShowPlayerStatsIn
 C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMShowPlayerStatsInRange\obj\Debug\MofoMojo.MMShowPlayerStatsInRange.dll
 C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMShowPlayerStatsInRange\obj\Debug\MofoMojo.MMShowPlayerStatsInRange.pdb
 C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMShowPlayerStatsInRange\obj\Debug\MMShowPlayerStatsInRange.csprojAssemblyReference.cache
+C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMShowPlayerStatsInRange\bin\Debug\MofoMojo.MMShowPlayerStatsInRange.dll
+C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMShowPlayerStatsInRange\bin\Debug\MofoMojo.MMShowPlayerStatsInRange.pdb
+C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMShowPlayerStatsInRange\obj\Debug\MMShowPlayerStatsInRange.csprojAssemblyReference.cache
+C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMShowPlayerStatsInRange\obj\Debug\MofoMojo.MMShowPlayerStatsInRange.dll
+C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMShowPlayerStatsInRange\obj\Debug\MofoMojo.MMShowPlayerStatsInRange.pdb
