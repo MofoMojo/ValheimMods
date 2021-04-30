@@ -7,3 +7,7 @@ C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMWishboneTweak\bin
 C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMWishboneTweak\obj\Debug\MofoMojo.MMWishboneTweak.dll
 C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMWishboneTweak\obj\Debug\MofoMojo.MMWishboneTweak.pdb
 C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMWishboneTweak\obj\Debug\MMWishboneTweak.csprojAssemblyReference.cache
+C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMWishboneTweak\bin\Debug\MofoMojo.MMWishboneTweak.dll
+C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMWishboneTweak\bin\Debug\MofoMojo.MMWishboneTweak.pdb
+C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMWishboneTweak\obj\Debug\MofoMojo.MMWishboneTweak.dll
+C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMWishboneTweak\obj\Debug\MofoMojo.MMWishboneTweak.pdb

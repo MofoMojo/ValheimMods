@@ -68,8 +68,7 @@ namespace MofoMojo.MMPersonalTweaks
         public static ConfigEntry<bool> FeatherMultiplierEnabled;
         public static ConfigEntry<bool> FishingInOceanMultiplierEnabled;
         public static ConfigEntry<bool> RememberLastConnectedIpEnabled;
-        public static ConfigEntry<bool> DropBasedOnCameraDirection;
-        public static ConfigEntry<string> LastConnectedIP;
+         public static ConfigEntry<string> LastConnectedIP;
         public static ConfigEntry<Plugin.LoggingLevel> PluginLoggingLevel;
 
         // These are the settings that will be saved in the ..\plugins\mofomojo.cfg file
@@ -80,7 +79,6 @@ namespace MofoMojo.MMPersonalTweaks
             RememberLastConnectedIpEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Tweaks", "RememberLastConnectedIpEnabled", true, "Remember the last server/ip address connected - not implemented yet");
             LastConnectedIP = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<string>("Tweaks", "LastConnectedIP", "", "This is the last connect string (used for storage)");
             PluginLoggingLevel = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<Plugin.LoggingLevel>("LoggingLevel", "PluginLoggingLevel", Plugin.LoggingLevel.None, "Supported values are None, Normal, Verbose");
-            DropBasedOnCameraDirection = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Tweaks", "DropBasedOnCameraDirection", true, "Items drop in the direction that the camera is facing, not the character");
         }
 
     }
