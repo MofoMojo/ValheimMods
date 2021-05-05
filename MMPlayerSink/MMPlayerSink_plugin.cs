@@ -28,6 +28,7 @@ namespace MofoMojo.MMPlayerSink
         public static ConfigEntry<bool> Enabled;
         public static ConfigEntry<LoggingLevel> PluginLoggingLevel;
         public static bool isSunk = false;
+        public static bool wasSwimming = false;
 
         private void Awake()
         {
@@ -103,15 +104,21 @@ namespace MofoMojo.MMPlayerSink
                     // this places a downward force on the player body
                     // https://docs.unity3d.com/ScriptReference/ForceMode.html
                     player.m_body.AddForceAtPosition(Vector3.down, base.transform.position, ForceMode.VelocityChange);
+                    wasSwimming = true;
                 }
             }
             else
             {
                 // reset the camera min distance back to 0.3f
-                if (null != GameCamera.instance)
+                if (wasSwimming)
                 {
-                    GameCamera.instance.m_minWaterDistance = 0.3f;
+                    if (null != GameCamera.instance)
+                    {
+                        GameCamera.instance.m_minWaterDistance = 0.3f;
+                        wasSwimming = false;
+                    }
                 }
+
             }
         }
 
