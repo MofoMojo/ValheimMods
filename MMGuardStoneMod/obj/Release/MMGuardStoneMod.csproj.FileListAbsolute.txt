@@ -10,3 +10,7 @@ C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMGuardStoneMod\bin
 C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMGuardStoneMod\bin\Release\MofoMojo.MMGuardStoneMod.pdb
 C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMGuardStoneMod\obj\Release\MofoMojo.MMGuardStoneMod.dll
 C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMGuardStoneMod\obj\Release\MofoMojo.MMGuardStoneMod.pdb
+C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMGuardStoneMod\bin\Release\MofoMojo.MMGuardStoneMod.dll
+C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMGuardStoneMod\bin\Release\MofoMojo.MMGuardStoneMod.pdb
+C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMGuardStoneMod\obj\Release\MofoMojo.MMGuardStoneMod.dll
+C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMGuardStoneMod\obj\Release\MofoMojo.MMGuardStoneMod.pdb

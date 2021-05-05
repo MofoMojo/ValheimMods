@@ -8,6 +8,5 @@ C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMGuardStoneMod\obj
 C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMGuardStoneMod\obj\Debug\MofoMojo.MMGuardStoneMod.pdb
 C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMGuardStoneMod\bin\Debug\MofoMojo.MMGuardStoneMod.dll
 C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMGuardStoneMod\bin\Debug\MofoMojo.MMGuardStoneMod.pdb
-C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMGuardStoneMod\obj\Debug\MMGuardStoneMod.csprojAssemblyReference.cache
 C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMGuardStoneMod\obj\Debug\MofoMojo.MMGuardStoneMod.dll
 C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMGuardStoneMod\obj\Debug\MofoMojo.MMGuardStoneMod.pdb

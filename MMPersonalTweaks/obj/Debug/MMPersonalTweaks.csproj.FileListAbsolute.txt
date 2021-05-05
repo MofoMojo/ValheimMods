@@ -9,6 +9,6 @@ C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMPersonalTweaks\ob
 C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMPersonalTweaks\obj\Debug\MMPersonalTweaks.csprojAssemblyReference.cache
 C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMPersonalTweaks\bin\Debug\MofoMojo.MMPersonalTweaks.dll
 C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMPersonalTweaks\bin\Debug\MofoMojo.MMPersonalTweaks.pdb
-C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMPersonalTweaks\obj\Debug\MMPersonalTweaks.csprojAssemblyReference.cache
 C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMPersonalTweaks\obj\Debug\MofoMojo.MMPersonalTweaks.dll
 C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMPersonalTweaks\obj\Debug\MofoMojo.MMPersonalTweaks.pdb
+C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMPersonalTweaks\obj\Debug\MMPersonalTweaks.csprojAssemblyReference.cache

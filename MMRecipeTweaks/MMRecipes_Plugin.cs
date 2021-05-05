@@ -16,7 +16,7 @@ namespace MofoMojo.MMRecipeTweaks
     [BepInDependency("com.bepinex.plugins.jotunnlib")]
     public class Plugin : BaseUnityPlugin
     {
-        public const string Version = "1.1";
+        public const string Version = "1.2";
         public const string ModName = "MMRecipeTweaks";
         Harmony _Harmony;
         public static Plugin Instance;
@@ -76,14 +76,14 @@ namespace MofoMojo.MMRecipeTweaks
         #region BronzeTweak
         // Modify the Awake method of ObjectDB
         [HarmonyPatch(typeof(ObjectDB), "Awake")]
-        private static class MMEnableBronzeTweak
+        private static class MMRecipeTweaks
         {
             // check to see if it's enabled and if not, it won't patch for this mod
             [HarmonyPrepare]
             static bool IsRemeberLastConnectedIpEnabled()
             {
-                bool enabled = Settings.BronzeTweakEnabled.Value;
-                Plugin.Log($"EnableBronzeTweak: {enabled}");
+                bool enabled = Settings.BronzeTweakEnabled.Value || Settings.TurnipStewTweakEnabled.Value;
+                Plugin.Log($"MMRecipeTweaks: {enabled}");
 
                 return enabled;
             }
@@ -98,15 +98,26 @@ namespace MofoMojo.MMRecipeTweaks
                     //Plugin.Log($"Looking at {recipe.name}");
 
                     // Plugin.Log($"Checking {recipe.name}");
-                    if (recipe.name == "Recipe_Bronze")
+                    switch(recipe.name)
                     {
-                        // Plugin.Log($"Patching {recipe.name}");
-                        recipe.m_amount = 3;
-                    }
-                    else if (recipe.name == "Recipe_Bronze5")
-                    {
-                        //Plugin.Log($"Patching {recipe.name}");
-                        recipe.m_amount = 15;
+                        case "Recipe_Bronze":
+                            if(Settings.BronzeTweakEnabled.Value)
+                            {
+                                recipe.m_amount = 3;
+                            }
+                            break;
+                        case "Recipe_Bronze5":
+                            if (Settings.BronzeTweakEnabled.Value)
+                            {
+                                recipe.m_amount = 15;
+                            }
+                            break;
+                        case "Recipe_TurnipStew":
+                            if (Settings.TurnipStewTweakEnabled.Value)
+                            {
+                                recipe.m_amount = 4;
+                            }
+                            break;
                     }
                 }
             }
@@ -356,6 +367,7 @@ namespace MofoMojo.MMRecipeTweaks
         public static ConfigEntry<bool> BronzeTweakEnabled;
         public static ConfigEntry<bool> LeatherScrapsRecipeEnabled;
         public static ConfigEntry<bool> LeatherRecipeEnabled;
+        public static ConfigEntry<bool> TurnipStewTweakEnabled;
         public static ConfigEntry<Plugin.LoggingLevel> PluginLoggingLevel;
         // These are the settings that will be saved in the ..\plugins\mofomojo.cfg file
         public static void Init()
@@ -369,6 +381,7 @@ namespace MofoMojo.MMRecipeTweaks
             LoxMeatSurpriseRecipeEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "LoxMeatSurpriseRecipeEnabled", true, "Enables a recipe and item for Lox Meat Surprise");
             ChainsRecipeEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "ChainsRecipeEnabled", true, "Enables a recipe for making chains (4 Iron = 1 chain)");
             BronzeTweakEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "BronzeTweakEnabled", true, "Changes Bronze Recipe from 2 copper+1 tin = 1 bronze to 2+1=3 (and the x5 recipe too)");
+            TurnipStewTweakEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "TurnipStewTweakEnabled", true, "You get 4 TurnipStew for your efforts to cook");
         }
 
     }
