@@ -11,4 +11,3 @@ C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMExploreOnShipRadius\bin\Debug
 C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMExploreOnShipRadius\bin\Debug\MofoMojo.MMExploreOnShipRadius.pdb
 C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMExploreOnShipRadius\obj\Debug\MofoMojo.MMExploreOnShipRadius.dll
 C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMExploreOnShipRadius\obj\Debug\MofoMojo.MMExploreOnShipRadius.pdb
-C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMExploreOnShipRadius\obj\Debug\MMExplorationTweaks.csprojAssemblyReference.cache

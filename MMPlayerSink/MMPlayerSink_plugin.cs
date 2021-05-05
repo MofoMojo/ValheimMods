@@ -108,7 +108,10 @@ namespace MofoMojo.MMPlayerSink
             else
             {
                 // reset the camera min distance back to 0.3f
-                GameCamera.instance.m_minWaterDistance = 0.3f;
+                if (null != GameCamera.instance)
+                {
+                    GameCamera.instance.m_minWaterDistance = 0.3f;
+                }
             }
         }
 
