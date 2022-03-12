@@ -11,3 +11,9 @@ C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMGuardStoneMod\bin\Debug\MofoM
 C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMGuardStoneMod\obj\Debug\MMGuardStoneMod.csprojAssemblyReference.cache
 C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMGuardStoneMod\obj\Debug\MofoMojo.MMGuardStoneMod.dll
 C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMGuardStoneMod\obj\Debug\MofoMojo.MMGuardStoneMod.pdb
+F:\Source\Repos\ValheimMods\MMGuardStoneMod\bin\Debug\MofoMojo.MMGuardStoneMod.dll
+F:\Source\Repos\ValheimMods\MMGuardStoneMod\bin\Debug\MofoMojo.MMGuardStoneMod.pdb
+F:\Source\Repos\ValheimMods\MMGuardStoneMod\obj\Debug\MMGuardStoneMod.csproj.AssemblyReference.cache
+F:\Source\Repos\ValheimMods\MMGuardStoneMod\obj\Debug\MMGuardStoneMod.csproj.CoreCompileInputs.cache
+F:\Source\Repos\ValheimMods\MMGuardStoneMod\obj\Debug\MofoMojo.MMGuardStoneMod.dll
+F:\Source\Repos\ValheimMods\MMGuardStoneMod\obj\Debug\MofoMojo.MMGuardStoneMod.pdb

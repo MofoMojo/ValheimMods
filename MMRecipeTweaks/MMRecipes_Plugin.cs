@@ -1,10 +1,10 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
-using JotunnLib.Entities;
-using JotunnLib.Managers;
+using Jotunn.Configs;
+using Jotunn.Entities;
+using Jotunn.Managers;
 using System.Reflection;
-using System;
 using UnityEngine;
 
 
@@ -12,14 +12,16 @@ using UnityEngine;
 
 namespace MofoMojo.MMRecipeTweaks
 {
-    [BepInPlugin("MofoMojo.MMRecipeTweaks", Plugin.ModName, Plugin.Version)]
-    [BepInDependency("com.bepinex.plugins.jotunnlib")]
-    public class Plugin : BaseUnityPlugin
+    [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
+    [BepInDependency(Jotunn.Main.ModGuid)]
+    //[NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.Minor)]
+    internal class Plugin : BaseUnityPlugin
     {
-        public const string Version = "1.1";
-        public const string ModName = "MMRecipeTweaks";
-        Harmony _Harmony;
+        public const string PluginGUID = "MofoMojo.MMRecipeTweaks";
+        public const string PluginName = "MMRecipeTweaks";
+        public const string PluginVersion = "2.0";
         public static Plugin Instance;
+        Harmony _Harmony;
 
         public static LoggingLevel PluginLoggingLevel = LoggingLevel.None;
         public enum LoggingLevel
@@ -29,18 +31,29 @@ namespace MofoMojo.MMRecipeTweaks
             Verbose
         }
 
+        // Use this class to add your own localization to the game
+        // https://valheim-modding.github.io/Jotunn/tutorials/localization.html
+        public static CustomLocalization Localization = LocalizationManager.Instance.GetLocalization();
+
         private void Awake()
         {
             Instance = this;
             Settings.Init();
             PluginLoggingLevel = Settings.PluginLoggingLevel.Value;
+
+            // Jotunn comes with MonoMod Detours enabled for hooking Valheim's code
+            // https://github.com/MonoMod/MonoMod
+            On.FejdStartup.Awake += FejdStartup_Awake;
+
+            // Jotunn comes with its own Logger class to provide a consistent Log style for all mods using it
+            Jotunn.Logger.LogInfo("MMRecipeTweaks2 has landed");
+
+            // To learn more about Jotunn's features, go to
+            // https://valheim-modding.github.io/Jotunn/tutorials/overview.html
+            AddRecipes();
+
             _Harmony = Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), null);
 
-            // Register Prefabs First
-            PrefabManager.Instance.PrefabRegister += registerPrefabs;
-
-            // Register Objects that use Prefabs after
-            ObjectManager.Instance.ObjectRegister += registerObjects;
 
         }
 
@@ -51,86 +64,206 @@ namespace MofoMojo.MMRecipeTweaks
 
         public static void Log(string message)
         {
-            message = $"{ModName}: {message}";
+            message = $"{PluginName}: {message}";
             if (PluginLoggingLevel > LoggingLevel.None) Debug.Log(message);
         }
 
         public static void LogWarning(string message)
         {
-            message = $"{ModName}: {message}";
+            message = $"{PluginName}: {message}";
             if (PluginLoggingLevel > LoggingLevel.None) Debug.LogWarning(message);
         }
 
         public static void LogError(string message)
         {
-            message = $"{ModName}: {message}";
+            message = $"{PluginName}: {message}";
             if (PluginLoggingLevel > LoggingLevel.None) Debug.LogError(message);
         }
 
         public static void LogVerbose(string message)
         {
-            message = $"{ModName}: {message}";
+            message = $"{PluginName}: {message}";
             if (PluginLoggingLevel == LoggingLevel.Verbose) Debug.LogError(message);
         }
 
-        #region BronzeTweak
-        // Modify the Awake method of ObjectDB
-        [HarmonyPatch(typeof(ObjectDB), "Awake")]
-        private static class MMEnableBronzeTweak
+        private void FejdStartup_Awake(On.FejdStartup.orig_Awake orig, FejdStartup self)
         {
-            // check to see if it's enabled and if not, it won't patch for this mod
-            [HarmonyPrepare]
-            static bool IsRemeberLastConnectedIpEnabled()
-            {
-                bool enabled = Settings.BronzeTweakEnabled.Value;
-                Plugin.Log($"EnableBronzeTweak: {enabled}");
+            // This code runs before Valheim's FejdStartup.Awake
+            Jotunn.Logger.LogInfo("FejdStartup is going to awake");
 
-                return enabled;
-            }
+            // Call this method so the original game method is invoked
+            orig(self);
 
-            // postfix attach to Awake method of ObjectDB
-            [HarmonyPostfix]
-            public static void ObjectDB_BronzeTweak(ref ObjectDB __instance)
+            // This code runs after Valheim's FejdStartup.Awake
+            Jotunn.Logger.LogInfo("FejdStartup has awoken");
+        }
+
+        private void AddRecipes()
+        {
+            if (Settings.FishingRodRecipeEnabled.Value) ItemManager.Instance.AddRecipe(registerFishingRod());
+            if (Settings.FishingBaitRecipeEnabled.Value) ItemManager.Instance.AddRecipe(registerFishingBait());
+            if (Settings.ChainsRecipeEnabled.Value) ItemManager.Instance.AddRecipe(registerChainsRecipe());
+            if (Settings.LeatherRecipeEnabled.Value) ItemManager.Instance.AddRecipe(registerLeatherRecipe());
+            if (Settings.LeatherScrapsRecipeEnabled.Value) ItemManager.Instance.AddRecipe(registerLeatherScrapsRecipe());
+        }
+
+        #region FishingRodRecipe
+        private CustomRecipe registerFishingRod()
+        {
+
+            // Create a custom recipe with a RecipeConfig
+            CustomRecipe fishingRod = new CustomRecipe(new RecipeConfig()
             {
-                //Plugin.Log($"Looking for Bronze Recipes");
-                foreach (Recipe recipe in __instance.m_recipes)
+                Name = "Recipe_MMFishingRod",
+                Item = "FishingRod",                    // Name of the item prefab to be crafted
+                MinStationLevel = 2,
+                Amount = 1,
+                CraftingStation = "piece_workbench",
+                Requirements = new RequirementConfig[]  // Resources and amount needed for it to be crafted
                 {
-                    //Plugin.Log($"Looking at {recipe.name}");
+                    new RequirementConfig { Item = "Wood", Amount = 2 },
+                    new RequirementConfig { Item = "LinenThread", Amount = 2 }
+                }
+            });
 
-                    // Plugin.Log($"Checking {recipe.name}");
-                    if (recipe.name == "Recipe_Bronze")
+            return fishingRod;
+        }
+        #endregion
+        private CustomRecipe registerFishingBait()
+        {
+            CustomRecipe fishingBait = new CustomRecipe(new RecipeConfig()
+            {
+                // Name of the recipe (defaults to "Recipe_YourItem")
+                Name = "Recipe_MMFishingBait",
+
+                // Name of the prefab for the crafted item
+                Item = "FishingBait",
+
+                Amount = 5,
+
+                // Name of the prefab for the crafting station we wish to use
+                // Can set this to null or leave out if you want your recipe to be craftable in your inventory
+                CraftingStation = "piece_workbench",
+
+                // List of requirements to craft your item
+                Requirements = new RequirementConfig[]
+                            {
+                    new RequirementConfig()
                     {
-                        // Plugin.Log($"Patching {recipe.name}");
-                        recipe.m_amount = 3;
-                    }
-                    else if (recipe.name == "Recipe_Bronze5")
-                    {
-                        //Plugin.Log($"Patching {recipe.name}");
-                        recipe.m_amount = 15;
+                        // Prefab name of requirement
+                        Item = "NeckTail",
+
+                        // Amount required
+                        Amount = 1
                     }
                 }
-            }
+            });
+
+            return fishingBait;
         }
 
-        #endregion
-         
-        // Register new prefabs
-        private void registerPrefabs(object sender, EventArgs e)
+        private CustomRecipe registerChainsRecipe()
         {
-            // Registering LoxMeatSurprise for Recipe
-            if (Settings.LoxMeatSurpriseRecipeEnabled.Value) PrefabManager.Instance.RegisterPrefab(new MMLoxMeatSurprise());
+            CustomRecipe chains = new CustomRecipe(new RecipeConfig()
+            {
+                // Name of the recipe (defaults to "Recipe_YourItem")
+                Name = "Recipe_MMChain",
+
+                // Name of the prefab for the crafted item
+                Item = "Chain",
+
+                Amount = 1,
+
+                // Name of the prefab for the crafting station we wish to use
+                // Can set this to null or leave out if you want your recipe to be craftable in your inventory
+                CraftingStation = "forge",
+
+                // List of requirements to craft your item
+                Requirements = new RequirementConfig[]
+                            {
+                    new RequirementConfig()
+                    {
+                        // Prefab name of requirement
+                        Item = "Iron",
+
+                        // Amount required
+                        Amount = 4
+                    }
+                }
+            });
+
+            return chains;
         }
 
-        private void registerObjects(object sender, EventArgs e)
+        private CustomRecipe registerLeatherRecipe()
         {
-            if (Settings.LoxMeatSurpriseRecipeEnabled.Value) registerLoxMeatSurprise();
-            if (Settings.FishingRodRecipeEnabled.Value) registerFishingRod();
-            if (Settings.FishingBaitRecipeEnabled.Value) registerFishingBait();
-            if (Settings.ChainsRecipeEnabled.Value) registerChainsRecipe();
-            if (Settings.LeatherRecipeEnabled.Value) registerLeatherRecipe();
-            if (Settings.LeatherScrapsRecipeEnabled.Value) registerLeatherScrapsRecipe();
+            CustomRecipe leather = new CustomRecipe(new RecipeConfig()
+            {
+                // Name of the recipe (defaults to "Recipe_YourItem")
+                Name = "Recipe_MMDeerHide",
+
+                // Name of the prefab for the crafted item
+                Item = "DeerHide",
+
+                Amount = 1,
+
+                // Name of the prefab for the crafting station we wish to use
+                // Can set this to null or leave out if you want your recipe to be craftable in your inventory
+                CraftingStation = "piece_workbench",
+
+                // List of requirements to craft your item
+                Requirements = new RequirementConfig[]
+                {
+                    new RequirementConfig()
+                    {
+                        // Prefab name of requirement
+                        Item = "LeatherScraps",
+
+                        // Amount required
+                        Amount = 3
+                    }
+    }
+            });
+            return leather;
         }
 
+        private CustomRecipe registerLeatherScrapsRecipe()
+        {
+            CustomRecipe leatherscraps = new CustomRecipe(new RecipeConfig()
+            {
+                // Name of the recipe (defaults to "Recipe_YourItem")
+                Name = "Recipe_LeatherScraps",
+
+                // Name of the prefab for the crafted item
+                Item = "LeatherScraps",
+
+                Amount = 3,
+
+                // Name of the prefab for the crafting station we wish to use
+                // Can set this to null or leave out if you want your recipe to be craftable in your inventory
+                CraftingStation = "piece_workbench",
+
+                // List of requirements to craft your item
+                Requirements = new RequirementConfig[]
+                            {
+                    new RequirementConfig()
+                    {
+                        // Prefab name of requirement
+                        Item = "DeerHide",
+
+                        // Amount required
+                        Amount = 1
+                    }
+                }
+            });
+
+            return leatherscraps;
+
+
+
+        }
+
+        /*
         private void registerLoxMeatSurprise()
         {
 
@@ -172,179 +305,51 @@ namespace MofoMojo.MMRecipeTweaks
                 }
             });
         }
+        */
 
-        #region FishingRodRecipe
-        private void registerFishingRod()
+
+        #region BronzeTweak
+        // Modify the Awake method of ObjectDB
+        [HarmonyPatch(typeof(ObjectDB), "Awake")]
+        private static class MMEnableBronzeTweak
         {
-
-            ObjectManager.Instance.RegisterRecipe(new RecipeConfig()
+            // check to see if it's enabled and if not, it won't patch for this mod
+            [HarmonyPrepare]
+            static bool IsBronzeTweakEnabled()
             {
-                // Name of the recipe (defaults to "Recipe_YourItem")
-                Name = "Recipe_MMFishingRod",
+                bool enabled = Settings.BronzeTweakEnabled.Value;
+                Plugin.Log($"EnableBronzeTweak: {enabled}");
 
-                // Name of the prefab for the crafted item
-                Item = "FishingRod",
+                return enabled;
+            }
 
-                // The minimum station level to craft it
-                MinStationLevel = 2,
-
-                // The number of items to craft
-                Amount = 1,
-
-                // Name of the prefab for the crafting station we wish to use
-                // Can set this to null or leave out if you want your recipe to be craftable in your inventory
-                CraftingStation = "piece_workbench",
-
-                // List of requirements to craft your item
-                Requirements = new PieceRequirementConfig[]
+            // postfix attach to Awake method of ObjectDB
+            [HarmonyPostfix]
+            public static void ObjectDB_BronzeTweak(ref ObjectDB __instance)
+            {
+                //Plugin.Log($"Looking for Bronze Recipes");
+                foreach (Recipe recipe in __instance.m_recipes)
                 {
-                    new PieceRequirementConfig()
-                    {
-                        // Prefab name of requirement
-                        Item = "Wood",
+                    //Plugin.Log($"Looking at {recipe.name}");
 
-                        // Amount required
-                        Amount = 3
-                    },
-                    new PieceRequirementConfig()
+                    // Plugin.Log($"Checking {recipe.name}");
+                    if (recipe.name == "Recipe_Bronze")
                     {
-                        // Prefab name of requirement
-                        Item = "LinenThread",
-
-                        // Amount required
-                        Amount = 2
+                        // Plugin.Log($"Patching {recipe.name}");
+                        recipe.m_amount = 3;
+                    }
+                    else if (recipe.name == "Recipe_Bronze5")
+                    {
+                        //Plugin.Log($"Patching {recipe.name}");
+                        recipe.m_amount = 15;
                     }
                 }
-            });
+            }
         }
         #endregion
-        private void registerFishingBait()
-        {
-            ObjectManager.Instance.RegisterRecipe(new RecipeConfig()
-            {
-                // Name of the recipe (defaults to "Recipe_YourItem")
-                Name = "Recipe_MMFishingBait",
 
-                // Name of the prefab for the crafted item
-                Item = "FishingBait",
-
-                Amount = 5,
-
-                // Name of the prefab for the crafting station we wish to use
-                // Can set this to null or leave out if you want your recipe to be craftable in your inventory
-                CraftingStation = "piece_workbench",
-
-                // List of requirements to craft your item
-                Requirements = new PieceRequirementConfig[]
-                            {
-                    new PieceRequirementConfig()
-                    {
-                        // Prefab name of requirement
-                        Item = "NeckTail",
-
-                        // Amount required
-                        Amount = 1
-                    }
-                }
-            });
-        }
-
-        private void registerChainsRecipe()
-        {
-            ObjectManager.Instance.RegisterRecipe(new RecipeConfig()
-            {
-                // Name of the recipe (defaults to "Recipe_YourItem")
-                Name = "Recipe_MMChain",
-
-                // Name of the prefab for the crafted item
-                Item = "Chain",
-
-                Amount = 1,
-
-                // Name of the prefab for the crafting station we wish to use
-                // Can set this to null or leave out if you want your recipe to be craftable in your inventory
-                CraftingStation = "forge",
-
-                // List of requirements to craft your item
-                Requirements = new PieceRequirementConfig[]
-                            {
-                    new PieceRequirementConfig()
-                    {
-                        // Prefab name of requirement
-                        Item = "Iron",
-
-                        // Amount required
-                        Amount = 4
-                    }
-                }
-            });
-        }
-
-        private void registerLeatherRecipe()
-        {
-            ObjectManager.Instance.RegisterRecipe(new RecipeConfig()
-            {
-                // Name of the recipe (defaults to "Recipe_YourItem")
-                Name = "Recipe_MMDeerHide",
-
-                // Name of the prefab for the crafted item
-                Item = "DeerHide",
-
-                Amount = 1,
-
-                // Name of the prefab for the crafting station we wish to use
-                // Can set this to null or leave out if you want your recipe to be craftable in your inventory
-                CraftingStation = "piece_workbench",
-
-                // List of requirements to craft your item
-                Requirements = new PieceRequirementConfig[]
-                {
-                    new PieceRequirementConfig()
-                    {
-                        // Prefab name of requirement
-                        Item = "LeatherScraps",
-
-                        // Amount required
-                        Amount = 3
-                    }
-    }
-            });
-        }
-
-        private void registerLeatherScrapsRecipe()
-        {
-            ObjectManager.Instance.RegisterRecipe(new RecipeConfig()
-            {
-                // Name of the recipe (defaults to "Recipe_YourItem")
-                Name = "Recipe_LeatherScraps",
-
-                // Name of the prefab for the crafted item
-                Item = "LeatherScraps",
-
-                Amount = 3,
-
-                // Name of the prefab for the crafting station we wish to use
-                // Can set this to null or leave out if you want your recipe to be craftable in your inventory
-                CraftingStation = "piece_workbench",
-
-                // List of requirements to craft your item
-                Requirements = new PieceRequirementConfig[]
-                            {
-                    new PieceRequirementConfig()
-                    {
-                        // Prefab name of requirement
-                        Item = "DeerHide",
-
-                        // Amount required
-                        Amount = 1
-                    }
-                }
-            });
-        }
 
     }
-
-
 
     internal static class Settings
     {

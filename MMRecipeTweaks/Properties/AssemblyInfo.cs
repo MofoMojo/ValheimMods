@@ -33,5 +33,5 @@ using MofoMojo.MMRecipeTweaks;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion(Plugin.Version)]
-[assembly: AssemblyFileVersion(Plugin.Version)]
+[assembly: AssemblyVersion(Plugin.PluginVersion)]
+[assembly: AssemblyFileVersion(Plugin.PluginVersion)]

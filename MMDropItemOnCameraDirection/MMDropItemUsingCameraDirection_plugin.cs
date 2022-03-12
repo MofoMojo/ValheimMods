@@ -9,7 +9,7 @@ namespace MofoMojo.MMDropItemUsingCameraDirection
     [BepInPlugin("MofoMojo.MMDropItemUsingCameraDirection", Plugin.ModName, Plugin.Version)]
     public class Plugin : BaseUnityPlugin
     {
-        public const string Version = "1.1";
+        public const string Version = "1.2";
         public const int nexusId = 1101;
         public const string ModName = "MMDropItemUsingCameraDirection";
         Harmony _Harmony;
@@ -172,13 +172,18 @@ namespace MofoMojo.MMDropItemUsingCameraDirection
             ItemDrop itemDrop;
             Plugin.Log($"Drop by player... using camera rotation");
             itemDrop = ItemDrop.DropItem(item, amount, (__instance as Character).transform.position + GameCamera.instance.transform.forward + GameCamera.instance.transform.up, GameCamera.instance.transform.rotation);
-            itemDrop.OnPlayerDrop();
+            if(__instance.IsPlayer())
+            {
+                itemDrop.OnPlayerDrop();
+            }
+            
             itemDrop.GetComponent<Rigidbody>().velocity = (GameCamera.instance.transform.forward + Vector3.up) * 5f;
 
             //end our change..
 
             __instance.m_zanim.SetTrigger("interact");
-            __instance.m_dropEffects.Create((__instance as Character).transform.position, Quaternion.identity);
+            //__instance.m_dropEffects.Create((__instance as Character).transform.position, Quaternion.identity);
+            __instance.m_dropEffects.Create((__instance as Character).transform.position, Quaternion.identity, null, 1f, -1);
             __instance.Message(MessageHud.MessageType.TopLeft, "$msg_dropped " + itemDrop.m_itemData.m_shared.m_name, itemDrop.m_itemData.m_stack, itemDrop.m_itemData.GetIcon());
             __result = true;
             return false;

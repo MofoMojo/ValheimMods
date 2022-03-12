@@ -12,3 +12,9 @@ C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMShowPlayerStatsInRange\bin\De
 C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMShowPlayerStatsInRange\obj\Debug\MMShowPlayerStatsInRange.csprojAssemblyReference.cache
 C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMShowPlayerStatsInRange\obj\Debug\MofoMojo.MMShowPlayerStatsInRange.dll
 C:\Users\stuar\source\repos\MofoMojo\ValheimMods\MMShowPlayerStatsInRange\obj\Debug\MofoMojo.MMShowPlayerStatsInRange.pdb
+F:\Source\Repos\ValheimMods\MMShowPlayerStatsInRange\bin\Debug\MofoMojo.MMShowPlayerStatsInRange.dll
+F:\Source\Repos\ValheimMods\MMShowPlayerStatsInRange\bin\Debug\MofoMojo.MMShowPlayerStatsInRange.pdb
+F:\Source\Repos\ValheimMods\MMShowPlayerStatsInRange\obj\Debug\MMShowPlayerStatsInRange.csproj.AssemblyReference.cache
+F:\Source\Repos\ValheimMods\MMShowPlayerStatsInRange\obj\Debug\MMShowPlayerStatsInRange.csproj.CoreCompileInputs.cache
+F:\Source\Repos\ValheimMods\MMShowPlayerStatsInRange\obj\Debug\MofoMojo.MMShowPlayerStatsInRange.dll
+F:\Source\Repos\ValheimMods\MMShowPlayerStatsInRange\obj\Debug\MofoMojo.MMShowPlayerStatsInRange.pdb
