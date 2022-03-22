@@ -21,3 +21,9 @@ C:\Users\stuartp\source\repos\MofoMojoValheimMods.Experimental\MMRecipeTweaks\ob
 C:\Users\stuartp\source\repos\MofoMojoValheimMods.Experimental\MMRecipeTweaks\obj\Release\MofoMojo.MMRecipeTweaks.dll
 C:\Users\stuartp\source\repos\MofoMojoValheimMods.Experimental\MMRecipeTweaks\obj\Release\MofoMojo.MMRecipeTweaks.pdb
 C:\Users\stuar\source\repos\MofoMojoValheimMods.Experimental\MMRecipeTweaks\obj\Release\MMRecipeTweaks.csprojAssemblyReference.cache
+F:\Source\Repos\ValheimMods\MMRecipeTweaks\bin\release\MofoMojo.MMRecipeTweaks.dll
+F:\Source\Repos\ValheimMods\MMRecipeTweaks\bin\release\MofoMojo.MMRecipeTweaks.pdb
+F:\Source\Repos\ValheimMods\MMRecipeTweaks\obj\Release\MMRecipeTweaks.csproj.AssemblyReference.cache
+F:\Source\Repos\ValheimMods\MMRecipeTweaks\obj\Release\MMRecipeTweaks.csproj.CoreCompileInputs.cache
+F:\Source\Repos\ValheimMods\MMRecipeTweaks\obj\Release\MofoMojo.MMRecipeTweaks.dll
+F:\Source\Repos\ValheimMods\MMRecipeTweaks\obj\Release\MofoMojo.MMRecipeTweaks.pdb

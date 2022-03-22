@@ -218,14 +218,26 @@ namespace MofoMojo.MMWeatherMod
                         }
 
                         //envMan.QueueEnvironment(newEnvironment);
-                        foreach(Player playingPlayer in Player.GetAllPlayers())
+                        if(Player.GetAllPlayers().Count == 1)
                         {
-                            if(player.GetCurrentBiome() == playingPlayer.GetCurrentBiome())
+                            Plugin.LogVerbose($"Calling QueueEnvironment, Weather: {weather}");
+                            EnvMan.instance.QueueEnvironment(weather);
+
+                        }
+                        else
+                        {
+                            foreach (Player playingPlayer in Player.GetAllPlayers())
                             {
-                                ZNetPeer peer = ZNet.instance.GetPeerByPlayerName(player.name);
-                                ZRoutedRpc.instance.InvokeRoutedRPC(peer.m_uid, "QueueEnvironment", weather);
+                                if (player.GetCurrentBiome() == playingPlayer.GetCurrentBiome())
+                                {
+                                    ZNetPeer peer = ZNet.instance.GetPeerByPlayerName(player.name);
+                                    Plugin.LogVerbose($"Found Peer {player.name}, Weather: {weather}, calling InvokeRoutedRPC");
+                                    ZRoutedRpc.instance.InvokeRoutedRPC(peer.m_uid, "QueueEnvironment", weather);
+                                    Plugin.LogVerbose($"Called QueueEnvironment, Weather: {weather}");
+                                }
                             }
                         }
+                        
                         
 
                         // no need to run the original method, return false

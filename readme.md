@@ -36,19 +36,19 @@ https://github.com/MofoMojo/ValheimMods/tree/master/MMRecipeTweaks/bin/Release
 https://github.com/MofoMojo/ValheimMods/tree/master/MMServerMessages/bin/Release
 
 # Details
-## MMRandomStartPosition
+## MMRandomStartPosition (Updated for H&H/Frostcaves)
 Randomizes a players first spawn location on every map started. Players will no longer (most likely) be starting in the center of the map and their spawn locations will be different from others (assuming they're running this mod too).
 
 ## MMWeatherMod
 Allows the player to /pray in the chat window to ask Odin to bless them with clear weather. It does not always work, sometimes you will anger Odin, and you must be seated and outside (or on a boat). 
 
-## ExploreOnShipRadius
+## ExploreOnShipRadius (Updated for H&H/Frostcaves)
 Extends the ship radius when you're standing on a boat. I made this because an existing mod didn't work for players on the boat, just piloting the boat.
 
 ## PlayerMiniMapMod
 Allows you to toggle the minimap and specify independent scaling of the minimap marker and the large map marker
 
-## RecipeTweaks
+## RecipeTweaks (Updated for H&H/Frostcaves)
 FishingRodRecipe requires Wood and LinenThread. Yes, this is fairly late game and you probably already have one by then but thematically it makes sense. 
 * Bait requires raw Neck meat
 * Chains requires 4 iron

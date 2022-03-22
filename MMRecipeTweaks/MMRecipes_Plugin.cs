@@ -52,6 +52,8 @@ namespace MofoMojo.MMRecipeTweaks
             // https://valheim-modding.github.io/Jotunn/tutorials/overview.html
             AddRecipes();
 
+            PrefabManager.OnVanillaPrefabsAvailable += InitPortalOverrides;
+
             _Harmony = Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), null);
 
 
@@ -83,7 +85,7 @@ namespace MofoMojo.MMRecipeTweaks
         public static void LogVerbose(string message)
         {
             message = $"{PluginName}: {message}";
-            if (PluginLoggingLevel == LoggingLevel.Verbose) Debug.LogError(message);
+            if (PluginLoggingLevel == LoggingLevel.Verbose) Debug.Log(message);
         }
 
         private void FejdStartup_Awake(On.FejdStartup.orig_Awake orig, FejdStartup self)
@@ -105,8 +107,51 @@ namespace MofoMojo.MMRecipeTweaks
             if (Settings.ChainsRecipeEnabled.Value) ItemManager.Instance.AddRecipe(registerChainsRecipe());
             if (Settings.LeatherRecipeEnabled.Value) ItemManager.Instance.AddRecipe(registerLeatherRecipe());
             if (Settings.LeatherScrapsRecipeEnabled.Value) ItemManager.Instance.AddRecipe(registerLeatherScrapsRecipe());
+
         }
 
+        private void InitPortalOverrides()
+        {
+            if (Settings.AllowIronOreTeleportationEnabled.Value) {
+                Plugin.LogVerbose("Setting IronOre Portal(able) ");
+                ItemDrop item = PrefabManager.Cache.GetPrefab<ItemDrop>("IronOre");
+                item.m_itemData.m_shared.m_teleportable = true;
+            }
+
+            if (Settings.AllowIronScrapTeleportationEnabled.Value)
+            {
+                Plugin.LogVerbose("Setting IronScrap Portal(able) ");
+                ItemDrop item = PrefabManager.Cache.GetPrefab<ItemDrop>("IronScrap");
+                item.m_itemData.m_shared.m_teleportable = true;
+            }
+
+            if (Settings.AllowTinOreTeleportationEnabled.Value) {
+                Plugin.LogVerbose("Setting TinOre Portal(able) ");
+                ItemDrop item = PrefabManager.Cache.GetPrefab<ItemDrop>("TinOre");
+                item.m_itemData.m_shared.m_teleportable = true;
+            }
+            if (Settings.AllowBlackMetalScrapTeleportationEnabled.Value) {
+                Plugin.LogVerbose("Setting BlackMetalScrap Portal(able) ");
+                ItemDrop item = PrefabManager.Cache.GetPrefab<ItemDrop>("BlackMetalScrap");
+                item.m_itemData.m_shared.m_teleportable = true;
+            }
+            if (Settings.AllowSilverOreTeleportationEnabled.Value) {
+                Plugin.LogVerbose("Setting SilverOre Portal(able) ");
+                ItemDrop item = PrefabManager.Cache.GetPrefab<ItemDrop>("SilverOre");
+                item.m_itemData.m_shared.m_teleportable = true;
+            }
+            if (Settings.AllowFlametalOreTeleportationEnabled.Value) {
+                Plugin.LogVerbose("Setting FlametalOre Portal(able) ");
+                ItemDrop item = PrefabManager.Cache.GetPrefab<ItemDrop>("FlametalOre");
+                item.m_itemData.m_shared.m_teleportable = true;
+            }
+            if (Settings.AllowCopperOreTeleportationEnabled.Value) {
+                Plugin.LogVerbose("Setting CopperOre Portal(able) ");
+                ItemDrop item = PrefabManager.Cache.GetPrefab<ItemDrop>("CopperOre");
+                item.m_itemData.m_shared.m_teleportable = true;
+            }
+
+        }
         #region FishingRodRecipe
         private CustomRecipe registerFishingRod()
         {
@@ -315,10 +360,10 @@ namespace MofoMojo.MMRecipeTweaks
         {
             // check to see if it's enabled and if not, it won't patch for this mod
             [HarmonyPrepare]
-            static bool IsBronzeTweakEnabled()
+            static bool IsRecipeTweaksEnabled()
             {
-                bool enabled = Settings.BronzeTweakEnabled.Value;
-                Plugin.Log($"EnableBronzeTweak: {enabled}");
+                bool enabled = Settings.RecipeTweaksEnabled.Value;
+                Plugin.Log($"RecipeTweaksEnabled: {enabled}");
 
                 return enabled;
             }
@@ -331,18 +376,70 @@ namespace MofoMojo.MMRecipeTweaks
                 foreach (Recipe recipe in __instance.m_recipes)
                 {
                     //Plugin.Log($"Looking at {recipe.name}");
+                    switch(recipe.name.ToLower())
+                    {
+                        case "recipe_bronze" :
+                            if (Settings.BronzeTweakEnabled.Value) recipe.m_amount = 3;
+                            Plugin.Log($"recipe_bronze: {3}");
+                            break;
+                        case "recipe_bronze5":
+                            if (Settings.BronzeTweakEnabled.Value) recipe.m_amount = 15;
+                            Plugin.Log($"recipe_bronze5: {15}");
+                            break;
+                        case "recipe_carrotsoup":
+                            recipe.m_amount = Settings.CarrotSoupAmount.Value;
+                            Plugin.Log($"recipe_carrotsoup: {Settings.CarrotSoupAmount.Value}");
+                            break;
+                        case "recipe_serpentstew":
+                            recipe.m_amount = Settings.SerpentStewAmount.Value;
+                            Plugin.Log($"recipe_serpentstew: {Settings.SerpentStewAmount.Value}");
+                            break;
+                        case "recipe_deerstew":
+                            recipe.m_amount = Settings.DeerStewAmount.Value;
+                            Plugin.Log($"recipe_deerstew: {Settings.DeerStewAmount.Value}");
+                            break;
+                        case "recipe_bloodpudding":
+                            recipe.m_amount = Settings.DeerStewAmount.Value;
+                            Plugin.Log($"recipe_bloodpudding: {Settings.SerpentStewAmount.Value}");
+                            break;
+                        case "recipe_fishwraps":
+                            recipe.m_amount = Settings.FishWrapsAmount.Value;
+                            Plugin.Log($"recipe_fishwraps: {Settings.FishWrapsAmount.Value}");
+                            break;
+                        case "recipe_mincemeatsauce":
+                            recipe.m_amount = Settings.MinceMeatSauceAmount.Value;
+                            Plugin.Log($"recipe_mincemeatsauce: {Settings.MinceMeatSauceAmount.Value}");
+                            break;
+                        case "recipe_meadbasefrostresist":
+                            recipe.m_amount = Settings.MeadBaseFrostResistAmount.Value;
+                            Plugin.Log($"recipe_meadbasefrostresist: {Settings.MeadBaseFrostResistAmount.Value}");
+                            break;
+                        case "recipe_meadbasehealthmedium":
+                            recipe.m_amount = Settings.MeadBaseHealthMediumAmount.Value;
+                            Plugin.Log($"recipe_meadbasehealthmedium: {Settings.MeadBaseHealthMediumAmount.Value}");
+                            break;
+                        case "recipe_meadbasehealthminor":
+                            recipe.m_amount = Settings.MeadBaseHealthMinorAmount.Value;
+                            Plugin.Log($"recipe_meadbasehealthminor: {Settings.MeadBaseHealthMinorAmount.Value}");
+                            break;
+                        case "recipe_meadbasepoisonresist":
+                            recipe.m_amount = Settings.MeadBasePoisonResistAmount.Value;
+                            Plugin.Log($"recipe_meadbasepoisonresist: {Settings.MeadBasePoisonResistAmount.Value}");
+                            break;
+                        case "recipe_meadbasestaminamedium":
+                            recipe.m_amount = Settings.MeadBaseStaminaMediumAmount.Value;
+                            Plugin.Log($"recipe_meadbasestaminamedium: {Settings.MeadBaseStaminaMediumAmount.Value}");
+                            break;
+                        case "recipe_meadbasestaminaminor":
+                            recipe.m_amount = Settings.MeadBaseStaminaMinorAmount.Value;
+                            Plugin.Log($"recipe_meadbasestaminaminor: {Settings.MeadBaseStaminaMinorAmount.Value}");
+                            break;
+                        case "recipe_meadbasetasty":
+                            recipe.m_amount = Settings.MeadBaseTastyAmount.Value;
+                            Plugin.Log($"recipe_meadbasetasty: {Settings.MeadBaseTastyAmount.Value}");
+                            break;
+                    }
 
-                    // Plugin.Log($"Checking {recipe.name}");
-                    if (recipe.name == "Recipe_Bronze")
-                    {
-                        // Plugin.Log($"Patching {recipe.name}");
-                        recipe.m_amount = 3;
-                    }
-                    else if (recipe.name == "Recipe_Bronze5")
-                    {
-                        //Plugin.Log($"Patching {recipe.name}");
-                        recipe.m_amount = 15;
-                    }
                 }
             }
         }
@@ -353,15 +450,46 @@ namespace MofoMojo.MMRecipeTweaks
 
     internal static class Settings
     {
-
+        // https://valheim-modding.github.io/Jotunn/data/objects/recipe-list.html
         public static ConfigEntry<bool> FishingRodRecipeEnabled;
         public static ConfigEntry<bool> LoxMeatSurpriseRecipeEnabled;
         public static ConfigEntry<bool> FishingBaitRecipeEnabled;
         public static ConfigEntry<bool> ChainsRecipeEnabled;
-        public static ConfigEntry<bool> BronzeTweakEnabled;
+        public static ConfigEntry<bool> RecipeTweaksEnabled;
         public static ConfigEntry<bool> LeatherScrapsRecipeEnabled;
         public static ConfigEntry<bool> LeatherRecipeEnabled;
+        public static ConfigEntry<bool> BronzeTweakEnabled;
+
+        public static ConfigEntry<bool> AllowPortalOverrides;
+        public static ConfigEntry<bool> AllowCopperOreTeleportationEnabled;
+        public static ConfigEntry<bool> AllowIronOreTeleportationEnabled;
+        public static ConfigEntry<bool> AllowIronScrapTeleportationEnabled;
+        public static ConfigEntry<bool> AllowSilverOreTeleportationEnabled;
+        public static ConfigEntry<bool> AllowTinOreTeleportationEnabled;
+        public static ConfigEntry<bool> AllowBlackMetalScrapTeleportationEnabled;
+        public static ConfigEntry<bool> AllowFlametalOreTeleportationEnabled;
+        
+        public static ConfigEntry<int> CarrotSoupAmount;
+        public static ConfigEntry<int> SerpentStewAmount;
+        public static ConfigEntry<int> DeerStewAmount;
+        public static ConfigEntry<int> BloodPuddingAmount;
+        public static ConfigEntry<int> FishWrapsAmount;
+        public static ConfigEntry<int> MinceMeatSauceAmount;
+        public static ConfigEntry<int> TurnipStewAmount;
+        public static ConfigEntry<int> MeadBaseFrostResistAmount;
+        public static ConfigEntry<int> MeadBaseHealthMediumAmount;
+        public static ConfigEntry<int> MeadBaseHealthMinorAmount;
+        public static ConfigEntry<int> MeadBasePoisonResistAmount;
+        public static ConfigEntry<int> MeadBaseStaminaMediumAmount;
+        public static ConfigEntry<int> MeadBaseStaminaMinorAmount;
+        public static ConfigEntry<int> MeadBaseTastyAmount;
         public static ConfigEntry<Plugin.LoggingLevel> PluginLoggingLevel;
+
+
+
+
+
+
         // These are the settings that will be saved in the ..\plugins\mofomojo.cfg file
         public static void Init()
         {
@@ -373,7 +501,32 @@ namespace MofoMojo.MMRecipeTweaks
             FishingBaitRecipeEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "FishingBaitRecipeEnabled", true, "Enables  a recipe for bait made from Necktails");
             LoxMeatSurpriseRecipeEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "LoxMeatSurpriseRecipeEnabled", true, "Enables a recipe and item for Lox Meat Surprise");
             ChainsRecipeEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "ChainsRecipeEnabled", true, "Enables a recipe for making chains (4 Iron = 1 chain)");
-            BronzeTweakEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "BronzeTweakEnabled", true, "Changes Bronze Recipe from 2 copper+1 tin = 1 bronze to 2+1=3 (and the x5 recipe too)");
+            RecipeTweaksEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("RecipeTweaks", "RecipeTweaksEnabled", true, "Enabled Various Recipe Tweaks below");
+            BronzeTweakEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("RecipeTweaks", "BronzeTweakEnabled", true, "Changes Bronze Recipe from 2 copper+1 tin = 1 bronze to 2+1=3 (and the x5 recipe too)");
+            CarrotSoupAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "CarrotSoupAmount", 3, "The amount of carrot soup a single recipe makes");
+            SerpentStewAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "SerpentStewAmount", 2, "The amount of Serpent Stew a single recipe makes");
+            DeerStewAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "DeerStewAmount", 2, "The amount of Deer Stew a single recipe makes");
+            BloodPuddingAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "BloodPuddingAmount", 2, "The amount of Blood Pudding a single recipe makes");
+            FishWrapsAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "FishWrapsAmount", 2, "The amount of Fish Wraps a single recipe makes");
+            MinceMeatSauceAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "MinceMeatSauceAmount", 2, "The amount of mince meat sauce a single recipe makes");
+            TurnipStewAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "TurnipStewAmount", 3, "The amount of Turnip Stew a single recipe makes");
+            MeadBaseFrostResistAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "MeadBaseFrostResistAmount", 2, "The amount of mead a single recipe makes");
+            MeadBaseHealthMediumAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "MeadBaseHealthMediumAmount", 2, "The amount of mead a single recipe makes");
+            MeadBaseHealthMinorAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "MeadBaseHealthMinorAmount", 2, "The amount of mead a single recipe makes");
+            MeadBasePoisonResistAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "MeadBasePoisonResistAmount", 2, "The amount of mead a single recipe makes");
+            MeadBaseStaminaMediumAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "MeadBaseStaminaMediumAmount", 2, "The amount of mead a single recipe makes");
+            MeadBaseStaminaMinorAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "MeadBaseStaminaMinorAmount", 2, "The amount of mead a single recipe makes");
+            MeadBaseTastyAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "MeadBaseTastyAmount", 2, "The amount of mead a single recipe makes");
+
+            AllowPortalOverrides = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("PortalOverrides", "AllowPortalOverrides", true, "Enable this to support portal overrides below");
+            AllowCopperOreTeleportationEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("PortalOverrides", "AllowCopperOreTeleportationEnabled", true, "Enable this metal to go through portals");
+            AllowIronOreTeleportationEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("PortalOverrides", "AllowIronOreTeleportationEnabled", true, "Enable this metal to go through portals");
+            AllowIronScrapTeleportationEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("PortalOverrides", "AllowIronScrapTeleportationEnabled", true, "Enable this metal to go through portals");
+            AllowSilverOreTeleportationEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("PortalOverrides", "AllowSilverOreTeleportationEnabled", true, "Enable this metal to go through portals");
+            AllowTinOreTeleportationEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("PortalOverrides", "AllowTinOreTeleportationEnabled", true, "Enable this metal to go through portals");
+            AllowBlackMetalScrapTeleportationEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("PortalOverrides", "AllowBlackMetalScrapTeleportationEnabled", true, "Enable this metal to go through portals");
+            AllowFlametalOreTeleportationEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("PortalOverrides", "AllowFlametalOreTeleportationEnabled", true, "Enable this metal to go through portals");
+
         }
 
     }

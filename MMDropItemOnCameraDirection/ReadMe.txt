@@ -1,4 +1,4 @@
-﻿MofoMojo's Drop Item Using Camera Direction v1.1
+﻿MofoMojo's Drop Item Using Camera Direction v1.3
 
 Have you ever dropped an item over the edge of a cliff/roof/precipice into a swamp/abyss/ocean/lava flows of morder because
 that was the direction your character was facing as opposed to dropping it in the direction the camera was facing? Well, be
@@ -8,6 +8,7 @@ and if so, drops the item in the direction the camera is facing, NOT your charac
 :: FEATURES ::
 • This is a simple QOL mod from my personal tweaks collection that drops items based on your camera facing, and not your character facing. 
 • Thanks to stuybev for the suggestion, 1.1 supports behavior/key modifier settings in the plugin's .cfg file now
+• Updated to support H&H and Frostcaves
 
 DropModifierBehavior
 • None - This mod will ALWAYS override the drop behavior and drop based on the direction your camera is facing (default just like 1.0).
@@ -28,8 +29,14 @@ DropModifierBehavior
             ItemDrop itemDrop;
             Plugin.Log($"Drop by player... using camera rotation");
             itemDrop = ItemDrop.DropItem(item, amount, (__instance as Character).transform.position + GameCamera.instance.transform.forward + GameCamera.instance.transform.up, GameCamera.instance.transform.rotation);
-            itemDrop.OnPlayerDrop();
+            if(__instance.IsPlayer())
+            {
+                itemDrop.OnPlayerDrop();
+            }
+            
             itemDrop.GetComponent<Rigidbody>().velocity = (GameCamera.instance.transform.forward + Vector3.up) * 5f;
+
+            //end our change..
 
 :: REQUIREMENTS ::
 • BepInEx - 
@@ -41,7 +48,7 @@ This mod is enabled by default. Modify the .cfg to disable it if you want.
 Play Valheim
 
 :: UPGRADING ::
-This is 1.0... there are no upgrades here.
+This is 1.3... Just replacing existing files if upgrading
 
 :: UNINSTALLATION ::
 Remove the MofoMojo.MMDropItemUsingCameraDirection.dll and MofoMojo.MMDropItemUsingCameraDirection.CFG file from the \Plugins and \Config folders respectively.
@@ -50,6 +57,8 @@ Remove the MofoMojo.MMDropItemUsingCameraDirection.dll and MofoMojo.MMDropItemUs
 • None known
 
 :: VERSIONS ::
+1.3 Upgrade to support H&H and Frostcaves update
+1.2 internal
 1.1 At suggestion of stuybev, added modifier settings to support a modifier key to drop items with either camera direction or character direction
 1.0 Initial Release
 

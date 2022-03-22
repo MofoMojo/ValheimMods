@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31026.101
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMWishboneTweak", "MMWishboneTweak\MMWishboneTweak.csproj", "{48DFC998-62E8-4751-A860-8CDB3B829F30}"
 EndProject
@@ -35,6 +35,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMRandomSpawnPoint", "MMRandomSpawnPoint\MMRandomSpawnPoint.csproj", "{D3EEA594-BA1C-4CDB-8FE2-5168AC9BB73F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMDropItemOnCameraDirection", "MMDropItemOnCameraDirection\MMDropItemOnCameraDirection.csproj", "{5FC7508A-6BB4-40DA-8701-7B0D002DDAE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMConanPurgeRaids", "MMConanPurgeRaids\MMConanPurgeRaids.csproj", "{541BE968-AE06-416C-AA9A-682DA78817DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMDisableRandomEvents", "MMDisableRandomEvents\MMDisableRandomEvents.csproj", "{DC3EBD22-DA24-4948-8B3E-BE262D2D082D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,6 +98,14 @@ Global
 		{5FC7508A-6BB4-40DA-8701-7B0D002DDAE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FC7508A-6BB4-40DA-8701-7B0D002DDAE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FC7508A-6BB4-40DA-8701-7B0D002DDAE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{541BE968-AE06-416C-AA9A-682DA78817DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{541BE968-AE06-416C-AA9A-682DA78817DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{541BE968-AE06-416C-AA9A-682DA78817DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{541BE968-AE06-416C-AA9A-682DA78817DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC3EBD22-DA24-4948-8B3E-BE262D2D082D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC3EBD22-DA24-4948-8B3E-BE262D2D082D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC3EBD22-DA24-4948-8B3E-BE262D2D082D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC3EBD22-DA24-4948-8B3E-BE262D2D082D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
