@@ -49,7 +49,7 @@ namespace MofoMojo.MMExplorationTweaks
     [BepInPlugin("MofoMojo.MMExplorationTweaks", Plugin.ModName, Plugin.Version)]
     public class Plugin : BaseUnityPlugin
     {
-        public const string Version = "2.5";
+        public const string Version = "3.1";
         public const string ModName = "MMExplorationTweaks";
         Harmony _Harmony;
         public static Plugin Instance;
@@ -150,10 +150,10 @@ namespace MofoMojo.MMExplorationTweaks
 
         public static float GetWeatherImpact()
         {
-            return GetWeatherImpact(out float temp);
+            return GetWeatherImpactToRadius(out float temp);
         }
 
-        public static float GetWeatherImpact(out float siteDistance)
+        public static float GetWeatherImpactToRadius(out float siteDistance)
         {
             float impact = 0;
             siteDistance = Settings.MaximumExplorationDistance.Value;
@@ -296,6 +296,11 @@ namespace MofoMojo.MMExplorationTweaks
         public static ConfigEntry<bool> AlsoExploreLineOfSight;
         public static ConfigEntry<bool> ResetMapOnDeath;
         public static ConfigEntry<bool> RemovePinsOnDeath;
+        public static ConfigEntry<bool> HeightAffectsRadiusforLOS;
+        public static ConfigEntry<bool> HeightAffectsDistanceforLOS;
+        public static ConfigEntry<float> HeightLOSRadiusMultiplier;
+        public static ConfigEntry<float> HeightLOSDistanceMultiplier;
+
         public static ConfigEntry<float> ExploreOnShipRadius;
         public static ConfigEntry<float> ExploreOnFootRadius;
         public static ConfigEntry<Plugin.LoggingLevel> PluginLoggingLevel;
@@ -344,6 +349,11 @@ namespace MofoMojo.MMExplorationTweaks
             AlsoExploreLineOfSight = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Plugin", "AlsoExploreLineOfSight", true, "When enabled and the Exploration triggers, you will also explore the area around where you are looking");
             ResetMapOnDeath = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Plugin", "ResetMapOnDeath", false, "Resets the player map on death");
             RemovePinsOnDeath = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Plugin", "RemovePinsOnDeath", false, "Removes all pins on player map on death");
+            HeightAffectsRadiusforLOS = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Plugin", "HeightAffectsRadiusForLOSExploration", true, "When using LOS Exploration, the higher you are above where you're looking, the greater your radius");
+            HeightLOSRadiusMultiplier = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("ExplorationRadius", "HeightLOSMultiplier", 1f, "Sets the multiplier for applying the height affect on radius");
+            HeightLOSDistanceMultiplier = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("ExplorationRadius", "HeightLOSDistanceMultiplier", 1f, "Sets the multiplier for applying the height affect on distance you can see");
+            HeightAffectsDistanceforLOS = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Plugin", "HeightAffectsDistanceforLOS", true, "When using LOS Exploration, the higher you are the farther your potential distance to see is");
+
 
             ExploreOnFootRadius = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("ExplorationRadius", "ExploreOnFootRadius", 75f, "Sets the exploration radius when on foot");
             ExploreOnShipRadius = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("ExplorationRadius", "ExploreOnShipRadius", 150f, "Sets the exploration radius when on a boat");
@@ -376,8 +386,8 @@ namespace MofoMojo.MMExplorationTweaks
             nofogts = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("EnvironmentalImpact", "nofogts",0f, "Impact percentage this weather type has on exploration radius, positive numbers increase radius, negative numbers decrease");
             SwampRain = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("EnvironmentalImpact", "SwampRain",-0.33f, "Impact percentage this weather type has on exploration radius, positive numbers increase radius, negative numbers decrease");
             Bonemass = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("EnvironmentalImpact", "Bonemass",-0.33f, "Impact percentage this weather type has on exploration radius, positive numbers increase radius, negative numbers decrease");
-            Snow = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("EnvironmentalImpact", "Snow",-0.20f, "Impact percentage this weather type has on exploration radius, positive numbers increase radius, negative numbers decrease");
-            Twilight_Snow = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("EnvironmentalImpact", "Twilight_Snow",-0.20f, "Impact percentage this weather type has on exploration radius, positive numbers increase radius, negative numbers decrease");
+            Snow = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("EnvironmentalImpact", "Snow",-0.10f, "Impact percentage this weather type has on exploration radius, positive numbers increase radius, negative numbers decrease");
+            Twilight_Snow = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("EnvironmentalImpact", "Twilight_Snow",-0.10f, "Impact percentage this weather type has on exploration radius, positive numbers increase radius, negative numbers decrease");
             Twilight_SnowStorm = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("EnvironmentalImpact", "Twilight_SnowStorm", -0.50f, "Impact percentage this weather type has on exploration radius, positive numbers increase radius, negative numbers decrease");
             SnowStorm = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("EnvironmentalImpact", "SnowStorm", -0.50f, "Impact percentage this weather type has on exploration radius, positive numbers increase radius, negative numbers decrease");
             Moder = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<float>("EnvironmentalImpact", "Moder", -0.30f, "Impact percentage this weather type has on exploration radius, positive numbers increase radius, negative numbers decrease");

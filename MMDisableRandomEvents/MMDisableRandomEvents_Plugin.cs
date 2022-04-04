@@ -78,19 +78,20 @@ namespace MofoMojo.MMDisableRandomEvents
                 if (RandEventSystem.instance != null)
                 {
                     BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance;
-                    MethodInfo SetActiveEvent = RandEventSystem.instance.GetType().GetMethod("SetActiveEvent", flags);
-                    if (null != SetActiveEvent)
+                    MethodInfo SetRandomEvent = RandEventSystem.instance.GetType().GetMethod("SetRandomEvent", flags);
+                    if (null != SetRandomEvent)
                     {
-                        RandomEvent randEvent = Plugin.KnownRandomEvents[random];
+                        RandomEvent randEvent = Plugin.KnownRandomEvents[random].Clone();
+                        randEvent.m_enabled = true;
                         Plugin.Log($"Starting random event {randEvent.m_name}");
-                        SetActiveEvent.Invoke(RandEventSystem.instance, new object[] { randEvent, false });
+                        SetRandomEvent.Invoke(RandEventSystem.instance, new object[] { randEvent, Player.m_localPlayer.transform.position });
 
                     }
                 }
             }
             catch (Exception ex)
             {
-                Plugin.LogError($"Exception calling SetActiveEvent. {ex.Message}");
+                Plugin.LogError($"Exception calling SetRandomEvent. {ex.Message}");
             }
 
         }

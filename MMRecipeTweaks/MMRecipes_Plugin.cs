@@ -21,6 +21,7 @@ namespace MofoMojo.MMRecipeTweaks
         public const string PluginName = "MMRecipeTweaks";
         public const string PluginVersion = "2.0";
         public static Plugin Instance;
+        
         Harmony _Harmony;
 
         public static LoggingLevel PluginLoggingLevel = LoggingLevel.None;
@@ -50,9 +51,10 @@ namespace MofoMojo.MMRecipeTweaks
 
             // To learn more about Jotunn's features, go to
             // https://valheim-modding.github.io/Jotunn/tutorials/overview.html
-            AddRecipes();
+            AddAndUpdateRecipes();
 
-            PrefabManager.OnVanillaPrefabsAvailable += InitPortalOverrides;
+            if(Settings.AllowPortalOverrides.Value) PrefabManager.OnVanillaPrefabsAvailable += InitPortalOverrides;
+            if(Settings.MasonryChangesEnabled.Value) PrefabManager.OnVanillaPrefabsAvailable += DoStoneWork;
 
             _Harmony = Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), null);
 
@@ -100,13 +102,36 @@ namespace MofoMojo.MMRecipeTweaks
             Jotunn.Logger.LogInfo("FejdStartup has awoken");
         }
 
-        private void AddRecipes()
+        private void AddAndUpdateRecipes()
         {
             if (Settings.FishingRodRecipeEnabled.Value) ItemManager.Instance.AddRecipe(registerFishingRod());
             if (Settings.FishingBaitRecipeEnabled.Value) ItemManager.Instance.AddRecipe(registerFishingBait());
             if (Settings.ChainsRecipeEnabled.Value) ItemManager.Instance.AddRecipe(registerChainsRecipe());
             if (Settings.LeatherRecipeEnabled.Value) ItemManager.Instance.AddRecipe(registerLeatherRecipe());
             if (Settings.LeatherScrapsRecipeEnabled.Value) ItemManager.Instance.AddRecipe(registerLeatherScrapsRecipe());
+            if (Settings.FineWoodRecipeEnabled.Value)
+            {
+                ItemManager.Instance.AddRecipe(registerFineWoodRecipe());
+                ItemManager.Instance.AddRecipe(registerFineWoodx3Recipe());
+            }
+        }
+
+        public static void DoStoneWork()
+        {
+            PrefabManager prefabManager = PrefabManager.Instance;
+
+            foreach(string key in Settings.stoneWork.Keys)
+            {
+                LogVerbose($"Attempting to fixup {key}");
+                //CustomPiece piece = pieceManager.GetPiece(key);
+                Piece piece = prefabManager.GetPrefab(key).GetComponent<Piece>();
+
+                if (null != piece)
+                {
+                    piece.m_resources[0].m_amount = Settings.stoneWork[key];
+                    LogVerbose($"Found {key}, new amount {piece.m_resources[0].m_amount}");
+                }
+            }
 
         }
 
@@ -277,7 +302,7 @@ namespace MofoMojo.MMRecipeTweaks
             CustomRecipe leatherscraps = new CustomRecipe(new RecipeConfig()
             {
                 // Name of the recipe (defaults to "Recipe_YourItem")
-                Name = "Recipe_LeatherScraps",
+                Name = "Recipe_MMLeatherScraps",
 
                 // Name of the prefab for the crafted item
                 Item = "LeatherScraps",
@@ -307,6 +332,83 @@ namespace MofoMojo.MMRecipeTweaks
 
 
         }
+
+        private CustomRecipe registerFineWoodRecipe()
+        {
+            CustomRecipe fineWood = new CustomRecipe(new RecipeConfig()
+            {
+                // Name of the recipe (defaults to "Recipe_YourItem")
+                Name = "Recipe_MMFineWood",
+
+                // Name of the prefab for the crafted item
+                Item = "FineWood",
+
+                Amount = 1,
+
+                // Name of the prefab for the crafting station we wish to use
+                // Can set this to null or leave out if you want your recipe to be craftable in your inventory
+                CraftingStation = "piece_workbench",
+
+                MinStationLevel = 3,
+
+                // List of requirements to craft your item
+                Requirements = new RequirementConfig[]
+                            {
+                    new RequirementConfig()
+                    {
+                        // Prefab name of requirement
+                        Item = "Wood",
+
+                        // Amount required
+                        Amount = 5
+                    }
+                }
+            });
+
+            return fineWood;
+
+
+
+        }
+
+        private CustomRecipe registerFineWoodx3Recipe()
+        {
+            CustomRecipe fineWood = new CustomRecipe(new RecipeConfig()
+            {
+                // Name of the recipe (defaults to "Recipe_YourItem")
+                Name = "Recipe_MMFineWoodx3",
+
+                // Name of the prefab for the crafted item
+                Item = "FineWood",
+
+                Amount = 3,
+
+                // Name of the prefab for the crafting station we wish to use
+                // Can set this to null or leave out if you want your recipe to be craftable in your inventory
+                CraftingStation = "piece_workbench",
+
+                MinStationLevel = 3,
+
+                // List of requirements to craft your item
+                Requirements = new RequirementConfig[]
+                            {
+                    new RequirementConfig()
+                    {
+                        // Prefab name of requirement
+                        Item = "Wood",
+
+                        // Amount required
+                        Amount = 15
+                    }
+                }
+            });
+
+            return fineWood;
+
+
+
+        }
+
 
         /*
         private void registerLoxMeatSurprise()
@@ -356,7 +458,7 @@ namespace MofoMojo.MMRecipeTweaks
         #region BronzeTweak
         // Modify the Awake method of ObjectDB
         [HarmonyPatch(typeof(ObjectDB), "Awake")]
-        private static class MMEnableBronzeTweak
+        private static class MMRecipeTweaks
         {
             // check to see if it's enabled and if not, it won't patch for this mod
             [HarmonyPrepare]
@@ -368,11 +470,12 @@ namespace MofoMojo.MMRecipeTweaks
                 return enabled;
             }
 
+            // https://valheim-modding.github.io/Jotunn/data/objects/recipe-list.html
             // postfix attach to Awake method of ObjectDB
             [HarmonyPostfix]
-            public static void ObjectDB_BronzeTweak(ref ObjectDB __instance)
+            public static void ObjectDB_MMRecipeTweaks(ref ObjectDB __instance)
             {
-                //Plugin.Log($"Looking for Bronze Recipes");
+
                 foreach (Recipe recipe in __instance.m_recipes)
                 {
                     //Plugin.Log($"Looking at {recipe.name}");
@@ -438,6 +541,10 @@ namespace MofoMojo.MMRecipeTweaks
                             recipe.m_amount = Settings.MeadBaseTastyAmount.Value;
                             Plugin.Log($"recipe_meadbasetasty: {Settings.MeadBaseTastyAmount.Value}");
                             break;
+                        case "recipe_turnipstew":
+                            recipe.m_amount = Settings.TurnipStewAmount.Value;
+                            Plugin.Log($"recipe_turnipstew: {Settings.TurnipStewAmount.Value}");
+                            break;
                     }
 
                 }
@@ -458,6 +565,7 @@ namespace MofoMojo.MMRecipeTweaks
         public static ConfigEntry<bool> RecipeTweaksEnabled;
         public static ConfigEntry<bool> LeatherScrapsRecipeEnabled;
         public static ConfigEntry<bool> LeatherRecipeEnabled;
+        public static ConfigEntry<bool> FineWoodRecipeEnabled;
         public static ConfigEntry<bool> BronzeTweakEnabled;
 
         public static ConfigEntry<bool> AllowPortalOverrides;
@@ -483,6 +591,18 @@ namespace MofoMojo.MMRecipeTweaks
         public static ConfigEntry<int> MeadBaseStaminaMediumAmount;
         public static ConfigEntry<int> MeadBaseStaminaMinorAmount;
         public static ConfigEntry<int> MeadBaseTastyAmount;
+
+        public static ConfigEntry<bool> MasonryChangesEnabled;
+        public static ConfigEntry<int> stone_wall_4x2;
+        public static ConfigEntry<int> stone_wall_2x1;
+        public static ConfigEntry<int> stone_wall_1x1;
+        public static ConfigEntry<int> stone_floor_2x2;
+        public static ConfigEntry<int> stone_arch;
+        public static ConfigEntry<int> stone_pillar;
+        public static ConfigEntry<int> stone_stair;
+
+        public static System.Collections.Generic.Dictionary<string, int> stoneWork = new System.Collections.Generic.Dictionary<string, int>();
+
         public static ConfigEntry<Plugin.LoggingLevel> PluginLoggingLevel;
 
 
@@ -497,6 +617,7 @@ namespace MofoMojo.MMRecipeTweaks
             FishingRodRecipeEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "FishingRodRecipeEnabled", true, "Enables  a recipe for Fishing Rods");
             LeatherScrapsRecipeEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "LeatherScrapsRecipeEnabled", true, "Enables  a recipe for converting Leather to LeatherScraps");
             LeatherRecipeEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "LeatherRecipeEnabled", true, "Enables  a recipe for converting LeatherScraps to Leather");
+            FineWoodRecipeEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "FineWoodRecipeEnabled", true, "Enables  crafting FineWood from 5 Wood with a min Workbench level of 3");
 
             FishingBaitRecipeEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "FishingBaitRecipeEnabled", true, "Enables  a recipe for bait made from Necktails");
             LoxMeatSurpriseRecipeEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Recipes", "LoxMeatSurpriseRecipeEnabled", true, "Enables a recipe and item for Lox Meat Surprise");
@@ -510,6 +631,7 @@ namespace MofoMojo.MMRecipeTweaks
             FishWrapsAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "FishWrapsAmount", 2, "The amount of Fish Wraps a single recipe makes");
             MinceMeatSauceAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "MinceMeatSauceAmount", 2, "The amount of mince meat sauce a single recipe makes");
             TurnipStewAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "TurnipStewAmount", 3, "The amount of Turnip Stew a single recipe makes");
+            
             MeadBaseFrostResistAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "MeadBaseFrostResistAmount", 2, "The amount of mead a single recipe makes");
             MeadBaseHealthMediumAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "MeadBaseHealthMediumAmount", 2, "The amount of mead a single recipe makes");
             MeadBaseHealthMinorAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "MeadBaseHealthMinorAmount", 2, "The amount of mead a single recipe makes");
@@ -517,6 +639,15 @@ namespace MofoMojo.MMRecipeTweaks
             MeadBaseStaminaMediumAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "MeadBaseStaminaMediumAmount", 2, "The amount of mead a single recipe makes");
             MeadBaseStaminaMinorAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "MeadBaseStaminaMinorAmount", 2, "The amount of mead a single recipe makes");
             MeadBaseTastyAmount = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("RecipeTweaks", "MeadBaseTastyAmount", 2, "The amount of mead a single recipe makes");
+
+            MasonryChangesEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("Masonry", "MasonryChangesEnabled", true, "Enables  a stone recipe changes");
+            stone_wall_4x2 = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("Masonry", "stone_wall_4x2", 4, "The amount of stone to make this item");
+            stone_wall_2x1 = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("Masonry", "stone_wall_2x1", 2, "The amount of stone to make this item");
+            stone_wall_1x1 = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("Masonry", "stone_wall_1x1", 1, "The amount of stone to make this item");
+            stone_floor_2x2 = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("Masonry", "stone_floor_2x2", 2, "The amount of stone to make this items");
+            stone_arch = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("Masonry", "stone_arch", 3, "The amount of stone to make this item");
+            stone_pillar = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("Masonry", "stone_pillar", 3, "The amount of stone to make this item");
+            stone_stair = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<int>("Masonry", "stone_stair", 4, "The amount of stone to make this item");
 
             AllowPortalOverrides = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("PortalOverrides", "AllowPortalOverrides", true, "Enable this to support portal overrides below");
             AllowCopperOreTeleportationEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("PortalOverrides", "AllowCopperOreTeleportationEnabled", true, "Enable this metal to go through portals");
@@ -526,6 +657,14 @@ namespace MofoMojo.MMRecipeTweaks
             AllowTinOreTeleportationEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("PortalOverrides", "AllowTinOreTeleportationEnabled", true, "Enable this metal to go through portals");
             AllowBlackMetalScrapTeleportationEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("PortalOverrides", "AllowBlackMetalScrapTeleportationEnabled", true, "Enable this metal to go through portals");
             AllowFlametalOreTeleportationEnabled = ((BaseUnityPlugin)Plugin.Instance).Config.Bind<bool>("PortalOverrides", "AllowFlametalOreTeleportationEnabled", true, "Enable this metal to go through portals");
+
+            stoneWork.Add("stone_wall_4x2", stone_wall_4x2.Value);
+            stoneWork.Add("stone_wall_2x1", stone_wall_2x1.Value);
+            stoneWork.Add("stone_wall_1x1", stone_wall_1x1.Value);
+            stoneWork.Add("stone_floor_2x2", stone_floor_2x2.Value);
+            stoneWork.Add("stone_arch", stone_arch.Value);
+            stoneWork.Add("stone_pillar", stone_pillar.Value);
+            stoneWork.Add("stone_stair", stone_stair.Value); 
 
         }
 

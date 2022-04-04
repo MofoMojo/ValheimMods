@@ -1,8 +1,15 @@
-﻿MofoMojo's Exploration Tweaks v2.0
+﻿MofoMojo's Exploration Tweaks v3.0
 
 This is my vision for Exploration Tweaks that started out as a simple private mod for increasing the exploration radius when travelling on a ship. 
 I had written it because many of the the original releases only checked if you were sailing a ship, not if you were simply standing on one. 
 It then progressed into a full fledged set of tweaks to Exploration. 
+
+New with 3.0!!! Line of Sight Exploration
+You can now enable Line of Sight exploration, meaning you can also reveal exploration radius based on what you are looking at. 
+The Line of Sight distance is based on weather and fog density
+The radius for Line of site exploration is affected by your normal exploration radius (after affects like time/weather are applied) and then further affected by your adjusted maximum distance.
+Line of Sight exploration has very little impact on performance but can be enabled/disabled as wanted.
+This can all be manipulated via the .cfg file
 
 Out of the box, the on foot radius for player exploration is 75, the on ship radius is 150. There's a reason for the lower numbers...
 Out of the box, the time of day will have impact on how large the exploration radius is. 
@@ -14,6 +21,7 @@ Out of the box, Environmental/Weather effects have an additional 25% impact (pos
 Out of the box, running, sneaking and swimming will have a negative impact on your awareness of your surroundings. While sneaking and swimming are unlikely to really have much overall impact to "exploration" as a mechanic,
 	it's added just for sake of "completeness". The idea here being that if you're running, sneaking, swimming, then you're unlikely to be able to "pay attention" and take notice of things farther away from you.
 	If you want to "explore" farther, you need to slow down and take a look at your surroundings. 
+Out of the Box, you can now explore areas that you can "see". The maximum line of sight distance is 900. Fog Density and Weather will affect the maximum distance you can "explore"
 
 :: FEATURES ::
 • This is a simple QOL mod from my personal tweaks collection for Map Exploration
@@ -23,93 +31,14 @@ Out of the box, running, sneaking and swimming will have a negative impact on yo
 • Exploration Radius influenced by Running, Swimming, and Sneaking  (configurable)
 • Enable ability to have the map wiped on player death. Disabled by default (configurable)
 • Enable ability to have map pins removed on player death. Disabled by default  (configurable)
+• NEW with 3.0 - Line of Sight Exploration
 
 :: NOTES ::
 • Have you ever had mayonaise on a subway meatball sandwich? It's awesome.
 • This mod will be incompatible with other Exploration tweaks that hook into UpdateExplore or call the Minimap.Explore method
 
 :: SPECIFICS ::
-[ActionImpact]
-Running = -0.5
-This is the amount of impact that running has on the exploration radius and the exploration view distance when line of site exploration is enabled. A negative number is negative impact, a positive number is positive impact. 
-If the radius is 100, and the player is running, the exploration radius will be 50 (by default)
-If the line of site distance is 900 and the player is running, the site distance will be 450. 
-Note: Line of Site distance is influenced by fog density
-
-Swimming = -0.75
-This is the amount of impact that swimming has on the exploration radius and the exploration view distance when line of site exploration is enabled. A negative number is negative impact, a positive number is positive impact. 
-
-Sneaking = -0.33
-This is the amount of impact that sneaking has on the exploration radius and the exploration view distance when line of site exploration is enabled. A negative number is negative impact, a positive number is positive impact. 
-Note this same value is used for crouching when calculating the line of site distance
-
-
-[EnvironmentalImpact]
-OnShipEnvironmentalPenalty = -0.25
-This represents, by default, a negative multiplier that the current weather has on exploration radius when on a ship. It is meant as a means to represent that navigating a ship in all but clear weather will incur additional penalties.
-Set this to 0 if you wish to have no penalty applied. 
-
-FogDensityAffectsExplorationDistance = true
-When true, fog density of the current weather will impact the exploration line of site distance. 
-
-FogDensityDistanceMultiplier = 2
-
-
-[ExplorationRadius]
-
-## Sets the exploration radius when on foot
-# Setting type: Single
-# Default value: 75
-ExploreOnFootRadius = 75
-
-## Sets the exploration radius when on a boat
-# Setting type: Single
-# Default value: 150
-ExploreOnShipRadius = 150
-
-MaximumExplorationRadius = 300
-MinimumExplorationRadius = 5
-MaximumExplorationDistance = 900
-
-[Plugin]
-
-ExploreMapTweaksEnabled = true
-ExploreWeatherTweaksEnabled = true
-ExploreTimeTweaksEnabled = true
-AlsoExploreLineOfSight = true
-ResetMapOnDeath = false
-RemovePinsOnDeath = false
-
-[TimeImpact]
-Hours = -0.50,-0.45,-0.40,-0.35,-0.30,-0.25,-0.1,0,0,0,0.10,0.15,0.20,0.25,0.25,0.2,0.15,-0.10,-0.15,-0.20,-0.25,-0.30,-0.40,-0.50
-
-
-
-
-:: REQUIREMENTS ::
-• BepInEx
-
-:: INSTALLATION ::
-Place the MofoMojo.MMExplorationTweaks.dll in your \BepinEx\Plugins folder
-Start Valheim
-This mod is enabled by default. 
-Play Valheim
-
-:: UPGRADING ::
-Just replace the dll and run Valheim
-Afterwards, tweak the .cfg file as necessary.
-
-:: UNINSTALLATION ::
-Remove the MofoMojo.MMExplorationTweaks.dll and MofoMojo.MMExplorationTweaks.CFG file from the \Plugins and \Config folders respectively.
-
-::  KNOWN ISSUES ::
-• None known
-
-:: VERSIONS ::
-2.0 Initial Public release
-
-:: Sample Settings ::
-## Settings file was created by plugin MMExplorationTweaks v2.5
+## Settings file was created by plugin MMExplorationTweaks v3.0
 ## Plugin GUID: MofoMojo.MMExplorationTweaks
 
 [ActionImpact]
@@ -300,7 +229,7 @@ MaximumExplorationDistance = 900
 # Setting type: LoggingLevel
 # Default value: None
 # Acceptable values: None, Normal, Verbose
-PluginLoggingLevel = Verbose
+PluginLoggingLevel = None
 
 [Plugin]
 

@@ -1,8 +1,15 @@
-﻿MofoMojo's Exploration Tweaks v2.0
+﻿MofoMojo's Exploration Tweaks v3.0
 
 This is my vision for Exploration Tweaks that started out as a simple private mod for increasing the exploration radius when travelling on a ship. 
 I had written it because many of the the original releases only checked if you were sailing a ship, not if you were simply standing on one. 
 It then progressed into a full fledged set of tweaks to Exploration. 
+
+New with 3.0!!! Line of Sight Exploration
+You can now enable Line of Sight exploration, meaning you can also reveal exploration radius based on what you are looking at. 
+The Line of Sight distance is based on weather and fog density
+The radius for Line of site exploration is affected by your normal exploration radius (after affects like time/weather are applied) and then further affected by your adjusted maximum distance.
+Line of Sight exploration has very little impact on performance but can be enabled/disabled as wanted.
+This can all be manipulated via the .cfg file
 
 Out of the box, the on foot radius for player exploration is 75, the on ship radius is 150. There's a reason for the lower numbers...
 Out of the box, the time of day will have impact on how large the exploration radius is. 
@@ -14,6 +21,7 @@ Out of the box, Environmental/Weather effects have an additional 25% impact (pos
 Out of the box, running, sneaking and swimming will have a negative impact on your awareness of your surroundings. While sneaking and swimming are unlikely to really have much overall impact to "exploration" as a mechanic,
 	it's added just for sake of "completeness". The idea here being that if you're running, sneaking, swimming, then you're unlikely to be able to "pay attention" and take notice of things farther away from you.
 	If you want to "explore" farther, you need to slow down and take a look at your surroundings. 
+Out of the Box, you can now explore areas that you can "see". The maximum line of sight distance is 900. Fog Density and Weather will affect the maximum distance you can "explore"
 
 :: FEATURES ::
 • This is a simple QOL mod from my personal tweaks collection for Map Exploration
@@ -23,34 +31,14 @@ Out of the box, running, sneaking and swimming will have a negative impact on yo
 • Exploration Radius influenced by Running, Swimming, and Sneaking  (configurable)
 • Enable ability to have the map wiped on player death. Disabled by default (configurable)
 • Enable ability to have map pins removed on player death. Disabled by default  (configurable)
+• NEW with 3.0 - Line of Sight Exploration
 
 :: NOTES ::
 • Have you ever had mayonaise on a subway meatball sandwich? It's awesome.
 • This mod will be incompatible with other Exploration tweaks that hook into UpdateExplore or call the Minimap.Explore method
 
-:: REQUIREMENTS ::
-• BepInEx
-
-:: INSTALLATION ::
-Place the MofoMojo.MMExplorationTweaks.dll in your \BepinEx\Plugins folder
-Start Valheim
-This mod is enabled by default. 
-Play Valheim
-
-:: UPGRADING ::
-No upgrade requirements at this time
-
-:: UNINSTALLATION ::
-Remove the MofoMojo.MMExplorationTweaks.dll and MofoMojo.MMExplorationTweaks.CFG file from the \Plugins and \Config folders respectively.
-
-::  KNOWN ISSUES ::
-• None known
-
-:: VERSIONS ::
-2.0 Initial Public release
-
-:: Sample Settings ::
-## Settings file was created by plugin MMExplorationTweaks v2.0
+:: SPECIFICS ::
+## Settings file was created by plugin MMExplorationTweaks v3.0
 ## Plugin GUID: MofoMojo.MMExplorationTweaks
 
 [ActionImpact]
@@ -76,6 +64,16 @@ Sneaking = -0.33
 # Setting type: Single
 # Default value: -0.25
 OnShipEnvironmentalPenalty = -0.25
+
+## The Fog Density influences the maximum distance for exploration
+# Setting type: Boolean
+# Default value: true
+FogDensityAffectsExplorationDistance = true
+
+## If FogDensity affects exploration distance, then this is the multiplier applied to distance viewable
+# Setting type: Single
+# Default value: 2
+FogDensityDistanceMultiplier = 2
 
 ## Impact percentage this weather type has on exploration radius, positive numbers increase radius, negative numbers decrease, positive numbers increase radius, negative numbers decrease
 # Setting type: Single
@@ -197,9 +195,6 @@ Crypt = -0.3
 # Default value: -0.3
 SunkenCrypt = -0.3
 
-Heath_clear = 0
-
-DeepForest_Mist = -0.25
 
 [ExplorationRadius]
 
@@ -223,13 +218,18 @@ MaximumExplorationRadius = 300
 # Default value: 5
 MinimumExplorationRadius = 5
 
+## This is the maximum distance you can 'explore' via line of sight
+# Setting type: Single
+# Default value: 900
+MaximumExplorationDistance = 900
+
 [LoggingLevel]
 
 ## Supported values are None, Normal, Verbose
 # Setting type: LoggingLevel
 # Default value: None
 # Acceptable values: None, Normal, Verbose
-PluginLoggingLevel = Verbose
+PluginLoggingLevel = None
 
 [Plugin]
 
@@ -247,6 +247,11 @@ ExploreWeatherTweaksEnabled = true
 # Setting type: Boolean
 # Default value: true
 ExploreTimeTweaksEnabled = true
+
+## When enabled and the Exploration triggers, you will also explore the area around where you are looking
+# Setting type: Boolean
+# Default value: true
+AlsoExploreLineOfSight = true
 
 ## Resets the player map on death
 # Setting type: Boolean

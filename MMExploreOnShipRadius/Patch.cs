@@ -60,7 +60,8 @@ namespace MofoMojo.MMExplorationTweaks
 
                 float hourImpact = Plugin.GetHourImpact();
                 float adjustedSiteDistance = 300;
-                float weatherImpact = Plugin.GetWeatherImpact(out adjustedSiteDistance);
+                float playerPosHeightInWorld = player.transform.position.y;
+                float weatherImpact = Plugin.GetWeatherImpactToRadius(out adjustedSiteDistance);
                 float totalImpact = hourImpact + weatherImpact;
 
 
@@ -109,6 +110,7 @@ namespace MofoMojo.MMExplorationTweaks
                 // clamp the distance. 
                 dt = Mathf.Clamp(dt, Settings.MinimumExplorationRadius.Value, Settings.MaximumExplorationRadius.Value);
 
+                // Readjust the dt
                 if(Settings.FogDensityAffectsExplorationDistance.Value)
                 {
                     dt = Mathf.Clamp(dt, 0, adjustedSiteDistance);
@@ -120,10 +122,12 @@ namespace MofoMojo.MMExplorationTweaks
                 if (dt > 0f)
                 {
                     Plugin.LogVerbose($"DT: {dt}");
+                    __instance.Explore(player.transform.position, dt);
+
                     // original
                     //__instance.Explore(player.transform.position, dt);
                     // Explore where player is looking
-                    if(Settings.AlsoExploreLineOfSight.Value)
+                    if (Settings.AlsoExploreLineOfSight.Value)
                     {
                         try
                         {
@@ -131,9 +135,13 @@ namespace MofoMojo.MMExplorationTweaks
 
                             float maxDistance = Settings.MaximumExplorationDistance.Value;
 
-                            if (Settings.FogDensityAffectsExplorationDistance.Value) maxDistance = adjustedSiteDistance;
+                            // adjust the sight distance 
+                            if (Settings.FogDensityAffectsExplorationDistance.Value) maxDistance = adjustedSiteDistance + Mathf.Clamp(playerPosHeightInWorld, 0, playerPosHeightInWorld);
+                            if (Settings.HeightAffectsDistanceforLOS.Value) maxDistance += (Mathf.Clamp(playerPosHeightInWorld, 0, playerPosHeightInWorld) * Settings.HeightLOSDistanceMultiplier.Value);
 
                             Plugin.LogVerbose($"Max Distance {maxDistance}");
+
+                            float heightAdjustment = 0;
 
                             //if (Physics.Raycast(GameCamera.instance.transform.position, GameCamera.instance.transform.forward, out var hit, maxDistance, ZoneSystem.instance.m_solidRayMask))
                             if (Physics.Raycast(GameCamera.instance.transform.position, GameCamera.instance.transform.forward, out var hit, maxDistance, (int)Plugin.GetMask))
@@ -141,6 +149,12 @@ namespace MofoMojo.MMExplorationTweaks
                                 try
                                 {
                                     Vector3 target = hit.point;
+
+                                    // calculate the actual height variation between the player and what they're looking at. 
+                                    heightAdjustment = playerPosHeightInWorld - target.y;
+
+                                    // This just makes sure the adjustment is some value between 0 and positive number
+                                    heightAdjustment = Mathf.Max(heightAdjustment, 0);
 
                                     /*
                                      * zi = (xi – min(x)) / (max(x) – min(x))
@@ -152,16 +166,33 @@ namespace MofoMojo.MMExplorationTweaks
                                         max(x) – Maximum value in the dataset
                                         zi – Normalized value of the current iteration
                                      */
+
+                                    // caculate the distance between the player and the target
                                     float distance = Vector3.Distance(player.transform.position, target);
+
                                     Plugin.LogVerbose($"Distance pre-clamp: {distance}");
-                                    distance = Mathf.Clamp(distance, Settings.MinimumExplorationRadius.Value + 1, Settings.MaximumExplorationDistance.Value);
+
+                                    // clamp the distance between the minimum exploration radius and the maximum exploration distance. 
+                                    // distance = Mathf.Clamp(distance, Settings.MinimumExplorationRadius.Value + 1, Settings.MaximumExplorationDistance.Value);
+
+                                    // calculate radius adjustment based on the current distance and maximum distance. This puts the radius on a sliding scale between 0% and 100% based on how close we are to the maximum distance.
                                     float percentage = 1 - ((distance - Settings.MinimumExplorationRadius.Value) / (Settings.MaximumExplorationDistance.Value - Settings.MinimumExplorationRadius.Value));
 
-                                    float adjustedDistanceRadius = dt * percentage;
-                                    //dt = Mathf.Clamp(dt, 10, Settings.MaximumExplorationRadius.Value);
-                                    Plugin.LogVerbose($"Distance: {distance} Percentage: {percentage} adjustedDistanceRadius: {adjustedDistanceRadius}");
+                                    float adjustedDistanceRadius = dt;
 
-                                    __instance.Explore(target, adjustedDistanceRadius);
+                                    // add to the adjustedDistanceRadius if LOS Radius is affected by height difference between player and target
+                                    if (Settings.HeightAffectsRadiusforLOS.Value) adjustedDistanceRadius += (heightAdjustment * Settings.HeightLOSRadiusMultiplier.Value);
+
+                                    // apply the percentage multiplier based on how far we're actually seeing.
+                                    adjustedDistanceRadius *= percentage;
+
+                                    // Now clamp the adjustedDistanceRadius to the maximum exploration radius
+                                    adjustedDistanceRadius = Mathf.Clamp(adjustedDistanceRadius, 1, Settings.MaximumExplorationDistance.Value);
+
+                                    //dt = Mathf.Clamp(dt, 10, Settings.MaximumExplorationRadius.Value);
+                                    Plugin.LogVerbose($"Distance: {distance} Percentage: {percentage} adjustedDistanceRadius: {adjustedDistanceRadius} heightAdjustment: {heightAdjustment} playerPosHeightInWorld: {playerPosHeightInWorld}");
+
+                                    __instance.Explore(target, adjustedDistanceRadius );
                                 }
                                 catch (System.Exception ex)
                                 {
@@ -177,8 +208,6 @@ namespace MofoMojo.MMExplorationTweaks
                         
 
                     }
-
-                    __instance.Explore(player.transform.position, dt);
 
                 }
                 
